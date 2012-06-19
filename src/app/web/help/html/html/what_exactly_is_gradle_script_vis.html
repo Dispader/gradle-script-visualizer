@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+  <HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-1">
+  <META NAME="Author" CONTENT="Douglas Bullard">
+  <META NAME="Keywords" CONTENT="Nurflugel, Gradle, GradleScriptVisualizer, GraphViz">
+  <TITLE>What exactly is the GradleScriptVisualizer</TITLE>
+
+  <LINK REL=STYLESHEET TYPE="text/css" HREF="../html/style.css">
+  <LINK REL=STYLESHEET TYPE="text/css" HREF="../html/site.css">
+  <STYLE>
+    :link { color: rgb(0,51,204);}
+    :visited { color: rgb(153,0,153);}
+    :active { color: rgb(255,0,0);}
+    BODY { color: rgb(0,0,0);LEFTMARGIN: 20}
+  </STYLE>
+  </HEAD>
+  <BODY  STYLE="background-color: rgb(255,255,255); background-image: url('../assets/images/wing1.jpg');" TOPMARGIN=10 LEFTMARGIN=20 MARGINWIDTH=0 MARGINHEIGHT=0>
+      <TABLE CELLPADDING=30 CELLSPACING=0 WIDTH="100%" HEIGHT="100%" VALIGN=TOP>
+          <TR>
+              <TD VALIGN=TOP CLASS="TextObject">
+                  <P>
+                      <TABLE ID="Table1" BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%" VALIGN="TOP" HEIGHT="100%" STYLE="font-family: 'Trebuchet MS', Tahoma, Verdana, Arial, Helvetica, Sans-serif, sans-serif;">
+                          <COLGROUP>
+                          <COL WIDTH="100%">
+                          </COLGROUP>
+                          <TR>
+                              <TD VALIGN=TOP WIDTH="100%">
+                                  <P STYLE="text-align: center;"><SPAN STYLE="font-size: x-large;">Gradle Script Visualizer</SPAN></P>
+                                  <P STYLE="text-align: left;"><B>What exactly is the Gradle Script Visualizer?<IMG ID="Picture3" SRC="../assets/images/build_gradle_small.png"
+                                                                                                                    VSPACE=0 HSPACE=0
+                                                                                                                          ALIGN="RIGHT"
+                                                                                                                          BORDER=0
+                                                                                                                          ALT=""></B>
+                                  <P>Ever take a look at an Gradle build script and, although perfectly readable, not really &quot;see&quot; all the dependencies between your tasks?</P>
+                                  <P>And any imported Gradle scripts - where do they fit in? This program was designed to show that,
+                                     by importing your Ant scripts and creating graphic file representations of them. Say what?</P>
+                                  <P>OK, here's an example of the output for the build file used for this program: </P>
+                                  <P></P>
+                                  <P><B>Features</B></P>
+                                  <LI>  Parses Gradle build files for the following task usages: </LI>
+                                  <UL>
+                                      <LI>Task declarations</LI>
+                                      <LI>Task dependsOn</LI>
+                                  </UL>
+                                  <LI>Apply from: for imported files from the file system</LI>
+                                  <LI>Apply from: for imported files from the a URL</LI>
+                                  <LI>Optional real-time updating of graphs as the build files are modified (you do have to keep the program running for this(</LI>
+                                  <LI>Optionally group results by build file subgraphs, or all items together in one graph</LI>
+                                  <LI>Output formats: PNG (default for PC), PDF (default for OS X, not available otherwise)</LI>
+                                  <p>Gradle Script Visualizer is a program I've written to make visualizing how your Gradle tasks and scripts are related to one another.</P>
+                                  <p>This was originally written as an exercise in TDD (Test Driven Development), I wanted to see how it affected development time compared to the very similar AntScriptVisualizer program
+                                    on this site, which was written more traditionally.  Guess what?  TDD was way, way faster.
+                                  </p>
+                                  <!--<P><A HREF="../html/using_gradle_script_visualizer.html">Click here to see more examples showing GradleScriptVisualizer</A> </P>-->
+                                  <P></P>
+                              </TD>
+                          </TR>
+                      </TABLE>
+                  </TD>
+          </TR>
+      </TABLE>
+  </BODY>
+</HTML>
+ 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE map
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/map_1_0.dtd">
+<map version="1.0">
+    <mapID target="welcome"         url="html/index.html"/>
+    <mapID target="what"            url="html/html/what_exactly_is_ant_script_vis.html"/>
+    <mapID target="using"           url="html/html/using_ant_script_visualizer.html"/>
+    <mapID target="whatsLeft"       url="html/html/whats_left_todo.html"/>
+    <mapID target="bugs"            url="html/html/bugs.html"/>
+    <mapID target="feedback"        url="html/html/contact_me.html"/>
+</map>

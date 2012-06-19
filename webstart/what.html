@@ -1,0 +1,34 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+	<head>
+	   <title>What IS the Ant Script Visualizer Application?</title>
+	</head>
+<body bgcolor="#FFFFFF" BACKGROUND="wing.jpg">
+<!--	<body bgcolor="#FFFFFF" >-->
+
+		<strong><big>OK, what IS the Ant Script Visualizer program?</big><p></strong>
+		Ever take a look at an Ant build script and, although perfectly readable, not really "see" all the dependencies between targets?<p>
+
+		What targets depend on a certain taskdef?  Or a macrodef?  Do macrodefs rely on other macrodefs?  And all those imported Ant scripts - where do they
+		fit in?<p>
+
+		Here's some example output.  The "Help" section in the program shows how to generate them.<p>
+First, a basic build script:
+	<img src="images/onebuild.png"><p>
+
+Now, taskdefs:<p>
+		<img src="images/twobuild_with_taskdefs.png"><p>
+macrodefs AND taskdefs:<p>
+		<img src="images/twobuild_with_taskdef_and_macrodef.png"><p>
+Ant and Antcalls:<p>
+		<img src="images/fourbuild.png"><p>
+All together:<p>
+		<img src="images/build_all.png"><p>
+
+Build script for this program:<p>
+		<img src="images/build.png">
+
+
+
+	</body>
+</html>
