@@ -25,10 +25,7 @@ configurations {
 dependencies {
 
     compile 'org.jdom:jdom:'+                       libraryVersions.jdom,
-            'ca.odell.glazedlists:jdk_1.5:'+        libraryVersions.glazedLists,
-            'org.codehaus.xstream:xstream:'+        libraryVersions.xstream,
             'org.tmatesoft.svnkit:svnkit:'+         libraryVersions.svnkit,
-            'w3c:jtidy:'+                           libraryVersions.jtidy,
             'com.ryangrier.ant:version_tool:'+      libraryVersions.version_tool,
             'com.nurflugel:buildtasks:'+            libraryVersions.buildtasks,
             'org.apache:commons-logging:'+          libraryVersions.commons_logging,
@@ -45,10 +42,7 @@ dependencies {
 
 
     runtime 'org.jdom:jdom:'+                   libraryVersions.jdom,
-            'ca.odell.glazedlists:jdk_1.5:'+    libraryVersions.glazedLists,
-            'org.codehaus.xstream:xstream:'+    libraryVersions.xstream,
             'org.tmatesoft.svnkit:svnkit:'+     libraryVersions.svnkit,
-            'w3c:jtidy:'+                       libraryVersions.jtidy,
             'org.apache:commons-logging:'+      libraryVersions.commons_logging,
             'org.apache:commons-lang:'+         libraryVersions.commons_lang,
             'org.apache:commons-collections:'+  libraryVersions.commons_collections,
@@ -63,10 +57,7 @@ dependencies {
 
 
     source 'org.jdom:jdom:'+                  libraryVersions.jdom,
-           'ca.odell.glazedlists:jdk_1.5:'+   libraryVersions.glazedLists,
-           'org.codehaus.xstream:xstream:'+   libraryVersions.xstream,
            'org.tmatesoft.svnkit:svnkit:'+    libraryVersions.svnkit,
-           'w3c:jtidy:'+                      libraryVersions.jtidy,
            'com.ryangrier.ant:version_tool:'+ libraryVersions.version_tool,
            'com.nurflugel:buildtasks:'+       libraryVersions.buildtasks,
            'org.apache:commons-logging:'+     libraryVersions.commons_logging,
