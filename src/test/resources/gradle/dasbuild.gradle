@@ -1,0 +1,319 @@
+apply plugin: 'war'
+apply plugin: 'tomcat'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'sonar'
+
+description = 'DAS webapp'
+group = 'com.nike.das'
+version = '1.0'
+projectname = 'das-webapp'
+artifactId = "das-webapp"
+groupId = group
+versionNumber = version
+
+//todo almost everything below this line should go into a common gradle file for reuse 
+
+buildscript {
+    repositories {
+        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+            name = 'GitHub'
+            addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
+        }
+    }
+
+    dependencies {
+        classpath 'bmuschko:gradle-tomcat-plugin:0.9.2'
+    }
+}
+
+
+// begin cobertura vars
+def cobSerFile="${project.buildDir}/reports/cobertura/cobertura.ser"
+//def cobSerFile="cobertura.ser"
+def srcOriginal="${sourceSets.main.output.classesDir}"
+def srcCopy="${srcOriginal}-copy"
+// end cobertura vars
+
+repositories {
+    maven {
+        url "http://artifactory-gtms.nike.com/artifactory/libs-release/"
+    }
+    ivy {
+        url "http://artifactory-gtms.nike.com/artifactory/libs-release/"
+    }
+}
+
+configurations {
+    integrationTestCompile {
+        extendsFrom testCompile
+    }
+    integrationTestRuntime {
+        extendsFrom integrationTestCompile, testRuntime
+    }
+    bddTestCompile {
+        extendsFrom testCompile
+    }
+    bddTestRuntime {
+        extendsFrom integrationTestCompile, testRuntime
+    }
+}
+
+sourceSets {
+    integrationTest {
+        java.srcDir file('src/integration-test/java')
+        resources.srcDir file('src/integration-test/resources')
+    }
+    bddTest {
+        java.srcDir file('src/bdd-test/java')
+        resources.srcDir file('src/bdd-test/resources')
+    }
+}
+apply from: 'dependencies.gradle'
+
+dependencies {
+
+    integrationTestCompile sourceSets.main.output
+    integrationTestCompile configurations.testCompile
+    integrationTestCompile sourceSets.test.output
+    integrationTestRuntime configurations.testRuntime
+
+    bddTestCompile sourceSets.main.output
+    bddTestCompile configurations.testCompile
+    bddTestCompile sourceSets.test.output
+    bddTestCompile configurations.testRuntime
+
+}
+
+// work in progress... commenting out so RGA can run builds.
+task genConfig(description: 'Generate the application config file.') {
+//    def confilePath = "${buildDir}/config/"
+//    def outputDir = new File(confilePath)
+//    def wasCreated = outputDir.mkdirs()
+//
+//    doLast {
+//        def address = "http://envstore.nike.net:8080/env/envsubst.cgi?opt=subst&envname=atlas.mystic.dev&svnrepo=DAS&svnpath=webapp/trunk/src/main/config/das.properties"
+//        def url = address.toURL()
+//        def conn = url.openConnection()
+//
+//    Website Basic Authentication
+//        def authString = "user:pass".getBytes().encodeBase64().toString()
+//        conn.setRequestProperty("Authorization", "Basic ${authString}")
+//
+//        def passed = conn.responseCode == 200
+//        def text = url.getText()
+//        conn.getContent().getText()
+//
+//        logger.lifecycle("Returned config file content: \r\n\t$text")
+//
+//        outputDir.mkdirs()
+//        def file = new FileOutputStream(confilePath + address.tokenize("/")[-1])
+//        def out = new BufferedOutputStream(file)
+//        out << url.openStream()
+//        out.close()
+//        file.close()
+//    }
+}
+
+genConfig.onlyIf {
+    file("${buildDir}/config/das.properties").exists() != true
+}
+
+task tomcatRunCore(type:  org.gradle.api.plugins.tomcat.TomcatRun, dependsOn: war) 
+
+task tomcatRunMock(dependsOn: tomcatRunCore, description: 'Runs Webapp using Mock resources (DB, LDAP)') {
+    doFirst {
+        System.setProperty("spring.profiles.active", "InMemoryAuth,MockDB")
+    }
+}
+
+// unit tests
+test {
+    testReportDir = new File(testReportDir, "unitTest-report")
+    outputs.dir testReportDir
+    useTestNG()
+
+    // begin cobertura
+    // set the cobertura data file that collects instrumentation data
+    systemProperties ["net.sourceforge.cobertura.datafile"] = cobSerFile
+
+    doFirst{
+      //todo put this into it's own task with defined inputs and outputs
+        ant {
+            // delete data file for cobertura, otherwise coverage would be added
+            delete(file:cobSerFile, failonerror:false)
+            // delete copy of original classes
+            delete(dir: srcCopy, failonerror:false)
+            // import cobertura task, so it is available in the script
+            taskdef(resource:'tasks.properties', classpath: configurations.testRuntime.asPath)
+            // create copy (backup) of original class files
+            copy(todir: srcCopy) {
+                fileset(dir: srcOriginal)
+            }
+            // instrument the relevant classes in-place -- exclude test and mock classes
+            'cobertura-instrument'(datafile:cobSerFile) {
+                fileset(dir: srcOriginal,
+                includes:"**/*.class",
+                excludes:"**/*Test.class, **/*Mock*.class, **/*Function.class")
+            }
+        }
+    }
+    // end cobertura
+}
+
+// selenium and other integration tests
+task integrationTest(type: Test, dependsOn: [test, genConfig], description: 'Runs the integration selenium and testNG tests.') {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    testReportDir = new File(testReportDir, "integrationTest-report")
+    outputs.dir testReportDir
+    useTestNG()
+    // set the cobertura data file that collects instrumentation data
+    systemProperties ["net.sourceforge.cobertura.datafile"] = cobSerFile
+}
+
+task integrationTestMockDaemonModeTomcat (type:  org.gradle.api.plugins.tomcat.TomcatRun, dependsOn: [test, genConfig]){
+    daemon=true
+}
+
+// selenium and other integration tests using Mock DAOs.
+task integrationTestMockCore(type: Test, dependsOn: [integrationTestMockDaemonModeTomcat], description: 'Runs the integration selenium and testNG tests using Mock DOAs.') {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    testReportDir = new File(testReportDir, "integrationTest-report")
+    outputs.dir testReportDir
+    useTestNG()
+
+    doFirst {
+        System.setProperty("spring.profiles.active", "InMemoryAuth,MockDB")
+    }
+}
+
+task integrationTestMock(type:org.gradle.api.plugins.tomcat.TomcatStop, dependsOn: integrationTestMockCore )
+
+// cucumber bdd tests
+task bddTestBare(dependsOn: [compileBddTestJava, processBddTestResources, bddTestClasses])
+
+
+task daemonModeBddTomcat(type:  org.gradle.api.plugins.tomcat.TomcatRun, dependsOn: [compileBddTestJava, processBddTestResources, bddTestClasses]){
+    daemon = true
+}
+
+task daemonModeTomcat(type:  org.gradle.api.plugins.tomcat.TomcatRun){
+    daemon = true
+}
+
+task bddTestCore(dependsOn: [test,  daemonModeBddTomcat])
+task bddTest(type: org.gradle.api.plugins.tomcat.TomcatStop, dependsOn: bddTestCore)
+
+
+task smokeTestBare(dependsOn: bddTestBare)
+
+[bddTestCore, bddTestBare].each{
+    it.with{
+        description = 'Runs the bdd cucumber and junit tests.'
+        def outputDir = "${buildDir}/reports/tests/bddTest-report"
+        outputs.dir outputDir
+        doFirst {
+            def format = "html:${outputDir}"
+            javaexec {
+                main = "cucumber.cli.Main"
+                classpath = files(sourceSets.bddTest.output.classesDir) + sourceSets.bddTest.compileClasspath + sourceSets.bddTest.runtimeClasspath
+                args = ['-f', format, '--glue', 'cucumber', 'src/bdd-test/resources']
+            }
+        }
+    }
+}
+
+// cucumber bdd tests
+task funcTestBare(type: Test)
+task funcTestCore(type: Test, dependsOn: daemonModeTomcat)
+task funcTest(type: org.gradle.api.plugins.tomcat.TomcatStop, dependsOn: funcTestCore)
+//todo funcTestBare???
+[funcTestBare, funcTestCore].each{
+    it.with{
+        description = 'Runs the func end to end tests.'
+        testClassesDir = sourceSets.bddTest.output.classesDir
+        classpath = sourceSets.bddTest.runtimeClasspath
+        testReportDir = new File(testReportDir, "funcTest-report")
+        outputs.dir testReportDir
+        useTestNG()
+    }
+}
+
+[tomcatRun, daemonModeBddTomcat,daemonModeTomcat,integrationTestMockDaemonModeTomcat]*.additionalRuntimeJars << new File(buildDir, 'config')
+[tomcatRun, tomcatRunWar, tomcatStop,bddTest,funcTest, daemonModeBddTomcat,daemonModeTomcat,integrationTestMockDaemonModeTomcat,integrationTestMock].each{
+    it.with{
+        contextPath = "/das"
+        httpPort = (System.properties['jetty.httport'] ?: System.properties['appserver.httport']) as int
+        stopPort = 8082
+        stopKey = 'stopKey'
+    }
+}
+
+check.dependsOn integrationTest
+check.dependsOn bddTest
+check.dependsOn funcTest
+
+check.doLast {
+    if (new File(srcCopy).exists()) {
+        // replace instrumented classes with backup copy again
+        ant {
+            delete(file: srcOriginal)
+            move(file: srcCopy, tofile: srcOriginal)
+        }
+        // end cobertura cleanup
+
+        // create cobertura reports
+        ant.'cobertura-report'(destdir:"${project.buildDir}/reports/cobertura",
+                format:'html', srcdir:"src/main/java", datafile:cobSerFile)
+        ant.'cobertura-report'(destdir:"${project.buildDir}/reports/cobertura",
+                format:'xml', srcdir:"src/main/java", datafile:cobSerFile)
+    }
+}
+
+task quickTest(dependsOn: [test, integrationTestMock], description: 'Runs unit and integrationMock tests.')
+
+sonar {
+    server {
+        url = 'http://aws-224-244.nike.com:8080/sonar'
+    }
+    database {
+        url = 'jdbc:derby://aws-224-244.nike.com:7777/sonar'
+    }
+    project {
+        testDirs += sourceSets.integrationTest.allSource.srcDirs
+        testDirs += sourceSets.bddTest.allSource.srcDirs
+        coberturaReportPath = file('build/reports/cobertura/coverage.xml')
+        testReportPath = file("$reportsDir/tests/unitTest-report/junitreports")
+        dynamicAnalysis = 'reuseReports'
+    }
+}
+
+// gradle wrapper version
+task wrapper(type: Wrapper, description: 'Runs the gradle wrapper.') {
+    gradleVersion = '1.0-rc-3'
+}
+
+//todo this should not be needed if you open the project in IDEA by "New project", "Import from Gradle"
+idea {
+    module {
+        testSourceDirs += sourceSets.integrationTest.java.srcDirs
+        testSourceDirs += sourceSets.integrationTest.resources.srcDirs
+        scopes.TEST.plus.add(configurations.integrationTestCompile)
+        scopes.TEST.plus.add(configurations.integrationTestRuntime)
+
+        testSourceDirs += sourceSets.bddTest.java.srcDirs
+        testSourceDirs += sourceSets.bddTest.resources.srcDirs
+        scopes.TEST.plus.add(configurations.bddTestCompile)
+        scopes.TEST.plus.add(configurations.bddTestRuntime)
+    }
+}
+
+eclipse {
+    jdt {
+        //if you want to alter the java versions (by default they are configured with gradle java plugin settings):
+        sourceCompatibility = 1.6
+        targetCompatibility = 1.6
+    }
+}

@@ -1,0 +1,255 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'application'
+apply plugin: 'idea'
+apply plugin: 'project-report'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'signing'
+
+
+configurations {
+  compile
+  presigned
+  dist
+  source
+  test
+  reporting
+  javac2
+  codeCoverage
+}
+
+
+println """\
+
+========================================================================================================
+Welcome to Gradle!  This is version: $gradle.gradleVersion
+              Gradle home is set to: $gradle.gradleHomeDir
+    Gradle user directory is set to: $gradle.gradleUserHomeDir
+
+                     Base directory: $projectDir
+
+
+Running build script ${relativePath(buildFile)}
+========================================================================================================
+
+"""
+
+repositories {
+  mavenCentral()
+  ivy {
+            artifactPattern "http://www.nurflugel.com/Home/repository/[organisation]/[module]/[revision]/[artifact]-[revision].[type]"
+            ivyPattern      "http://www.nurflugel.com/Home/repository/[organisation]/[module]/[revision]/[artifact]-[revision].ivy.xml"
+  }
+}
+
+dependencies
+    {
+      javac2 'com.intellij:javac2:9.0.0',
+             'org.objectweb.asm:asm:3.1'
+
+      testCompile  'com.google.inject:guice:3.0'
+  //  experimental jacoco import
+      testCompile  ('velocity:velocity:1.4'){transtive=true}
+      testCompile  ('org.uncommons:reportng:1.1.2'){transitive=false}
+
+//      codeCoverage files("${rootProject.projectDir.path}/lib/jacocoagent.jar")
+      codeCoverage 'org.jacoco:org.jacoco.build:0.5.7.201204190339'
+      codeCoverage 'org.jacoco:org.jacoco.ant:0.5.7.201204190339'
+      runtime      'org.jacoco:org.jacoco.agent:0.5.7.201204190339'
+      codeCoverage 'org.jacoco:org.jacoco.agent:0.5.7.201204190339'
+      codeCoverage 'org.jacoco:org.jacoco.report:0.5.7.201204190339'
+      codeCoverage 'org.jacoco:org.jacoco.core:0.5.7.201204190339'
+      codeCoverage 'org.jacoco:org.jacoco.agent:0.5.7.201204190339'
+
+    }
+
+test {
+  useTestNG()
+  testLogging.showStandardStreams = true
+  options.suites("src/test/testng-config/testng.xml")
+  systemProperties "org.uncommons.reportng.stylesheet": "${projectDir}/src/test/resources/hudsonesque.css"
+  options {
+    listeners << 'org.uncommons.reportng.HTMLReporter'
+    listeners << 'org.uncommons.reportng.JUnitXMLReporter'
+  }
+  workingDir = 'build/'
+
+//  println "\n\nThe testclasspath is: "
+//  project.sourceSets.test.runtimeClasspath.each {
+//    println "    classpath entry: " + it
+//  }
+//  println "\n\n"
+}
+
+//task testFormat {
+//  dependsOn "formatTestResults"
+//}
+
+
+def titleForDocumentation = archivesBaseName + ' ' + version
+def copyrightString = 'Copyright &#169; 2008&#8211;2012  Douglas Bullard.  All Rights Reserved.'
+def packageTitle = group
+
+// this will fail, but still do what it's supposed to
+javadoc {
+  options.overview('overview.html')
+  options.showAll()
+  options.encoding('UTF-8')
+  options.setUse(true)
+  options.author(true)
+  options.version(true)
+  options.windowTitle(titleForDocumentation)
+  options.docTitle(titleForDocumentation)
+  options.footer(copyrightString)
+}
+
+//task formatTestResults (dependsOn: "test") << {
+//  ant.xslt(in: './build/reports/tests/testng-results.xml',
+//           out: './build/reports/tests/index.html',
+//           style: 'src/main/resources/testng-results.xsl',
+//           classpath: '/Users/douglasbullard/Documents/JavaStuff/testng-xslt-1.1.1/lib/saxon-8.7.jar') {
+//    param(name: 'testNgXslt.outputDir', expression: '$outputDir')
+//    param(name: 'testNgXslt.sortTestCaseLinks', expression: 'true')
+//    param(name: 'testNgXslt.testDetailsFilter', expression: "FAIL,SKIP,PASS")
+//  }
+//}
+
+//task transform << {
+//  def transformer = TransformerFactory.newInstance().newTransformer(in: './build/reports/tests/testng-results.xml',
+//                                                                    out: './build/reports/tests/index.html',
+//                                                                    style: 'src/main/resources/testng-results.xsl'
+//                                                                    , classpath: '/Users/douglasbullard/Documents/JavaStuff/testng-xslt-1.1.1/lib/saxon-8.7.jar')
+//  transformer.setParamter(name: 'testNgXslt.testDetailsFilter', expression: "FAIL,SKIP,PASS")
+//  transformer.setParamter(name: 'testNgXslt.outputDir', expression: '$outputDir')
+//  transformer.setParamter(name: 'testNgXslt.sortTestCaseLinks', expression: 'true')
+//  transformer.transform()
+//}
+
+//def factory = TransformerFactory.newInstance()
+//def transformer = factory.newTransformer(new StreamSource(new StringReader(xslt)))
+//transformer.transform(new StreamSource(new StringReader(input)), new StreamResult(System.out))
+
+//  style: '/Users/douglasbullard/Documents/JavaStuff/Google_Code/IvyTools/branches/gradle/testng-results.xsl',
+
+//task zipSrc(type: Zip) {
+//    appendix = 'src'
+//    from sourceSets.main.allSource
+//    into('build/dist')
+//}
+
+// Note that we have to tell Gradle what's expected to run before this - Gradle doesn't honor dependency order in the tasks as specified below
+task publishWebstart(dependsOn: ['installApp', 'copyResources', 'copyHelp', 'copyLibs', 'signJars'], description: 'Create the WebStart distributable.')
+
+// Note that we have to tell Gradle what's expected to run before this - Gradle doesn't honor dependency order in the tasks as specified above
+task copyLibs(type: Copy, dependsOn: installApp) {
+  from('build/install/gradleTrunk/lib')//todo wrong project name here!!!!!!
+  into('webstart/lib')
+  //todo rename via regexp to strip jar versions off
+}
+
+//todo get this from Subversion !!!!!
+def subversion_branch=   'trunk'
+
+task copyResources(type: Copy) {
+  from('src/app/web'){
+    include '**/*.*'
+  }
+  into('webstart')
+
+//this
+//   codebase="http://ivy-tools.googlecode.com/svn/@subversion_trunk_or_branch@/webstart/"
+//  turns into
+//   codebase="http://ivy-tools.googlecode.com/svn/trunk/webstart/"
+
+  filter(ReplaceTokens, tokens:
+      [subversion_trunk_or_branch: subversion_branch ])
+  doFirst {
+    println '>>>>>>>>>>>>>Value of subversion_branch is ' + subversion_branch
+  }
+}
+
+task copyHelp(type: Copy) {
+  from('src/app/help')
+  into('webstart/html')
+}
+
+def baseDir = "webstart/lib"
+def jarsToSign = file(baseDir).listFiles()//exclude jhall-2.0.6.jar
+jarsToSign -= [file(baseDir+"/jhall-2.0.6.jar"),file(baseDir+"/junit-3.8.1.jar"),file(baseDir+"/buildtasks-1.0-SNAPSHOT.jar"),file(baseDir+"/.svn")]
+jarsToSign.each { File file ->
+  println 'Runtime library: ' + file.name
+}
+
+
+task signJars(dependsOn: 'installApp') << {
+  println 'Properties are:  keystore is ' + keystore
+
+//    from('src/app/help')
+//    into('webstart/html')
+
+  jarsToSign.each {
+    println "Generating classes for package: " + it
+    ant.signjar(jar: it,
+                keypass: keypass,
+                keystore: keystore,
+                alias: alias,
+                storepass: storepass)
+  }
+}
+
+task listRuntimeJars << {
+  configurations.compile.each { File file ->
+    println file.name }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '1.0-rc-3'
+}
+
+
+//jacoco stuff
+
+test {
+//  jvmArgs "-javaagent:${configurations.codeCoverage.singleFile}=destfile=${buildDirName}/coverage-results/jacoco.exec,sessionid=HSServ,append=false",
+//  jvmArgs "-javaagent:build/install/gradleTrunk/lib/org.jacoco.agent-0.5.7.201204190339.jar=destfile=build/reports/coverage-results/jacoco.exec,sessionid=HSServ,append=false",
+//    'Djacoco=true',
+//    '-Xms128m',
+//    '-Xmx512m',
+//    '-XX:MaxPermSize=128m'
+}
+
+task generateCoverageReport (dependsOn: [test,installApp]) << {
+  ant {
+    taskdef(name:'jacocoreport', classname: 'org.jacoco.ant.ReportTask') {
+//      classpath path: "${rootProject.projectDir.path}/lib/jacocoant.jar"
+      classpath path: "build/install/gradleTrunk/lib/org.jacoco.agent-0.5.7.201204190339.jar"
+//      classpath path: configurations.codeCoverage.singleFile.
+    }
+
+    mkdir dir: "${buildDirName}/reports/coverage"
+
+    jacocoreport {
+      executiondata {
+        fileset(dir: "build/reports/coverage-results") {
+          ant.file file: 'jacoco.exec'
+        }
+      }
+
+      structure(name: project.name) {
+
+        classfiles {
+          fileset dir: "${project.buildDir.path}/classes/main"
+        }
+
+        // this is for Windows
+        sourcefiles(encoding: 'CP1252') {
+          fileset dir: "${project.projectDir.path}/src/main/java"
+        }
+      }
+
+      xml destfile: "build/reports/coverage/jacoco.xml"
+      html destdir: "build/reports/coverage"
+    }
+  }
+}

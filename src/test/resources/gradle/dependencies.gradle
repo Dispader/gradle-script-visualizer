@@ -1,0 +1,52 @@
+dependencies {
+
+    compile 'org.jdom:jdom:1.0',
+    'ca.odell.glazedlists:jdk_1.5:1.8.0',
+    'org.codehaus.xstream:xstream:1.2',
+    'org.tmatesoft.svnkit:svnkit:1.7.4-v1',
+    'w3c:jtidy:04aug2000r7-dev',
+    'com.ryangrier.ant:version_tool:1.1.4_fixed',
+    'com.nurflugel:buildtasks:1.0-SNAPSHOT',
+    'org.apache:commons-logging:1.0.4',
+    'org.apache:commons-lang:2.4',
+    'org.apache:commons-collections:3.2.1',
+    'org.apache:commons-io:2.2',
+    'com.intellij:forms_rt:9.0.0',
+    'com.intellij:javac2:9.0.0',
+    'org.apache:log4j:1.2.15',
+    'org.testng:testng:6.4',
+    'org.objectweb.asm:asm:3.1',
+    'javax.help:jhall:2.0.6'
+
+
+//    testCompile  'org.testng:testng:6.4','com.google.inject:guice:3.0'
+
+    runtime 'org.jdom:jdom:1.0',
+     'ca.odell.glazedlists:jdk_1.5:1.8.0',
+    'org.codehaus.xstream:xstream:1.2',
+    'org.tmatesoft.svnkit:svnkit:1.7.4-v1',
+    'w3c:jtidy:04aug2000r7-dev',
+    'org.apache:commons-lang:2.4',
+    'org.apache:commons-logging:1.0.4',
+    'org.apache:commons-io:2.2',
+    'com.intellij:forms_rt:9.0.0',
+    'org.apache:log4j:1.2.15',
+    'org.testng:testng:6.4',
+    'org.objectweb.asm:asm:3.1',
+    'javax.help:jhall:2.0.6',
+        'org.apache.ant:ant:1.8.4'
+
+    source 'org.jdom:jdom:1.0',
+    'org.codehaus.xstream:xstream:1.2',
+    'org.tmatesoft.svnkit:svnkit:1.7.4-v1',
+    'w3c:jtidy:04aug2000r7-dev',
+//    'com.nurflugel:buildtasks:1.0-SNAPSHOT',
+    'org.apache:commons-lang:2.4',
+    'org.apache:commons-io:2.2',
+    'org.apache:commons-logging:1.0.4',
+    'com.intellij:forms_rt:9.0.0',
+//    'com.intellij:javac2:9.0.0',
+    'org.testng:testng:6.4',
+    'org.objectweb.asm:asm:3.1',
+    'javax.help:jhall:2.0.6'
+}

@@ -1,0 +1,14 @@
+apply from: 'http://ant-master-build-scripts.googlecode.com/svn/trunk/master-gradle/master-build.gradle'
+apply from: 'dependencies.gradle'
+
+
+configurations
+{
+  javac2
+}
+
+dependencies
+{
+  javac2 'com.intellij:javac2:9.0.0'
+}
+
