@@ -1,4 +1,4 @@
-apply from: 'http://ant-master-build-scripts.googlecode.com/svn/trunk/master-gradle/master-build.gradle'
+apply from: 'http://ant-master-build-scripts.googlecode.com/svn/trunk/master-gradle/master-webstart-build.gradle'
 apply from: 'dependencies.gradle'
 
 
