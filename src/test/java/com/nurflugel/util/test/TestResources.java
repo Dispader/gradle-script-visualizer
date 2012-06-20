@@ -5,7 +5,7 @@ import org.apache.commons.lang.BooleanUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Created with IntelliJ IDEA. User: douglas_bullard Date: 6/7/12 Time: 18:12 To change this template use File | Settings | File Templates. */
+/** Util class to help with test resources. */
 public class TestResources
 {
   private static final String SOURCE_PATH_IDEA   = "build/resources/test/";

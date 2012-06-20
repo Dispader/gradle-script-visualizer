@@ -150,6 +150,33 @@ public class GradleFileParserTest
     assertTrue(tasks.containsKey("publishWebstart"));
   }
 
+  @Test
+  public void testFindUrlImportsWithAuthentication() throws IOException
+  {
+    // read saved values
+    GradleScriptPreferences preferences       = new GradleScriptPreferences();
+    boolean                 useProxy          = preferences.shouldUseHttpProxy();
+    boolean                 useAuthentication = preferences.shouldUseProxyAuthentication();
+    String                  proxyUserName     = preferences.getProxyUserName();
+    String                  proxyPassword     = preferences.getProxyPassword();
+
+    preferences.setUseHttpProxy(true);
+    preferences.setUseProxyAuthentication(true);
+
+    GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
+
+    parser.parseFile(getFilePath("gradle/importTasksFromUrl.gradle"));
+
+    Map<String, Task> tasks = parser.getTasksMap();
+
+    // restore the old values
+    preferences.setUseHttpProxy(useProxy);
+    preferences.setUseProxyAuthentication(useAuthentication);
+    preferences.setProxyUserName(proxyUserName);
+    preferences.setProxyPassword(proxyPassword);
+    assertTrue(tasks.containsKey("publishWebstart"));
+  }
+
   private void validateTaskDependencies(Map<String, Task> tasks, String taskName, String dependsOnTaskName, int expectedSize)
   {
     Task task = tasks.get(taskName);

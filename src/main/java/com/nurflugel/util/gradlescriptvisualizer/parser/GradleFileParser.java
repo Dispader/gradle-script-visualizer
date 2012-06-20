@@ -9,10 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
 import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
 import static org.apache.commons.io.FileUtils.checksumCRC32;
@@ -198,15 +195,30 @@ public class GradleFileParser
   {
     if (preferences.shouldUseHttpProxy())
     {
-      System.getProperties().setProperty("http.proxyHost", preferences.getProxyServerName());
-      System.getProperties().setProperty("http.proxyPort", preferences.getProxyServerPort() + "");
+      Properties properties = System.getProperties();
+
+      properties.setProperty("http.proxyHost", preferences.getProxyServerName());
+      properties.setProperty("http.proxyPort", preferences.getProxyServerPort() + "");
 
       if (preferences.shouldUseProxyAuthentication())
       {
-        System.getProperties().setProperty("http.proxyUser", preferences.getProxyUserName());
-        System.getProperties().setProperty("http.proxyPassword", preferences.getProxyPassword());
+        String userName = preferences.getProxyUserName();
+
+        if (userName != null)
+        {
+          properties.setProperty("http.proxyUser", userName);
+        }
+
+        String password = preferences.getProxyPassword();
+
+        if (password != null)
+        {
+          properties.setProperty("http.proxyPassword", password);
+        }
       }
+      
     }
+    
 
     URL        url       = new URL(location);
     String     bigString = IOUtils.toString(url);

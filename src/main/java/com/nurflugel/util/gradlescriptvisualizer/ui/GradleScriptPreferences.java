@@ -23,14 +23,24 @@ public class GradleScriptPreferences extends ScriptPreferences
   public GradleScriptPreferences()
   {
     super(GradleScriptMainFrame.class);
+    get();
+
+    // proxyPassword=preferencesStore.get(PROXY_PASSWORD,"");
+  }
+
+  private void get()
+  {
     watchFilesForChanges   = preferencesStore.getBoolean(WATCH_FILES_FOR_CHANGES, false);
     useHttpProxy           = preferencesStore.getBoolean(USE_HTTP_PROXY, false);
     proxyServerName        = preferencesStore.get(PROXY_SERVER_NAME, "");
     proxyServerPort        = preferencesStore.getInt(PROXY_SERVER_PORT, 8080);
     useProxyAuthentication = preferencesStore.getBoolean(USE_PROXY_AUTHENTICATION, false);
     proxyUserName          = preferencesStore.get(PROXY_USER_NAME, "");
+  }
 
-    // proxyPassword=preferencesStore.get(PROXY_PASSWORD,"");
+  GradleScriptPreferences(Class theTestClass){
+    super(theTestClass);
+    get();
   }
 
   @Override

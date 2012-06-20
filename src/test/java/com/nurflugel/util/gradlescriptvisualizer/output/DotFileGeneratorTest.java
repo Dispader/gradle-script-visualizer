@@ -18,9 +18,7 @@ public class DotFileGeneratorTest
   @Test
   public void testGenerateSimpleDotFile() throws IOException
   {
-    // GradleFileParser parser = new
-    // GradleFileParser("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/AntScriptVisualizer_Google/gradleTrunk/master-gradle/master-build.gradle");
-    String           gradleFileName = TestResources.getFilePath("dasbuild.gradle");
+    String           gradleFileName = TestResources.getFilePath("gradle/dasbuild.gradle");
     GradleFileParser parser         = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
 
     parser.parseFile(gradleFileName);

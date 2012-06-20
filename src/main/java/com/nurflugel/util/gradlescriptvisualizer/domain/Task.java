@@ -59,6 +59,7 @@ public class Task
 
     taskName = substringBefore(taskName, " ");
     taskName = getTextBeforeIfExists(taskName, "(");
+    
 
     return taskName;
   }

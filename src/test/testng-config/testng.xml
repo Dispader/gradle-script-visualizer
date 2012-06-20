@@ -1,52 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="AntScriptVisualizer Suite">
-  <test verbose="1" name="Unit tests" annotations="JDK">
-    <groups>
-      <run>
-        <include name="unit"/>
-        <include name="cRoy"/>
-        <exclude name="failed"  />
-      </run>
-    </groups>
-      <packages>
-            <package name="com.nurflugel.util.antscriptvisualizer.*" />
-      </packages>
-  </test>
-
-  <test verbose="1" name="DOT tests" annotations="JDK">
-    <groups>
-      <run>
-        <include name="dot"/>
-        <exclude name="failed"  />
-      </run>
-    </groups>
-      <packages>
-            <package name="com.nurflugel.util.antscriptvisualizer.*" />
-      </packages>
-  </test>
-
-  <test verbose="1" name="Master build tests" annotations="JDK">
-    <groups>
-      <run>
-        <include name="master"/>
-        <exclude name="failed"  />
-      </run>
-    </groups>
-      <packages>
-            <package name="com.nurflugel.util.antscriptvisualizer.*" />
-      </packages>
-  </test>
-
-  <!--<test verbose="1" name="Failed tests" annotations="JDK">-->
-    <!--<groups>-->
-      <!--<run>-->
-        <!--<include name="failed"  />-->
-      <!--</run>-->
-    <!--</groups>-->
-      <!--<packages>-->
-            <!--<package name="com.nurflugel.util.*" />-->
-      <!--</packages>-->
-  <!--</test>-->
 
   <test verbose="1" name="Gradle parser tests" annotations="JDK">
     <groups>
@@ -56,6 +9,7 @@
       </run>
     </groups>
       <packages>
+            <!--<package name="com.nurflugel.util.gradlescriptvisualizer.domain.*" />-->
             <package name="com.nurflugel.util.gradlescriptvisualizer.*" />
             <package name="dibble.*" />
       </packages>
