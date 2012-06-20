@@ -2,7 +2,7 @@
 <!-- JNLP File for Ant ScriptDependency Visualizer client application -->
 <jnlp
     spec="1.0+"
-    codebase="http://ant-script-visualizer.googlecode.com/svn/trunk/webstart/"
+    codebase="http://gradle-script-visualizer.googlecode.com/svn/trunk/webstart/"
     href="gradlescriptVisualizer.jnlp">
     <information>
         <title>Gradle Script Visualizer</title>
