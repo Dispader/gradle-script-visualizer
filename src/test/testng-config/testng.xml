@@ -5,6 +5,8 @@
     <groups>
       <run>
         <include name="gradle"/>
+        <include name="dot"/>
+        <include name="unit"/>
         <exclude name="failed"  />
       </run>
     </groups>

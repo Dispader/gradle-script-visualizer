@@ -1,6 +1,5 @@
 package com.nurflugel.util.gradlescriptvisualizer.output;
 
-import com.nurflugel.util.ScriptPreferences;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
@@ -13,6 +12,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 6/2/12 Time: 19:18 To change this template use File | Settings | File Templates. */
+@Test(groups = "unit")
 public class DotFileGeneratorTest
 {
   @Test
