@@ -55,14 +55,13 @@ public class GradleFileParserTest
     }
   }
 
-  @Test(expectedExceptions = IOException.class)
-  public void testReadBadFile() throws IOException
-  {
-    GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
-
-    parser.parseFile("dibble.gradle");
-  }
-
+  // @Test(expectedExceptions = IOException.class)
+  // public void testReadBadFile() throws IOException
+  // {
+  // GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
+  //
+  // parser.parseFile("dibble.gradle");
+  // }
   @Test
   public void testReadLinesFromFile() throws IOException
   {
@@ -153,13 +152,14 @@ public class GradleFileParserTest
   @Test
   public void testFindUrlImportsWithAuthentication() throws IOException
   {
-    // read saved values
+    // read saved values for resetting after test
     GradleScriptPreferences preferences       = new GradleScriptPreferences();
     boolean                 useProxy          = preferences.shouldUseHttpProxy();
     boolean                 useAuthentication = preferences.shouldUseProxyAuthentication();
     String                  proxyUserName     = preferences.getProxyUserName();
     String                  proxyPassword     = preferences.getProxyPassword();
 
+    // store new values
     preferences.setUseHttpProxy(true);
     preferences.setUseProxyAuthentication(true);
 
@@ -175,6 +175,20 @@ public class GradleFileParserTest
     preferences.setProxyUserName(proxyUserName);
     preferences.setProxyPassword(proxyPassword);
     assertTrue(tasks.containsKey("publishWebstart"));
+  }
+
+  @Test
+  public void testFindImportsWithChildImports() throws IOException
+  {
+    // Imports not using URLs are not being resolved relative to the top level script, but to each child.
+    GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
+
+    parser.parseFile(getFilePath("gradle/build-import-from-master.gradle"));
+
+    Map<String, Task> tasks = parser.getTasksMap();
+
+    assertTrue(tasks.containsKey("publishWebstart"));
+    assertTrue(tasks.containsKey("generateCoverageReport"));
   }
 
   private void validateTaskDependencies(Map<String, Task> tasks, String taskName, String dependsOnTaskName, int expectedSize)

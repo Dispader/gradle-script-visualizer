@@ -1,0 +1,7 @@
+
+apply plugin: 'application'
+
+
+task generateCoverageReport (dependsOn: [test]) << {
+}
+

@@ -3,7 +3,6 @@ package com.nurflugel.util.gradlescriptvisualizer.parser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Line;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,6 +23,9 @@ public class GradleFileParser
   private Map<String, Task>       taskMap       = new HashMap<String, Task>();
   private Map<File, Long>         fileChecksums;
   private GradleScriptPreferences preferences;
+
+  /** The starting point - the entry script. */
+  private File baseFile;
 
   public static void addToTaskMap(Map<String, Task> taskMap, String name, Task task)
   {
@@ -88,16 +90,7 @@ public class GradleFileParser
     String baseName = getBaseName(sourceFile.getAbsolutePath());
 
     findTasksInLines(lines, baseName);
-    findImportsInFile(lines, sourceFile);
-    findPostDeclarationTaskModifications(lines);
-  }
-
-  private void processLines(URL sourceUrl, List<Line> lines) throws IOException
-  {
-    String fileName = sourceUrl.toString();
-
-    findTasksInLines(lines, fileName);
-    findImportsFromUrl(lines);
+    findImportsInFile(lines);
     findPostDeclarationTaskModifications(lines);
   }
 
@@ -126,7 +119,7 @@ public class GradleFileParser
     }
   }
 
-  void findImportsInFile(List<Line> lines, File file) throws IOException
+  void findImportsInFile(List<Line> lines) throws IOException
   {
     for (Line line : lines)
     {
@@ -152,40 +145,17 @@ public class GradleFileParser
         else
         {
           String fileName = trim(text);
+          File   newFile  = new File(fileName);
 
           // non-absolute path must be resolved relative to the current file
           if (!fileName.startsWith("/"))
           {
-            String parent = getFullPath(file.getAbsolutePath());
+            String parent = getFullPath(baseFile.getAbsolutePath());
 
-            fileName = parent + fileName;
+            newFile = new File(parent, fileName);
           }
 
-          parseFile(fileName);
-        }
-      }
-    }
-  }
-
-  void findImportsFromUrl(List<Line> lines) throws IOException
-  {
-    for (Line line : lines)
-    {
-      String text = line.getText().trim();
-
-      if (text.startsWith("apply from: "))
-      {
-        text = substringAfter(text, "apply from: ");
-        text = remove(text, '\'');
-        text = remove(text, '\"');
-
-        if (text.startsWith("http:"))
-        {
-          findUrlImport(text);
-        }
-        else
-        {
-          // todo we can't parse a file import in a remote URL - thow some sort of exception
+          parseFile(newFile);
         }
       }
     }
@@ -216,9 +186,7 @@ public class GradleFileParser
           properties.setProperty("http.proxyPassword", password);
         }
       }
-      
     }
-    
 
     URL        url       = new URL(location);
     String     bigString = IOUtils.toString(url);
@@ -233,12 +201,37 @@ public class GradleFileParser
     processLines(url, lines);
   }
 
-  public void parseFile(String fileName) throws IOException
+  private void processLines(URL sourceUrl, List<Line> lines) throws IOException
   {
-    File file = new File(fileName);
+    String fileName = sourceUrl.toString();
 
-    fileChecksums.put(file, checksumCRC32(file));
-    parseFile(file);
+    findTasksInLines(lines, fileName);
+    findImportsFromUrl(lines);
+    findPostDeclarationTaskModifications(lines);
+  }
+
+  void findImportsFromUrl(List<Line> lines) throws IOException
+  {
+    for (Line line : lines)
+    {
+      String text = line.getText().trim();
+
+      if (text.startsWith("apply from: "))
+      {
+        text = substringAfter(text, "apply from: ");
+        text = remove(text, '\'');
+        text = remove(text, '\"');
+
+        if (text.startsWith("http:"))
+        {
+          findUrlImport(text);
+        }
+        else
+        {
+          // todo we can't parse a file import in a remote URL - thow some sort of exception
+        }
+      }
+    }
   }
 
   public void findPostDeclarationTaskModifications(List<Line> list)
@@ -279,9 +272,40 @@ public class GradleFileParser
     }
   }
 
+  public void parseFile(String fileName)  // todo establish base directory from first call?
+  {
+    File file = new File(fileName);
+
+    if (file.exists())
+    {
+      baseFile = file;
+
+      try
+      {
+        fileChecksums.put(file, checksumCRC32(file));
+        parseFile(file);
+      }
+      catch (IOException e)
+      {
+        e.printStackTrace();              // todo log to user
+      }
+    }
+    else
+    {
+      System.out.println("GradleFileParser.parseFile - couldn't find file " + fileName);
+      // todo notify user file doesn't exist
+    }
+  }
+
   /** Keep results from one file corrupting another's output. */
   public void purgeAll()
   {
     taskMap.clear();
+  }
+
+  // --------------------- GETTER / SETTER METHODS ---------------------
+  public void setBaseFile(File baseFile)
+  {
+    this.baseFile = baseFile;
   }
 }

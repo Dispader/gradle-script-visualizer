@@ -6,10 +6,7 @@ import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import static org.apache.commons.io.FileUtils.isFileNewer;
 import static org.apache.commons.io.FileUtils.writeLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
@@ -22,6 +19,8 @@ public class DotFileGenerator
 
   public List<String> createOutput(List<Task> tasks, GradleScriptPreferences preferences)
   {
+    this.preferences = preferences;
+
     List<String>            output           = new ArrayList<String>();
     Map<String, List<Task>> buildFileTaskMap = new HashMap<String, List<Task>>();
 
@@ -31,8 +30,7 @@ public class DotFileGenerator
                  + "rankdir=BT;\n"                                  //
                  + '\n'                                             //
                  + "concentrate=" + (preferences.shouldConcentrate() ? "true"
-                                                                     : "false") + "true"
-                 + ";");
+                                                                     : "false") + "true" + ';');
 
     // build up a map of build files and their tasks - if a task has null, add it to "no build file"
     for (Task task : tasks)
@@ -77,7 +75,7 @@ public class DotFileGenerator
           builder.append(task.getDotDeclaration()).append("; ");
         }
 
-        output.add("subgraph cluster_" + replaceBadChars(scriptName) + " { label=\"" + scriptName + "\"; " + builder + "}");
+        output.add("subgraph cluster_" + replaceBadChars(scriptName) + " { label=\"" + scriptName + "\"; " + builder + '}');
       }
     }
 
@@ -86,7 +84,7 @@ public class DotFileGenerator
     return output;
   }
 
-  public File writeOutput(List<String> lines, String gradleFileName) throws IOException
+  public File writeOutput(Collection<String> lines, String gradleFileName) throws IOException
   {
     String name       = getBaseName(gradleFileName);
     String path       = getFullPath(gradleFileName);
@@ -95,6 +93,11 @@ public class DotFileGenerator
 
     System.out.println("writing output file = " + file.getAbsolutePath());
     writeLines(file, lines);
+
+    if (preferences.shouldDeleteDotFilesOnExit())
+    {
+      file.deleteOnExit();
+    }
 
     return file;
   }

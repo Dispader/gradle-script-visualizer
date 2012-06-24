@@ -1,0 +1,4 @@
+apply from: 'master-gradle/master-build.gradle'
+
+
+task publishWebstart(dependsOn: [ 'copyResources', 'copyHelp', 'signJars'], description: 'Create the WebStart distributable.')

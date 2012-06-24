@@ -1,0 +1,4 @@
+apply plugin: 'application'
+
+apply from:  'master-gradle/master-webstart-build.gradle'
+

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import static com.nurflugel.util.test.TestResources.getFilePath;
 import static org.testng.Assert.assertEquals;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 6/2/12 Time: 19:18 To change this template use File | Settings | File Templates. */
@@ -18,7 +19,7 @@ public class DotFileGeneratorTest
   @Test
   public void testGenerateSimpleDotFile() throws IOException
   {
-    String           gradleFileName = TestResources.getFilePath("gradle/dasbuild.gradle");
+    String           gradleFileName = getFilePath("gradle/dasbuild.gradle");
     GradleFileParser parser         = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
 
     parser.parseFile(gradleFileName);

@@ -23,63 +23,11 @@ public class Util
 {
   public static final Cursor busyCursor   = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
   public static final Cursor normalCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-  public static final String VERSION      = "2.0.2";
+  public static final String VERSION      = "1.0.3";
   // -------------------------- STATIC METHODS --------------------------
 
-  /** Firgures out how much time is remaining in the task. */
-  public static String calculateTimeRemaining(long startTime, int currentValue, int maxValue)
-  {
-    String timeRemainingString = "";
-    long   now                 = new Date().getTime();
-    long   difference          = now - startTime;
-
-    if ((difference != 0) && (currentValue != 0))
-    {
-      long deltaTime = ((maxValue - currentValue) * difference) / currentValue;
-      long minutes   = deltaTime / 60 / 1000;
-      long seconds   = 0;
-
-      if (minutes == 0)
-      {
-        seconds = deltaTime / 1000;
-      }
-
-      timeRemainingString = "" + ((minutes > 0) ? (minutes + " minutes")
-                                                : "") + ((seconds > 0) ? (seconds + " seconds")
-                                                                       : "");
-    }
-
-    return timeRemainingString;
-  }
-
-  /** Centers the component on the screen. */
-  @SuppressWarnings({ "NumericCastThatLosesPrecision" })
-  public static void center(Container container)
-  {
-    Toolkit   defaultToolkit = Toolkit.getDefaultToolkit();
-    Dimension screenSize     = defaultToolkit.getScreenSize();
-    int       x              = (int) ((screenSize.getWidth() - container.getWidth()) / 2);
-    int       y              = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
-
-    container.setBounds(x, y, container.getWidth(), container.getHeight());
-  }
-
-  /** Get's rid of the subversion base URL. */
-  public static String filterUrlNames(String theBranch)
-  {
-    // todo - fix this!!!
-    String branch = theBranch;
-
-    // String branch = theBranch.replace("http://----/svn/", "");
-    //
-    // branch = branch.replace("http://----.nurflugel.com/svn/", "");
-    branch = branch.replace("//", "/");
-
-    return branch;
-  }
-
   /** Sets the look and feel. */
-  @SuppressWarnings({ "UseOfSystemOutOrSystemErr" })
+  @SuppressWarnings("UseOfSystemOutOrSystemErr")
   public static LookAndFeel setLookAndFeel(String feelName, Component component)
   {
     LookAndFeel currentLAF = UIManager.getLookAndFeel();
@@ -112,6 +60,18 @@ public class Util
     }
   }
 
+  /** Centers the component on the screen. */
+  @SuppressWarnings("NumericCastThatLosesPrecision")
+  public static void center(Container container)
+  {
+    Toolkit   defaultToolkit = Toolkit.getDefaultToolkit();
+    Dimension screenSize     = defaultToolkit.getScreenSize();
+    int       x              = (int) ((screenSize.getWidth() - container.getWidth()) / 2);
+    int       y              = (int) ((screenSize.getHeight() - container.getHeight()) / 2);
+
+    container.setBounds(x, y, container.getWidth(), container.getHeight());
+  }
+
   /** Add the help listener - link to the help files. */
   public static void addHelpListener(String helpSetName, JButton helpButton, JFrame theFrame)
   {
@@ -134,28 +94,6 @@ public class Util
      * // LOGGER.error("HelpSet " + HELP_HS + " not found");
      * }
      */
-  }
-
-  public static void rmDirs(File theFile)
-  {
-    if (theFile.isFile())
-    {
-      theFile.delete();
-    }
-    else
-    {
-      File[] files = theFile.listFiles();
-
-      if (files != null)
-      {
-        for (File file : files)
-        {
-          rmDirs(file);
-        }
-      }
-
-      theFile.delete();
-    }
   }
 
   private Util() {}

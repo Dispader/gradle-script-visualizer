@@ -2,6 +2,7 @@ package com.nurflugel.util.gradlescriptvisualizer.ui;
 
 import com.nurflugel.util.GraphicFileCreator;
 import com.nurflugel.util.Os;
+import com.nurflugel.util.Util;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
 import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import static com.nurflugel.util.Os.findOs;
+import static com.nurflugel.util.Util.VERSION;
 import static com.nurflugel.util.Util.center;
 import static com.nurflugel.util.Util.setLookAndFeel;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
@@ -224,9 +226,7 @@ public class GradleScriptMainFrame
     useHttpProxyCheckBox.setSelected(preferences.shouldUseHttpProxy());
     useAuthenticationCheckBox.setSelected(preferences.shouldUseProxyAuthentication());
     setVisibility();
-
-    // frame.setTitle("Gradle Script Visualizer v" + VERSION);
-    frame.setTitle("Gradle Script Visualizer ");
+    frame.setTitle("Gradle Script Visualizer v" + VERSION);
     frame.setVisible(true);
   }
 
@@ -263,7 +263,10 @@ public class GradleScriptMainFrame
       // chooser.hide();
       if (selectedFiles.length > 0)
       {
-        preferences.setLastDir(selectedFiles[0].getParent());
+        File selectedFile = selectedFiles[0];
+
+        parser.setBaseFile(selectedFile);
+        preferences.setLastDir(selectedFile.getParent());
       }
 
       for (File selectedFile : selectedFiles)
