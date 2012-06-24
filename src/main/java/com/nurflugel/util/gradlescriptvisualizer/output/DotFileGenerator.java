@@ -24,13 +24,13 @@ public class DotFileGenerator
     List<String>            output           = new ArrayList<String>();
     Map<String, List<Task>> buildFileTaskMap = new HashMap<String, List<Task>>();
 
-    output.add("digraph G {\n"                                      //
-                 + "node [shape=box,fontname=\"Arial\",fontsize=\"10\"];\n"  //
-                 + "edge [fontname=\"Arial\",fontsize=\"8\"];\n"    //
-                 + "rankdir=BT;\n"                                  //
-                 + '\n'                                             //
-                 + "concentrate=" + (preferences.shouldConcentrate() ? "true"
-                                                                     : "false") + "true" + ';');
+    output.add("digraph G {");
+    output.add("node [shape=box,fontname=\"Arial\",fontsize=\"10\"];");
+    output.add("edge [fontname=\"Arial\",fontsize=\"8\"];");
+    output.add("rankdir=BT;");
+    output.add("");
+    output.add("concentrate=" + (preferences.shouldConcentrate() ? "true"
+                                                                 : "false") + ';');
 
     // build up a map of build files and their tasks - if a task has null, add it to "no build file"
     for (Task task : tasks)
