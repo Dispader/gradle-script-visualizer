@@ -21,7 +21,7 @@
         <all-permissions/>
     </security>
     <resources>
-        <j2se version="1.7+"  initial-heap-size="64m" max-heap-size="512m"/>
+        <j2se version="1.7"  initial-heap-size="64m" max-heap-size="512m"/>
         <jar href="lib/GradleScriptVisualizer.jar"/>
 
         <jar href="lib/commons-lang-2.4.jar"/>
