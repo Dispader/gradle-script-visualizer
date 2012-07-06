@@ -368,11 +368,47 @@ public class GradleFileParserTest
 
     assertTrue(tasksMap.containsKey("tomcatRunMock"));
 
-    // assertTrue(tasksMap.containsKey("tomcatRunner"));
     Task     task      = tasksMap.get("tomcatRunMock");
     String[] taskLines = task.getScopeLines();
 
     assertEquals(taskLines, lines, "Should have all the lines for the task in the task");
+  }
+
+  // If multiple executes are specified, then execution order is presumed.  That means cleanFour depends on cleanThree being done, etc.
+  @Test
+  public void testExecutesOrder()
+  {
+    String[] lines =
+    {
+      "task tomcatRunMock(dependsOn: war, description: 'Runs Webapp using Mock resources (DB, LDAP)') {",  //
+      "    cleanOne.execute()",                                                                            //
+      "    cleanTwo.execute()",                                                                            //
+      "    cleanThree.execute()",                                                                          //
+      "    cleanFour.execute()",                                                                           //
+      "}"                                                                                                  //
+    };
+    List<Line> list         = getLinesFromArray(lines);
+    GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
+
+    parser.findTasksInLines(list, null);
+
+    Map<String, Task> tasksMap = parser.getTasksMap();
+
+    assertTrue(tasksMap.containsKey("cleanOne"));
+    assertTrue(tasksMap.containsKey("cleanTwo"));
+    assertTrue(tasksMap.containsKey("cleanThree"));
+    assertTrue(tasksMap.containsKey("cleanFour"));
+    assertDependency(tasksMap, "cleanFour", "cleanThree");
+    assertDependency(tasksMap, "cleanThree", "cleanTwo");
+    assertDependency(tasksMap, "cleanTwo", "cleanOne");
+  }
+
+  private void assertDependency(Map<String, Task> tasksMap, String firstTaskName, String secondTaskName)
+  {
+    Task       task     = tasksMap.get(firstTaskName);
+    List<Task> taskList = task.getDependsOn();
+
+    assertTrue(taskList.contains(new Task(secondTaskName)));
   }
 
   @Test
