@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.*;
 import static com.nurflugel.util.test.TestResources.getFilePath;
 import static com.nurflugel.util.test.TestResources.getLinesFromArray;
+import static org.apache.commons.lang.ArrayUtils.contains;
 import static org.testng.Assert.*;
 import static org.testng.Assert.assertEquals;
 
@@ -65,8 +66,7 @@ public class GradleFileParserTest
   @Test
   public void testReadLinesFromFile() throws IOException
   {
-    GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
-    List<Line>       lines  = parser.readLinesInFile(new File(getFilePath(PARSE_FILE_NAME)));
+    List<Line> lines = GradleFileParser.readLinesInFile(new File(getFilePath(PARSE_FILE_NAME)));
 
     assertFalse(lines.isEmpty());
   }
@@ -94,7 +94,7 @@ public class GradleFileParserTest
 
     for (Task task : tasks)
     {
-      assertTrue(ArrayUtils.contains(TASK_NAMES, task.getName()), "Couldn't find task " + task);
+      assertTrue(contains(TASK_NAMES, task.getName()), "Couldn't find task " + task);
     }
   }
 
@@ -191,7 +191,7 @@ public class GradleFileParserTest
     assertTrue(tasks.containsKey("generateCoverageReport"));
   }
 
-  private void validateTaskDependencies(Map<String, Task> tasks, String taskName, String dependsOnTaskName, int expectedSize)
+  private static void validateTaskDependencies(Map<String, Task> tasks, String taskName, String dependsOnTaskName, int expectedSize)
   {
     Task task = tasks.get(taskName);
 
