@@ -1,6 +1,7 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
 import com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -59,7 +60,6 @@ public class Task
 
     taskName = substringBefore(taskName, " ");
     taskName = getTextBeforeIfExists(taskName, "(");
-    
 
     return taskName;
   }
@@ -127,6 +127,23 @@ public class Task
     return task;
   }
 
+  public static Task findOrCreateTaskByName(Map<String, Task> taskMap, String taskName)
+  {
+    Task result;
+
+    if (taskMap.containsKey(taskName))
+    {
+      result = taskMap.get(taskName);
+    }
+    else
+    {
+      result = new Task(taskName);
+      addToTaskMap(taskMap, taskName, result);
+    }
+
+    return result;
+  }
+
   // todo do I still need Line in this???
   public void findTaskDependsOn(Map<String, Task> taskMap, String line, String dependsText)
   {
@@ -174,21 +191,51 @@ public class Task
     }
   }
 
-  public static Task findOrCreateImplicitTasksByExecute(Map<String, Task> taskMap, String line)
+  /**
+   * @param   taskMap        map of tasks to add this one to
+   * @param   line           line of text to parse
+   * @param   taskInContext  the task that's in context - we add this execute task as a dependency to this
+   * @param   executeTasks   a list of executes found in this task so far - each new task is a dependency to the previous one, as order is implied
+   *
+   * @return  the "execute" task
+   */
+  public static Task findOrCreateImplicitTasksByExecute(Map<String, Task> taskMap, String line, Task taskInContext, List<Task> executeTasks)
   {
     String trim = line.trim();
 
     if (trim.contains(EXECUTE))
     {
-      String taskName = substringBefore(trim, EXECUTE);
-      Task   task     = findOrCreateTaskByName(taskMap, taskName);
+      String taskName    = substringBefore(trim, EXECUTE);
+      Task   executeTask = findOrCreateTaskByName(taskMap, taskName);
 
-      task.setUsage(TaskUsage.EXECUTE);
+      if (taskInContext != null)
+      {
+        taskInContext.addDependsOn(executeTask);
+      }
+      else
+      {
+        System.out.println("Task.findOrCreateImplicitTasksByExecute - we need to have a task in context");
+      }
 
-      return task;
+      if (CollectionUtils.isNotEmpty(executeTasks))
+      {
+        Task previousExecuteTask = executeTasks.get(executeTasks.size() - 1);
+
+        executeTask.addDependsOn(previousExecuteTask);
+      }
+
+      executeTasks.add(executeTask);
+      executeTask.setUsage(TaskUsage.EXECUTE);
+
+      return executeTask;
     }
 
     return null;
+  }
+
+  private void addDependsOn(Task task)
+  {
+    dependsOnTasks.add(task);
   }
 
   public static List<Task> findOrCreateTaskInForEach(Line line, Map<String, Task> taskMap)
@@ -287,23 +334,6 @@ public class Task
     }
   }
 
-  public static Task findOrCreateTaskByName(Map<String, Task> taskMap, String taskName)
-  {
-    Task result;
-
-    if (taskMap.containsKey(taskName))
-    {
-      result = taskMap.get(taskName);
-    }
-    else
-    {
-      result = new Task(taskName);
-      addToTaskMap(taskMap, taskName, result);
-    }
-
-    return result;
-  }
-
   public List<Task> getDependsOn()
   {
     return dependsOnTasks;
@@ -379,6 +409,16 @@ public class Task
   }
 
   // --------------------- GETTER / SETTER METHODS ---------------------
+  public String getBuildScript()
+  {
+    return buildScript;
+  }
+
+  public void setBuildScript(String buildScript)
+  {
+    this.buildScript = buildScript;
+  }
+
   public String getName()
   {
     return name;
@@ -407,15 +447,5 @@ public class Task
   public void setUsage(TaskUsage usage)
   {
     this.usage = usage;
-  }
-
-  public void setBuildScript(String buildScript)
-  {
-    this.buildScript = buildScript;
-  }
-
-  public String getBuildScript()
-  {
-    return buildScript;
   }
 }

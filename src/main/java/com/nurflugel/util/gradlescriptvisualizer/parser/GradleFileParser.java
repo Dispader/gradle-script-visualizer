@@ -96,6 +96,9 @@ public class GradleFileParser
 
   void findTasksInLines(List<Line> lines, String sourceFile)
   {
+    Task       taskInContext = null;
+    List<Task> executeTasks  = new ArrayList<Task>();
+
     for (Line line : lines)
     {
       String trimmedLine = line.getText().trim();
@@ -104,6 +107,8 @@ public class GradleFileParser
       {
         Task task = findOrCreateTaskByLine(taskMap, line, lines, sourceFile);
 
+        taskInContext = task;
+        executeTasks  = new ArrayList<Task>();
         taskMap.put(task.getName(), task);
       }
 
@@ -114,7 +119,7 @@ public class GradleFileParser
 
       if (trimmedLine.contains(".execute()"))
       {
-        findOrCreateImplicitTasksByExecute(taskMap, trimmedLine);
+        findOrCreateImplicitTasksByExecute(taskMap, trimmedLine, taskInContext, executeTasks);
       }
     }
   }

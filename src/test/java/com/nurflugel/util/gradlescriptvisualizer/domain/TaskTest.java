@@ -1,9 +1,11 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
 import org.testng.annotations.Test;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.findOrCreateImplicitTasksByExecute;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.findOrCreateImplicitTasksByLine;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.findOrCreateTaskByLine;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.EXECUTE;
@@ -163,9 +165,10 @@ public class TaskTest
   @Test
   public void testFindExecutes()
   {
-    HashMap<String, Task> map = new HashMap<String, Task>();
+    HashMap<String, Task> map           = new HashMap<String, Task>();
+    Task                  taskInContext = new Task("dibble");
 
-    Task.findOrCreateImplicitTasksByExecute(map, "tomcatRun.execute()");
+    findOrCreateImplicitTasksByExecute(map, "tomcatRun.execute()", taskInContext, new ArrayList<Task>());
 
     String tomcatRun = "tomcatRun";
 
@@ -175,13 +178,14 @@ public class TaskTest
 
     assertEquals(task.getName(), tomcatRun);
     assertEquals(task.getUsage(), EXECUTE);
+    assertEquals(taskInContext.getDependsOn().get(0), task);
   }
 
   @Test
   public void testFindExecutesDisplaysRight()
   {
     Map<String, Task> map         = new HashMap<String, Task>();
-    Task              task        = Task.findOrCreateImplicitTasksByExecute(map, "tomcatRun.execute()");
+    Task              task        = findOrCreateImplicitTasksByExecute(map, "tomcatRun.execute()", new Task("dibble"), new ArrayList<Task>());
     String            declaration = task.getDotDeclaration();
 
     assertEquals(declaration, "tomcatRun [label=\"tomcatRun\" shape=ellipse color=red ];");
