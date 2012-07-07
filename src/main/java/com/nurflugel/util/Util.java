@@ -23,7 +23,7 @@ public class Util
 {
   public static final Cursor busyCursor   = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
   public static final Cursor normalCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-  public static final String VERSION      = "1.0.4";
+  public static final String VERSION      = "1.0.5";
   // -------------------------- STATIC METHODS --------------------------
 
   /** Sets the look and feel. */
