@@ -1,6 +1,5 @@
 package com.nurflugel.util.test;
 
-import com.nurflugel.util.gradlescriptvisualizer.domain.Line;
 import org.apache.commons.lang.BooleanUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +22,15 @@ public class TestResources
                                : (SOURCE_PATH_IDEA + fileName);
   }
 
-  public static List<Line> getLinesFromArray(String[]... lineArrays)
+  public static List<String> getLinesFromArray(String[]... lineArrays)
   {
-    List<Line> results = new ArrayList<Line>();
+    List<String> results = new ArrayList<String>();
 
     for (String[] lineArray : lineArrays)
     {
       for (String line : lineArray)
       {
-        results.add(new Line(line));
+        results.add(new String(line));
       }
     }
 

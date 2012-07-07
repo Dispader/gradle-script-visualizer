@@ -19,7 +19,7 @@ public class TaskTest
   @Test
   public void testFindTaskType()
   {
-    Task task = new Task(new HashMap<String, Task>(), new Line("task copyHelp(type: Copy) {"));
+    Task task = new Task(new HashMap<String, Task>(), "task copyHelp(type: Copy) {");
 
     assertEquals(task.getType(), "Copy");
   }
@@ -27,7 +27,7 @@ public class TaskTest
   @Test
   public void testFindTaskTypeWithDepends()
   {
-    Task task = new Task(new HashMap<String, Task>(), new Line("task copyHelp(type: Copy, dependsOn: dibble) {"));
+    Task task = new Task(new HashMap<String, Task>(), "task copyHelp(type: Copy, dependsOn: dibble) {");
 
     assertEquals(task.getType(), "Copy");
   }
@@ -35,7 +35,7 @@ public class TaskTest
   @Test
   public void testFindTaskTypeWithQualifiedName()
   {
-    Task task = new Task(new HashMap<String, Task>(), new Line("task copyHelp(type: org.dibble.Copy, dependsOn: dibble) {"));
+    Task task = new Task(new HashMap<String, Task>(), "task copyHelp(type: org.dibble.Copy, dependsOn: dibble) {");
 
     assertEquals(task.getType(), "Copy");
   }
@@ -43,7 +43,7 @@ public class TaskTest
   @Test
   public void testFindTaskTypeNoTypeDeclared()
   {
-    Task task = new Task(new HashMap<String, Task>(), new Line("task copyHelp() {"));
+    Task task = new Task(new HashMap<String, Task>(), "task copyHelp() {");
 
     assertEquals(task.getType(), "noType");
   }
@@ -51,7 +51,7 @@ public class TaskTest
   @Test
   public void testFindDependsOn()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), new Line("task signJars(dependsOn: 'installApp') << {"));
+    Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: 'installApp') << {");
     List<Task> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 1);
@@ -61,7 +61,7 @@ public class TaskTest
   @Test
   public void testFindDependsOnDoubleQuotes()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), new Line("task signJars(dependsOn: \"installApp\") << {"));
+    Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: \"installApp\") << {");
     List<Task> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 1);
@@ -71,7 +71,7 @@ public class TaskTest
   @Test
   public void testFindDependsOnNoQuotes()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), new Line("task signJars(dependsOn: installApp) << {"));
+    Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: installApp) << {");
     List<Task> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 1);
@@ -81,7 +81,7 @@ public class TaskTest
   @Test
   public void testFindDependsOnWithComma()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), new Line("task jettyRunMock(dependsOn: war, description:"));
+    Task       task           = new Task(new HashMap<String, Task>(), "task jettyRunMock(dependsOn: war, description:");
     List<Task> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 1);
@@ -91,7 +91,7 @@ public class TaskTest
   @Test
   public void testFindMultipleDependsOn()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), new Line("task signJars(dependsOn: [installApp,dibble, dabble]) << {"));
+    Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: [installApp,dibble, dabble]) << {");
     List<Task> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 3);
@@ -111,7 +111,7 @@ public class TaskTest
   @Test
   public void testDotDependencies()
   {
-    Task         task  = new Task(new HashMap<String, Task>(), new Line("task signJars(dependsOn: [installApp,dibble, dabble]) << {"));
+    Task         task  = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: [installApp,dibble, dabble]) << {");
     List<String> lines = task.getDotDependencies();
 
     assertEquals(lines.get(0), "signJars -> installApp;");
@@ -210,10 +210,10 @@ public class TaskTest
     };
 
     // build up a list of what we want surrounded by junk - we should get just what we want back
-    List<Line> list            = getLinesFromArray(taskLines);
-    Line       declarationLine = new Line("task tomcatRunMock(dependsOn: war, description: 'Runs Webapp using Mock resources (DB, LDAP)') {");
-    Map<String, Task> taskMap  = new HashMap<String, Task>();
-    Task       task            = findOrCreateTaskByLine(taskMap, declarationLine, list, null);
+    List<String> list            = getLinesFromArray(taskLines);
+    String       declarationLine = "task tomcatRunMock(dependsOn: war, description: 'Runs Webapp using Mock resources (DB, LDAP)') {";
+    Map<String, Task> taskMap    = new HashMap<String, Task>();
+    Task         task            = findOrCreateTaskByLine(taskMap, declarationLine, list, null);
 
     assertTrue(taskMap.containsKey("tomcatRun"));
     assertTrue(taskMap.containsKey("tomcatStop"));
@@ -254,10 +254,10 @@ public class TaskTest
     };
 
     // build up a list of what we want surrounded by junk - we should get just what we want back
-    List<Line> list            = getLinesFromArray(lines, taskLines, lines);
-    Line       declarationLine = new Line("task tomcatRunMock(dependsOn: war, description: 'Runs Webapp using Mock resources (DB, LDAP)') {");
-    Task       task            = findOrCreateTaskByLine(new HashMap<String, Task>(), declarationLine, list, null);
-    String[]   scopeLines      = task.getScopeLines();
+    List<String> list            = getLinesFromArray(lines, taskLines, lines);
+    String       declarationLine = "task tomcatRunMock(dependsOn: war, description: 'Runs Webapp using Mock resources (DB, LDAP)') {";
+    Task         task            = findOrCreateTaskByLine(new HashMap<String, Task>(), declarationLine, list, null);
+    String[]     scopeLines      = task.getScopeLines();
 
     assertEquals(scopeLines, taskLines, "Should have all the lines for the task in the task");
   }
@@ -292,7 +292,7 @@ public class TaskTest
   @Test
   public void testFindForEachTasks()
   {
-    Line       line  = new Line("[tRun1, tRun2].each {");
+    String     line  = "[tRun1, tRun2].each {";
     List<Task> tasks = Task.findOrCreateTaskInForEach(line, new HashMap<String, Task>());
 
     assertEquals(tasks.size(), 2);
@@ -309,8 +309,14 @@ public class TaskTest
     assertEquals(task.getBuildScript(), "dibble.gradle");
   }
 
-  // ==>test find task dependsOn if task exists elsewhere in build script
-  // test find dependsOn in task modification
-  // test find dependsOn in iterative task modification
-  // determine type of task
+  @Test
+  public void testGetTextBeforeIfExists()
+  {
+    String baseText = "dibble@dabble";
+    String text     = Task.getTextBeforeIfExists(baseText, "@");
+
+    assertEquals(text, "dibble");
+    text = Task.getTextBeforeIfExists(baseText, "{");
+    assertEquals(text, baseText);
+  }
 }

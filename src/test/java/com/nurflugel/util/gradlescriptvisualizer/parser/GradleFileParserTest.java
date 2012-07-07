@@ -1,6 +1,5 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
-import com.nurflugel.util.gradlescriptvisualizer.domain.Line;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.lang.ArrayUtils;
@@ -66,7 +65,7 @@ public class GradleFileParserTest
   @Test
   public void testReadLinesFromFile() throws IOException
   {
-    List<Line> lines = GradleFileParser.readLinesInFile(new File(getFilePath(PARSE_FILE_NAME)));
+    List<String> lines = GradleFileParser.readLinesInFile(new File(getFilePath(PARSE_FILE_NAME)));
 
     assertFalse(lines.isEmpty());
   }
@@ -229,7 +228,7 @@ public class GradleFileParserTest
   public void testImplicitDeclarationTask() throws IOException
   {
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
-    List<Line>       list   = getLinesFromArray(new String[] { "task dibble", "check.dependsOn integrationTest" });
+    List<String>     list   = getLinesFromArray(new String[] { "task dibble", "check.dependsOn integrationTest" });
 
     parser.findTasksInLines(list, null);
 
@@ -244,7 +243,7 @@ public class GradleFileParserTest
   public void testImplicitDeclarationTask2() throws IOException
   {
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
-    List<Line>       list   = getLinesFromArray(new String[] { "task dibble", "check.dependsOn integrationTest" });
+    List<String>     list   = getLinesFromArray(new String[] { "task dibble", "check.dependsOn integrationTest" });
 
     parser.findTasksInLines(list, null);
 
@@ -258,7 +257,7 @@ public class GradleFileParserTest
   public void testImplicitDeclarationDependsOnTask() throws IOException
   {
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
-    List<Line>       list   = getLinesFromArray(new String[] { "task dibble", "check.dependsOn integrationTest" });
+    List<String>     list   = getLinesFromArray(new String[] { "task dibble", "check.dependsOn integrationTest" });
 
     parser.findTasksInLines(list, null);
 
@@ -273,7 +272,7 @@ public class GradleFileParserTest
   public void testListOfImplicitTaskDeclaration() throws IOException
   {
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
-    List<Line>       list   = getLinesFromArray(new String[] { "[funcTest, bddTest]*.dependsOn daemonModeTomcat" });
+    List<String>     list   = getLinesFromArray(new String[] { "[funcTest, bddTest]*.dependsOn daemonModeTomcat" });
 
     parser.findTasksInLines(list, null);
 
@@ -289,7 +288,7 @@ public class GradleFileParserTest
   public void testListOfImplicitTaskDeclarationDepends() throws IOException
   {
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
-    List<Line>       list   = getLinesFromArray(new String[] { "[funcTest, bddTest]*.dependsOn daemonModeTomcat" });
+    List<String>     list   = getLinesFromArray(new String[] { "[funcTest, bddTest]*.dependsOn daemonModeTomcat" });
 
     parser.findTasksInLines(list, null);
 
@@ -325,7 +324,7 @@ public class GradleFileParserTest
                                                                                                            //
                                                                                                            // //
     };
-    List<Line> list         = getLinesFromArray(lines);
+    List<String> list   = getLinesFromArray(lines);
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
 
     parser.findTasksInLines(list, null);
@@ -359,7 +358,7 @@ public class GradleFileParserTest
       "    }",                                                                                             //
       "}"                                                                                                  //
     };
-    List<Line> list         = getLinesFromArray(lines);
+    List<String> list   = getLinesFromArray(lines);
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
 
     parser.findTasksInLines(list, null);
@@ -387,7 +386,7 @@ public class GradleFileParserTest
       "    cleanFour.execute()",                                                                           //
       "}"                                                                                                  //
     };
-    List<Line> list         = getLinesFromArray(lines);
+    List<String> list   = getLinesFromArray(lines);
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
 
     parser.findTasksInLines(list, null);
@@ -425,7 +424,7 @@ public class GradleFileParserTest
       "   it.dependsOn('dibble')",  //
       "}"                           //
     };
-    List<Line> list         = getLinesFromArray(lines);
+    List<String> list   = getLinesFromArray(lines);
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
 
     parser.findTasksInLines(list, null);
@@ -476,7 +475,7 @@ public class GradleFileParserTest
       "    }",                                                                                  //
       "}"                                                                                       //
     };
-    List<Line> list         = getLinesFromArray(lines);
+    List<String> list   = getLinesFromArray(lines);
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
 
     parser.findTasksInLines(list, null);
@@ -523,7 +522,7 @@ public class GradleFileParserTest
       "    }",                                                                                  //
       "}"                                                                                       //
     };
-    List<Line> list         = getLinesFromArray(lines);
+    List<String> list   = getLinesFromArray(lines);
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
 
     parser.findTasksInLines(list, null);

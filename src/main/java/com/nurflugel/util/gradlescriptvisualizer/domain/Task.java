@@ -2,34 +2,53 @@ package com.nurflugel.util.gradlescriptvisualizer.domain;
 
 import com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.GRADLE;
 import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.addToTaskMap;
+import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
 import static org.apache.commons.lang.StringUtils.*;
 
+/**
+ * Representation of a Gradle task.
+ *
+ * <p>A Task can depend on other tasks, it can be a "Gradle" task, or, if an execute method is called on it, an "execute" task - we do that because
+ * you're not supposed to call "execute" on tasks.</p>
+ */
 public class Task
 {
-  private static final String DEPENDS_ON                 = "dependsOn:";
-  private static final String EXECUTE                    = ".execute()";
+  private static final String DEPENDS_ON_TEXT            = "dependsOn:";
+  private static final String EXECUTE_TEXT               = ".execute()";
   private static boolean      showFullyQualifiedTaskType = false;
   private String              name;
   private String              type;
   private List<Task>          dependsOnTasks             = new ArrayList<Task>();
-  private TaskUsage           usage                      = GRADLE;
-  private String[]            scopeLines;
-  private boolean             showType                   = true;
-  private String              buildScript;
 
-  public static Task findOrCreateTaskByLine(Map<String, Task> taskMap, Line line, List<Line> lines, String sourceFile)
+  /** Default is GRADLE, can be switched to EXECUTE if that method is used. */
+  private TaskUsage usage = GRADLE;
+
+  /** lines included in the scope of the task declaration. */
+  private String[] scopeLines;
+  private boolean  showType    = true;
+  private String   buildScript;
+
+  /**
+   * Given the line of text, find the task in the map of tasks by name, or else create a new task and add it to the map.
+   *
+   * @param   taskMap     the map of existing, known tasks
+   * @param   line        the line of text to parse
+   * @param   lines       The lines of text we're parsing - needed to find all the lines in the scope of a task.
+   * @param   sourceFile  the file these lines came from
+   *
+   * @return  the task that was created or found
+   */
+  public static Task findOrCreateTaskByLine(Map<String, Task> taskMap, String line, List<String> lines, String sourceFile)
   {
-    String name   = findTaskName(line.getText());
+    String name   = findTaskName(line);
     Task   result;
 
     if (taskMap.containsKey(name))
@@ -47,7 +66,7 @@ public class Task
 
     // find any dependencies in the task
     result.findTaskDependsOn(taskMap, line);
-    result.setScopeLines(ParseUtil.findLinesInScope(line, lines));
+    result.setScopeLines(findLinesInScope(line, lines));
     result.analyzeScopeLinesForExecuteDependencies(taskMap);
 
     return result;
@@ -64,20 +83,37 @@ public class Task
     return taskName;
   }
 
-  private static String getTextBeforeIfExists(String taskType, String matchingText)
+  /**
+   * Get the text before the matching text. For example, if text is "dibble@dabble", and the delimiter is " @", then you'll get "dibble" back.
+   *
+   * <p>However, if the delimiter is "&", then you get the whole "dibble@dabble" back.</p>
+   *
+   * @param   text       the text to parse
+   * @param   delimiter  a bit of text to search from.
+   *
+   * @return  the result text, or else the original
+   *
+   *          <p>todo - isn't this in StringUtils somewhere???</p>
+   */
+  static String getTextBeforeIfExists(String text, String delimiter)
   {
-    if (taskType.contains(matchingText))
+    if (text.contains(delimiter))
     {
-      taskType = substringBefore(taskType, matchingText);
+      text = substringBefore(text, delimiter);
     }
 
-    return taskType;
+    return text;
   }
 
-  // find the depends on from something like task signJars(dependsOn: 'installApp') << {
-  private void findTaskDependsOn(Map<String, Task> taskMap, Line line)
+  /**
+   * find the depends on from something like task signJars(dependsOn: 'installApp') << {
+   *
+   * @param  taskMap  map of tasks
+   * @param  line     the line of text we're parsing
+   */
+  private void findTaskDependsOn(Map<String, Task> taskMap, String line)
   {
-    findTaskDependsOn(taskMap, line.getText(), DEPENDS_ON);
+    findTaskDependsOn(taskMap, line, DEPENDS_ON_TEXT);
   }
 
   /** Go through the scope lines, look for any .executes - grab that and mark that task as a dependency. */
@@ -144,7 +180,7 @@ public class Task
     return result;
   }
 
-  // todo do I still need Line in this???
+  // todo do I still need String in this???
   public void findTaskDependsOn(Map<String, Task> taskMap, String line, String dependsText)
   {
     String text = substringAfter(line, dependsText);
@@ -203,9 +239,9 @@ public class Task
   {
     String trim = line.trim();
 
-    if (trim.contains(EXECUTE))
+    if (trim.contains(EXECUTE_TEXT))
     {
-      String taskName    = substringBefore(trim, EXECUTE);
+      String taskName    = substringBefore(trim, EXECUTE_TEXT);
       Task   executeTask = findOrCreateTaskByName(taskMap, taskName);
 
       if (taskInContext != null)
@@ -238,10 +274,10 @@ public class Task
     dependsOnTasks.add(task);
   }
 
-  public static List<Task> findOrCreateTaskInForEach(Line line, Map<String, Task> taskMap)
+  public static List<Task> findOrCreateTaskInForEach(String line, Map<String, Task> taskMap)
   {
     List<Task> foundTasks = new ArrayList<Task>();
-    String     text       = line.getText();
+    String     text       = line;
 
     text = substringBefore(text, ".each");
     text = substringBefore(text, "]");
@@ -268,10 +304,10 @@ public class Task
   }
 
   // todo maybe a better way of doing this would be to have a subclass which takes the other constructor??
-  Task(Map<String, Task> taskMap, Line line)
+  Task(Map<String, Task> taskMap, String line)
   {
-    name = findTaskName(line.getText());
-    type = findTaskType(line.getText());
+    name = findTaskName(line);
+    type = findTaskType(line);
     findTaskDependsOn(taskMap, line);
   }
 
@@ -320,9 +356,9 @@ public class Task
 
   public static String findExecuteDependency(String text)
   {
-    if (contains(text, EXECUTE))
+    if (contains(text, EXECUTE_TEXT))
     {
-      String beforeText         = substringBefore(text, EXECUTE);
+      String beforeText         = substringBefore(text, EXECUTE_TEXT);
       String afterLastSpaceText = substringAfterLast(beforeText, " ");
       String trimmedText        = afterLastSpaceText.trim();
 

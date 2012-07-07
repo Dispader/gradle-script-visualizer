@@ -23,7 +23,7 @@ public enum OutputFormat
   @SuppressWarnings({ "RefusedBequest" })
   public String toString()
   {
-    return "OutputFormat{" + "type='" + type + "'" + "}";
+    return "OutputFormat{" + "type='" + type + "'}";
   }
 
   // --------------------- GETTER / SETTER METHODS ---------------------

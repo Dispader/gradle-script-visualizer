@@ -1,6 +1,5 @@
 package com.nurflugel.util.gradlescriptvisualizer.util;
 
-import com.nurflugel.util.gradlescriptvisualizer.domain.Line;
 import java.util.ArrayList;
 import java.util.List;
 import static org.apache.commons.lang.StringUtils.countMatches;
@@ -14,18 +13,18 @@ public class ParseUtil
    * @param  line   the line where whatever is declared
    * @param  lines  the lines of the script
    */
-  public static String[] findLinesInScope(Line line, List<Line> lines)
+  public static String[] findLinesInScope(String line, List<String> lines)
   {
     List<String> scopeLines = new ArrayList<String>();
     int          index      = lines.indexOf(line);
 
     // in case the opening { is on the next (or later) lines, scan ahead until we find it
-    while (!line.getText().contains("{") && (index < lines.size()))
+    while (!line.contains("{") && (index < lines.size()))
     {
       index++;
     }
 
-    String text = line.getText();
+    String text = line;
 
     if (text.contains("{"))
     {
@@ -39,7 +38,7 @@ public class ParseUtil
 
       while ((levelOfNesting > 0) && (++index < lines.size()))
       {
-        text = lines.get(index).getText();
+        text = lines.get(index);
         scopeLines.add(text);
         levelOfNesting += countMatches(text, "{");
         levelOfNesting -= countMatches(text, "}");
@@ -48,4 +47,6 @@ public class ParseUtil
 
     return scopeLines.toArray(new String[scopeLines.size()]);
   }
+
+  private ParseUtil() {}
 }

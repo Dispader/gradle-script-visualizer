@@ -1,6 +1,5 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
-import com.nurflugel.util.gradlescriptvisualizer.domain.Line;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.io.IOUtils;
@@ -58,7 +57,7 @@ public class GradleFileParser
 
     if (file.exists())
     {
-      List<Line> lines = readLinesInFile(file);
+      List<String> lines = readLinesInFile(file);
 
       processLines(file, lines);
     }
@@ -72,20 +71,20 @@ public class GradleFileParser
    * We wrap the text lines into object lines so we can determine parsing strings or lines better. Later on, we may modify the line class to be more
    * broad than a single line of text.
    */
-  static List<Line> readLinesInFile(File file) throws IOException
+  static List<String> readLinesInFile(File file) throws IOException
   {
-    List<Line>   lines     = new ArrayList<Line>();
+    List<String> lines     = new ArrayList<String>();
     List<String> textLines = readLines(file);
 
     for (String textLine : textLines)
     {
-      lines.add(new Line(textLine));
+      lines.add(new String(textLine));
     }
 
     return lines;
   }
 
-  private void processLines(File sourceFile, List<Line> lines) throws IOException
+  private void processLines(File sourceFile, List<String> lines) throws IOException
   {
     String baseName = getBaseName(sourceFile.getAbsolutePath());
 
@@ -94,14 +93,14 @@ public class GradleFileParser
     findPostDeclarationTaskModifications(lines);
   }
 
-  void findTasksInLines(List<Line> lines, String sourceFile)
+  void findTasksInLines(List<String> lines, String sourceFile)
   {
     Task       taskInContext = null;
     List<Task> executeTasks  = new ArrayList<Task>();
 
-    for (Line line : lines)
+    for (String line : lines)
     {
-      String trimmedLine = line.getText().trim();
+      String trimmedLine = line.trim();
 
       if (trimmedLine.startsWith("task "))
       {
@@ -124,11 +123,11 @@ public class GradleFileParser
     }
   }
 
-  void findImportsInFile(List<Line> lines) throws IOException
+  void findImportsInFile(List<String> lines) throws IOException
   {
-    for (Line line : lines)
+    for (String line : lines)
     {
-      String text = line.getText().trim();
+      String text = line.trim();
 
       if (text.startsWith("apply from: "))
       {
@@ -193,20 +192,20 @@ public class GradleFileParser
       }
     }
 
-    URL        url       = new URL(location);
-    String     bigString = IOUtils.toString(url);
-    String[]   tokens    = bigString.split("\n");
-    List<Line> lines     = new ArrayList<Line>();
+    URL          url       = new URL(location);
+    String       bigString = IOUtils.toString(url);
+    String[]     tokens    = bigString.split("\n");
+    List<String> lines     = new ArrayList<String>();
 
     for (String token : tokens)
     {
-      lines.add(new Line(token));
+      lines.add(new String(token));
     }
 
     processLines(url, lines);
   }
 
-  private void processLines(URL sourceUrl, List<Line> lines) throws IOException
+  private void processLines(URL sourceUrl, List<String> lines) throws IOException
   {
     String fileName = sourceUrl.toString();
 
@@ -215,11 +214,11 @@ public class GradleFileParser
     findPostDeclarationTaskModifications(lines);
   }
 
-  void findImportsFromUrl(List<Line> lines) throws IOException
+  void findImportsFromUrl(List<String> lines) throws IOException
   {
-    for (Line line : lines)
+    for (String line : lines)
     {
-      String text = line.getText().trim();
+      String text = line.trim();
 
       if (text.startsWith("apply from: "))
       {
@@ -239,11 +238,11 @@ public class GradleFileParser
     }
   }
 
-  public void findPostDeclarationTaskModifications(List<Line> list)
+  public void findPostDeclarationTaskModifications(List<String> list)
   {
-    for (Line line : list)
+    for (String line : list)
     {
-      String text = line.getText();
+      String text = line;
 
       if (text.contains(".each"))
       {
