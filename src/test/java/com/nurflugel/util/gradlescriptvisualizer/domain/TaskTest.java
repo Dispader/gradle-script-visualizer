@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.findOrCreateImplicitTasksByExecute;
-import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.findOrCreateImplicitTasksByLine;
-import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.findOrCreateTaskByLine;
+import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.EXECUTE;
 import static com.nurflugel.util.test.TestResources.getLinesFromArray;
 import static org.testng.Assert.*;
@@ -266,7 +264,7 @@ public class TaskTest
   public void testFindExecutesTask()
   {
     String text = "        tomcatRun.execute()";
-    String name = Task.findExecuteDependency(text);
+    String name = findExecuteDependency(text);
 
     assertEquals(name, "tomcatRun");
   }
@@ -275,7 +273,7 @@ public class TaskTest
   public void testFindExecutesTaskWithOtherWords()
   {
     String text = "  dibble      tomcatRun.execute()";
-    String name = Task.findExecuteDependency(text);
+    String name = findExecuteDependency(text);
 
     assertEquals(name, "tomcatRun");
   }
@@ -284,7 +282,7 @@ public class TaskTest
   public void testFindExecutesTaskNoExecutes()
   {
     String text = "  dibble      tomcatRun.dibble()";
-    String name = Task.findExecuteDependency(text);
+    String name = findExecuteDependency(text);
 
     assertNull(name);
   }
@@ -293,7 +291,7 @@ public class TaskTest
   public void testFindForEachTasks()
   {
     String     line  = "[tRun1, tRun2].each {";
-    List<Task> tasks = Task.findOrCreateTaskInForEach(line, new HashMap<String, Task>());
+    List<Task> tasks = findOrCreateTaskInForEach(line, new HashMap<String, Task>());
 
     assertEquals(tasks.size(), 2);
     assertTrue(tasks.contains(new Task("tRun1")));  // since .equals only checks name, this works
@@ -313,10 +311,10 @@ public class TaskTest
   public void testGetTextBeforeIfExists()
   {
     String baseText = "dibble@dabble";
-    String text     = Task.getTextBeforeIfExists(baseText, "@");
+    String text     = getTextBeforeIfExists(baseText, "@");
 
     assertEquals(text, "dibble");
-    text = Task.getTextBeforeIfExists(baseText, "{");
+    text = getTextBeforeIfExists(baseText, "{");
     assertEquals(text, baseText);
   }
 }

@@ -1,6 +1,5 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
-import com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -8,6 +7,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.GRADLE;
 import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.addToTaskMap;
 import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
@@ -21,12 +21,10 @@ import static org.apache.commons.lang.StringUtils.*;
  */
 public class Task
 {
-  private static final String DEPENDS_ON_TEXT            = "dependsOn:";
-  private static final String EXECUTE_TEXT               = ".execute()";
-  private static boolean      showFullyQualifiedTaskType = false;
-  private String              name;
-  private String              type;
-  private List<Task>          dependsOnTasks             = new ArrayList<Task>();
+  private static boolean showFullyQualifiedTaskType = false;
+  private String         name;
+  private String         type;
+  private List<Task>     dependsOnTasks             = new ArrayList<Task>();
 
   /** Default is GRADLE, can be switched to EXECUTE if that method is used. */
   private TaskUsage usage = GRADLE;
@@ -77,8 +75,8 @@ public class Task
   {
     String taskName = substringAfter(line, "task ");
 
-    taskName = substringBefore(taskName, " ");
-    taskName = getTextBeforeIfExists(taskName, "(");
+    taskName = substringBefore(taskName, SPACE);
+    taskName = getTextBeforeIfExists(taskName, OPEN_PARENTHESIS);
 
     return taskName;
   }
@@ -97,12 +95,8 @@ public class Task
    */
   static String getTextBeforeIfExists(String text, String delimiter)
   {
-    if (text.contains(delimiter))
-    {
-      text = substringBefore(text, delimiter);
-    }
-
-    return text;
+    return text.contains(delimiter) ? substringBefore(text, delimiter)
+                                    : text;
   }
 
   /**
@@ -122,19 +116,26 @@ public class Task
     analyzeScopeLinesForExecuteDependencies(taskMap, scopeLines);
   }
 
-  // check.dependsOn integrationTest
+  /**
+   * <p>check.dependsOn integrationTest</p>
+   *
+   * @param   taskMap
+   * @param   trimmedLine
+   *
+   * @return
+   */
   public static List<Task> findOrCreateImplicitTasksByLine(Map<String, Task> taskMap, String trimmedLine)
   {
     List<Task> tasks       = new ArrayList<Task>();
     String     dependsText = ".dependsOn";
     String     text        = substringBefore(trimmedLine, dependsText);
 
-    if (text.contains("["))  // it's a list
+    if (text.contains(OPEN_SQUARE_BRACKET))  // it's a list
     {
-      text = substringAfter(text, "[");
-      text = substringBefore(text, "]");
+      text = substringAfter(text, OPEN_SQUARE_BRACKET);
+      text = substringBefore(text, CLOSE_SQUARE_BRACKET);
 
-      String[] tokens = split(text, ",");
+      String[] tokens = split(text, COMMA);
 
       for (String token : tokens)
       {
@@ -180,21 +181,22 @@ public class Task
     return result;
   }
 
-  // todo do I still need String in this???
   public void findTaskDependsOn(Map<String, Task> taskMap, String line, String dependsText)
   {
     String text = substringAfter(line, dependsText);
 
-    text = substringBefore(text, ")");
-    text = replace(text, "(", "");
+    text = substringBefore(text, CLOSE_PARENTHESIS);
+    text = replace(text, OPEN_PARENTHESIS, EMPTY_TEXT);
+    text = replace(text, SINGLE_QUOTE, EMPTY_TEXT);
+    text = replace(text, DOUBLE_QUOTE, EMPTY_TEXT);
 
     // test for multiple dependsOn
-    if (text.contains("["))
+    if (text.contains(OPEN_SQUARE_BRACKET))
     {
-      text = substringAfter(text, "[");
-      text = substringBefore(text, "]");
+      text = substringAfter(text, OPEN_SQUARE_BRACKET);
+      text = substringBefore(text, CLOSE_SQUARE_BRACKET);
 
-      String[] tokens = split(text, ",");
+      String[] tokens = split(text, COMMA);
 
       for (String token : tokens)
       {
@@ -279,13 +281,13 @@ public class Task
     List<Task> foundTasks = new ArrayList<Task>();
     String     text       = line;
 
-    text = substringBefore(text, ".each");
-    text = substringBefore(text, "]");
-    text = substringAfter(text, "[");
+    text = substringBefore(text, EACH);
+    text = substringBefore(text, CLOSE_SQUARE_BRACKET);
+    text = substringAfter(text, OPEN_SQUARE_BRACKET);
 
     if (text != null)
     {
-      String[] tokens = text.split(",");
+      String[] tokens = text.split(COMMA);
 
       for (String token : tokens)
       {
@@ -313,18 +315,20 @@ public class Task
 
   private static String findTaskType(String line)
   {
-    if (line.contains("type:"))
+    String type = "type:";
+
+    if (line.contains(type))
     {
-      String taskType = substringAfter(line, "type:");
+      String taskType = substringAfter(line, type);
 
       taskType = trim(taskType);
-      taskType = getTextBeforeIfExists(taskType, ")");
-      taskType = getTextBeforeIfExists(taskType, ",");
-      taskType = getTextBeforeIfExists(taskType, " ");
+      taskType = getTextBeforeIfExists(taskType, CLOSE_PARENTHESIS);
+      taskType = getTextBeforeIfExists(taskType, COMMA);
+      taskType = getTextBeforeIfExists(taskType, SPACE);
 
-      if (!showFullyQualifiedTaskType && taskType.contains("."))
+      if (!showFullyQualifiedTaskType && taskType.contains(PERIOD))
       {
-        taskType = substringAfterLast(taskType, ".");
+        taskType = substringAfterLast(taskType, PERIOD);
       }
 
       taskType = trim(taskType);
@@ -333,7 +337,7 @@ public class Task
     }
     else
     {
-      return "noType";
+      return NO_TYPE;
     }
   }
 
@@ -359,7 +363,7 @@ public class Task
     if (contains(text, EXECUTE_TEXT))
     {
       String beforeText         = substringBefore(text, EXECUTE_TEXT);
-      String afterLastSpaceText = substringAfterLast(beforeText, " ");
+      String afterLastSpaceText = substringAfterLast(beforeText, SPACE);
       String trimmedText        = afterLastSpaceText.trim();
 
       return trimmedText;
@@ -383,7 +387,7 @@ public class Task
   private String getDeclarationLabel()
   {
     boolean shouldShowType = showType;
-    boolean noType         = StringUtils.equals(type, "noType");
+    boolean noType         = StringUtils.equals(type, NO_TYPE);
 
     shouldShowType &= !noType;
     shouldShowType &= isNotEmpty(type);

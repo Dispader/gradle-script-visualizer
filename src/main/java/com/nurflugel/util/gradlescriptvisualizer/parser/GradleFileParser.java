@@ -1,5 +1,6 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
+import com.nurflugel.util.Util;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.io.IOUtils;
@@ -129,11 +130,11 @@ public class GradleFileParser
     {
       String text = line.trim();
 
-      if (text.startsWith("apply from: "))
+      if (text.startsWith(Util.APPLY_FROM))
       {
-        text = substringAfter(text, "apply from: ");
-        text = remove(text, '\'');
-        text = remove(text, '\"');
+        text = substringAfter(text, Util.APPLY_FROM);
+        text = remove(text, Util.SINGLE_QUOTE);
+        text = remove(text, Util.DOUBLE_QUOTE);
 
         if (text.startsWith("http:"))
         {
@@ -220,11 +221,11 @@ public class GradleFileParser
     {
       String text = line.trim();
 
-      if (text.startsWith("apply from: "))
+      if (text.startsWith(Util.APPLY_FROM))
       {
-        text = substringAfter(text, "apply from: ");
-        text = remove(text, '\'');
-        text = remove(text, '\"');
+        text = substringAfter(text, Util.APPLY_FROM);
+        text = remove(text, Util.SINGLE_QUOTE);
+        text = remove(text, Util.DOUBLE_QUOTE);
 
         if (text.startsWith("http:"))
         {
@@ -238,27 +239,25 @@ public class GradleFileParser
     }
   }
 
-  public void findPostDeclarationTaskModifications(List<String> list)
+  public void findPostDeclarationTaskModifications(List<String> lines)
   {
-    for (String line : list)
+    for (String line : lines)
     {
-      String text = line;
-
-      if (text.contains(".each"))
+      if (line.contains(Util.EACH))
       {
         List<Task> tasks = findOrCreateTaskInForEach(line, taskMap);
 
         if (!tasks.isEmpty())
         {
-          String[] linesInScope = findLinesInScope(line, list);
+          String[] linesInScope = findLinesInScope(line, lines);
 
           for (String lineInScope : linesInScope)
           {
-            if (lineInScope.contains("dependsOn"))
+            if (lineInScope.contains(Util.DEPENDS_ON))
             {
               for (Task task : tasks)
               {
-                task.findTaskDependsOn(taskMap, lineInScope, "dependsOn");
+                task.findTaskDependsOn(taskMap, lineInScope, Util.DEPENDS_ON);
               }
             }
 
