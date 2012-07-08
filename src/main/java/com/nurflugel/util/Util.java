@@ -46,6 +46,7 @@ public class Util
   public static final String SLASH                = "/";
   public static final String BACKSLASH            = "\\";
   public static final String HYPHEN               = "-";
+  public static final String HTTP                 = "http:";
   // -------------------------- STATIC METHODS --------------------------
 
   /** Sets the look and feel. */

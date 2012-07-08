@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
 import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
 import static org.apache.commons.io.FileUtils.checksumCRC32;
@@ -17,16 +18,20 @@ import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.apache.commons.io.FilenameUtils.getFullPath;
 import static org.apache.commons.lang.StringUtils.*;
 
-/** Created with IntelliJ IDEA. User: douglas_bullard Date: 5/30/12 Time: 22:07 To change this template use File | Settings | File Templates. */
+/** Class with parses the Gradle scripts. */
 public class GradleFileParser
 {
-  private Map<String, Task>       taskMap       = new HashMap<String, Task>();
+  /** map of all the tasks found. */
+  private Map<String, Task> taskMap = new HashMap<String, Task>();
+
+  /** map of checksums for all the build files. If any of these change, the graph is regenerated. Presto! */
   private Map<File, Long>         fileChecksums;
   private GradleScriptPreferences preferences;
 
   /** The starting point - the entry script. */
   private File baseFile;
 
+  /** if the task doesn't exist in the map, add it. */
   public static void addToTaskMap(Map<String, Task> taskMap, String name, Task task)
   {
     if (!isEmpty(name))
@@ -52,6 +57,7 @@ public class GradleFileParser
     return taskMap;
   }
 
+  /** Parse the given file. */
   public void parseFile(File file) throws IOException
   {
     System.out.println("file = " + file.getAbsolutePath());
@@ -71,6 +77,8 @@ public class GradleFileParser
   /**
    * We wrap the text lines into object lines so we can determine parsing strings or lines better. Later on, we may modify the line class to be more
    * broad than a single line of text.
+   *
+   * @param  file  The file to read
    */
   static List<String> readLinesInFile(File file) throws IOException
   {
@@ -79,12 +87,18 @@ public class GradleFileParser
 
     for (String textLine : textLines)
     {
-      lines.add(new String(textLine));
+      lines.add(textLine);
     }
 
     return lines;
   }
 
+  /**
+   * Process the lines in the source file.
+   *
+   * @param  sourceFile  the file that was read in
+   * @param  lines       the lines from that file
+   */
   private void processLines(File sourceFile, List<String> lines) throws IOException
   {
     String baseName = getBaseName(sourceFile.getAbsolutePath());
@@ -94,6 +108,7 @@ public class GradleFileParser
     findPostDeclarationTaskModifications(lines);
   }
 
+  /** find any tasks in the list of lines. Simple, right? */
   void findTasksInLines(List<String> lines, String sourceFile)
   {
     Task       taskInContext = null;
@@ -124,19 +139,20 @@ public class GradleFileParser
     }
   }
 
+  /** find any imports and process them, too. */
   void findImportsInFile(List<String> lines) throws IOException
   {
     for (String line : lines)
     {
       String text = line.trim();
 
-      if (text.startsWith(Util.APPLY_FROM))
+      if (text.startsWith(APPLY_FROM))
       {
-        text = substringAfter(text, Util.APPLY_FROM);
-        text = remove(text, Util.SINGLE_QUOTE);
-        text = remove(text, Util.DOUBLE_QUOTE);
+        text = substringAfter(text, APPLY_FROM);
+        text = remove(text, SINGLE_QUOTE);
+        text = remove(text, DOUBLE_QUOTE);
 
-        if (text.startsWith("http:"))
+        if (text.startsWith(HTTP))
         {
           try
           {
@@ -166,6 +182,7 @@ public class GradleFileParser
     }
   }
 
+  /** find URL import and process that. Note we have to deal with proxy servers. */
   private void findUrlImport(String location) throws IOException
   {
     if (preferences.shouldUseHttpProxy())
@@ -198,14 +215,11 @@ public class GradleFileParser
     String[]     tokens    = bigString.split("\n");
     List<String> lines     = new ArrayList<String>();
 
-    for (String token : tokens)
-    {
-      lines.add(new String(token));
-    }
-
+    Collections.addAll(lines, tokens);
     processLines(url, lines);
   }
 
+  /** Process the lines in the URL. */
   private void processLines(URL sourceUrl, List<String> lines) throws IOException
   {
     String fileName = sourceUrl.toString();
@@ -215,19 +229,20 @@ public class GradleFileParser
     findPostDeclarationTaskModifications(lines);
   }
 
+  /** The lines imported from a URL may have imports themselves. Use the internet as your file system! */
   void findImportsFromUrl(List<String> lines) throws IOException
   {
     for (String line : lines)
     {
       String text = line.trim();
 
-      if (text.startsWith(Util.APPLY_FROM))
+      if (text.startsWith(APPLY_FROM))
       {
-        text = substringAfter(text, Util.APPLY_FROM);
-        text = remove(text, Util.SINGLE_QUOTE);
-        text = remove(text, Util.DOUBLE_QUOTE);
+        text = substringAfter(text, APPLY_FROM);
+        text = remove(text, SINGLE_QUOTE);
+        text = remove(text, DOUBLE_QUOTE);
 
-        if (text.startsWith("http:"))
+        if (text.startsWith(HTTP))
         {
           findUrlImport(text);
         }
@@ -239,11 +254,12 @@ public class GradleFileParser
     }
   }
 
+  /** Find any modifications done after the task is declared. */
   public void findPostDeclarationTaskModifications(List<String> lines)
   {
     for (String line : lines)
     {
-      if (line.contains(Util.EACH))
+      if (line.contains(EACH))
       {
         List<Task> tasks = findOrCreateTaskInForEach(line, taskMap);
 
@@ -253,11 +269,11 @@ public class GradleFileParser
 
           for (String lineInScope : linesInScope)
           {
-            if (lineInScope.contains(Util.DEPENDS_ON))
+            if (lineInScope.contains(DEPENDS_ON))
             {
               for (Task task : tasks)
               {
-                task.findTaskDependsOn(taskMap, lineInScope, Util.DEPENDS_ON);
+                task.findTaskDependsOn(taskMap, lineInScope, DEPENDS_ON);
               }
             }
 
@@ -275,7 +291,8 @@ public class GradleFileParser
     }
   }
 
-  public void parseFile(String fileName)  // todo establish base directory from first call?
+  /** parse the given file. */
+  public void parseFile(String fileName)
   {
     File file = new File(fileName);
 
@@ -290,7 +307,7 @@ public class GradleFileParser
       }
       catch (IOException e)
       {
-        e.printStackTrace();              // todo log to user
+        e.printStackTrace();  // todo log to user
       }
     }
     else
