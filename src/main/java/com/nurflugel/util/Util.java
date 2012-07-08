@@ -23,7 +23,7 @@ public class Util
 {
   public static final Cursor busyCursor           = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
   public static final Cursor normalCursor         = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-  public static final String VERSION              = "1.0.6";
+  public static final String VERSION              = "1.0.7";
   public static final String DEPENDS_ON           = "dependsOn";
   public static final String APPLY_FROM           = "apply from: ";
   public static final String DEPENDS_ON_TEXT      = "dependsOn:";
