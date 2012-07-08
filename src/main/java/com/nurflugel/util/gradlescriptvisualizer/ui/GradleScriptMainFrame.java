@@ -7,7 +7,6 @@ import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
 import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import org.apache.commons.io.FileUtils;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
@@ -17,187 +16,184 @@ import java.awt.event.FocusEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
 import static com.nurflugel.util.Os.findOs;
 import static com.nurflugel.util.Util.*;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
+import static org.apache.commons.io.FileUtils.checksumCRC32;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 6/3/12 Time: 14:32 To change this template use File | Settings | File Templates. */
 public class GradleScriptMainFrame
 {
-  private JButton selectGradleScriptButton;
-  private JCheckBox watchFileForChangesCheckBox;
-  private JRadioButton generateJustDOTFilesRadioButton;
-  private JRadioButton generatePNGPDFFilesRadioButton;
-  private JPanel mainPanel;
-  private JButton quitButton;
-  private JCheckBox deleteDOTFilesOnCheckBox;
-  private JCheckBox groupByBuildFileCheckBox;
-  private JCheckBox useHttpProxyCheckBox;
-  private JPanel proxySettingsPanel;
-  private JFormattedTextField serverNameField;
-  private JCheckBox useAuthenticationCheckBox;
-  private JPanel authenticationPanel;
-  private JTextField portNumberField;
-  private JTextField userNameField;
-  private JPasswordField passwordField;
-  private JFrame frame;
+  public static final String      TITLE_TEXT                      = "Gradle Script Visualizer v";
+  private JButton                 selectGradleScriptButton;
+  private JCheckBox               watchFileForChangesCheckBox;
+  private JRadioButton            generateJustDOTFilesRadioButton;
+  private JRadioButton            generatePNGPDFFilesRadioButton;
+  private JPanel                  mainPanel;
+  private JButton                 quitButton;
+  private JCheckBox               deleteDOTFilesOnCheckBox;
+  private JCheckBox               groupByBuildFileCheckBox;
+  private JCheckBox               useHttpProxyCheckBox;
+  private JPanel                  proxySettingsPanel;
+  private JFormattedTextField     serverNameField;
+  private JCheckBox               useAuthenticationCheckBox;
+  private JPanel                  authenticationPanel;
+  private JTextField              portNumberField;
+  private JTextField              userNameField;
+  private JPasswordField          passwordField;
+  private JFrame                  frame;
   private GradleScriptPreferences preferences;
-  private String dotExecutablePath;
-  private Os os;
-  private final Map<File, Long> fileChecksums = new HashMap<File, Long>();
-  private final Set<File> filesToRender = new HashSet<File>();
-  private final GradleFileParser parser;
+  private String                  dotExecutablePath;
+  private Os                      os;
+  private final Map<File, Long>   fileChecksums                   = new HashMap<File, Long>();
+  private final Set<File>         filesToRender                   = new HashSet<File>();
+  private final GradleFileParser  parser;
 
   public GradleScriptMainFrame()
   {
     preferences = new GradleScriptPreferences();
-    os = findOs();
-    frame = new JFrame();
+    os          = findOs();
+    frame       = new JFrame();
     frame.setContentPane(mainPanel);
     initializeUi();
     addActionListeners();
     dotExecutablePath = preferences.getDotExecutablePath();  // todo this is ugly, fix it somehow
-
-//    if (StringUtils.isBlank(dotExecutablePath))
-//    {
-//      dotExecutablePath = os.getDefaultDotPath();
-//    }
-
     preferences.setDotExecutablePath(dotExecutablePath);
     parser = new GradleFileParser(fileChecksums, preferences);
   }
 
+  /** I like to put all the listeners in one method. */
   private void addActionListeners()
   {
     serverNameField.addFocusListener(new FocusAdapter()
-    {
-      @Override
-      public void focusLost(FocusEvent e)
       {
-        preferences.setProxyServerName(serverNameField.getText());
-      }
-    });
+        @Override
+        public void focusLost(FocusEvent e)
+        {
+          preferences.setProxyServerName(serverNameField.getText());
+        }
+      });
     userNameField.addFocusListener(new FocusAdapter()
-    {
-      @Override
-      public void focusLost(FocusEvent e)
       {
-        preferences.setProxyUserName(userNameField.getText());
-      }
-    });
+        @Override
+        public void focusLost(FocusEvent e)
+        {
+          preferences.setProxyUserName(userNameField.getText());
+        }
+      });
     passwordField.addFocusListener(new FocusAdapter()
-    {
-      @Override
-      public void focusLost(FocusEvent e)
       {
-        preferences.setProxyPassword(new String(passwordField.getPassword()));
-      }
-    });
+        @Override
+        public void focusLost(FocusEvent e)
+        {
+          preferences.setProxyPassword(new String(passwordField.getPassword()));
+        }
+      });
     portNumberField.addFocusListener(new FocusAdapter()
-    {
-      @Override
-      public void focusLost(FocusEvent e)
       {
-        preferences.setProxyServerPort(Integer.parseInt(portNumberField.getText()));
-      }
-    });
+        @Override
+        public void focusLost(FocusEvent e)
+        {
+          preferences.setProxyServerPort(Integer.parseInt(portNumberField.getText()));
+        }
+      });
     useAuthenticationCheckBox.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent e)
       {
-        boolean selected = useAuthenticationCheckBox.isSelected();
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+          boolean selected = useAuthenticationCheckBox.isSelected();
 
-        setVisibility();
-        preferences.setUseProxyAuthentication(selected);
-      }
-    });
+          setComponentVisibilityFromSettings();
+          preferences.setUseProxyAuthentication(selected);
+        }
+      });
     useHttpProxyCheckBox.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent e)
       {
-        boolean selected = useHttpProxyCheckBox.isSelected();
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+          boolean selected = useHttpProxyCheckBox.isSelected();
 
-        setVisibility();
-        preferences.setUseHttpProxy(selected);
-      }
-    });
+          setComponentVisibilityFromSettings();
+          preferences.setUseHttpProxy(selected);
+        }
+      });
     groupByBuildFileCheckBox.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent)
       {
-        preferences.setShouldGroupByBuildFiles(groupByBuildFileCheckBox.isSelected());
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+          preferences.setShouldGroupByBuildFiles(groupByBuildFileCheckBox.isSelected());
 
-        try
-        {
-          handleFileGeneration(parser);
+          try
+          {
+            handleFileGeneration(parser);
+          }
+          catch (IOException e)
+          {
+            e.printStackTrace();  // todo do something...
+          }
         }
-        catch (IOException e)
-        {
-          e.printStackTrace();  // todo do something...
-        }
-      }
-    });
+      });
     deleteDOTFilesOnCheckBox.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent)
       {
-        preferences.setShouldDeleteDotFilesOnExit(deleteDOTFilesOnCheckBox.isSelected());
-      }
-    });
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+          preferences.setShouldDeleteDotFilesOnExit(deleteDOTFilesOnCheckBox.isSelected());
+        }
+      });
     generateJustDOTFilesRadioButton.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent)
       {
-        preferences.setGenerateJustDotFiles(generateJustDOTFilesRadioButton.isSelected());
-      }
-    });
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+          preferences.setGenerateJustDotFiles(generateJustDOTFilesRadioButton.isSelected());
+        }
+      });
     generatePNGPDFFilesRadioButton.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent)
       {
-        preferences.setGenerateJustDotFiles(generateJustDOTFilesRadioButton.isSelected());
-      }
-    });
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+          preferences.setGenerateJustDotFiles(generateJustDOTFilesRadioButton.isSelected());
+        }
+      });
     watchFileForChangesCheckBox.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent)
       {
-        preferences.setWatchFilesForChanges(watchFileForChangesCheckBox.isSelected());
-      }
-    });
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+          preferences.setWatchFilesForChanges(watchFileForChangesCheckBox.isSelected());
+        }
+      });
     selectGradleScriptButton.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent)
       {
-        try
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
         {
-          selectGradleScript();
+          try
+          {
+            selectGradleScript();
+          }
+          catch (IOException e)
+          {
+            e.printStackTrace();
+          }
         }
-        catch (IOException e)
-        {
-          e.printStackTrace();
-        }
-      }
-    });
+      });
     quitButton.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent)
       {
-        doQuitAction();
-      }
-    });
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+          doQuitAction();
+        }
+      });
   }
 
+  /** Do any initialization that the IDE doesn't do in it's layout. Look and feel, setting UI attributes from stored preferencer, etc. */
   private void initializeUi()
   {
     setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel", frame);
@@ -221,22 +217,24 @@ public class GradleScriptMainFrame
 
     useHttpProxyCheckBox.setSelected(preferences.shouldUseHttpProxy());
     useAuthenticationCheckBox.setSelected(preferences.shouldUseProxyAuthentication());
-    setVisibility();
-    frame.setTitle("Gradle Script Visualizer v" + VERSION);
+    setComponentVisibilityFromSettings();
+    frame.setTitle(TITLE_TEXT + VERSION);
     frame.setVisible(true);
   }
 
-  private void setVisibility()
+  /** Called at startup and when the user clicks on one of the checkboxes. */
+  private void setComponentVisibilityFromSettings()
   {
     proxySettingsPanel.setVisible(useHttpProxyCheckBox.isSelected());
     authenticationPanel.setVisible(useAuthenticationCheckBox.isSelected());
     frame.pack();
   }
 
+  /** Open up a file chooser and select the file(s) to process. */
   private void selectGradleScript() throws IOException
   {
     JFileChooser chooser = new JFileChooser();
-    String lastDir = preferences.getLastDir();
+    String       lastDir = preferences.getLastDir();
 
     if (lastDir != null)
     {
@@ -268,7 +266,7 @@ public class GradleScriptMainFrame
       for (File selectedFile : selectedFiles)
       {
         // put the file checksum into a map so we can check it later if need be...
-        long checksum = FileUtils.checksumCRC32(selectedFile);
+        long checksum = checksumCRC32(selectedFile);
 
         fileChecksums.put(selectedFile, checksum);
       }
@@ -285,6 +283,7 @@ public class GradleScriptMainFrame
     }
   }
 
+  /** Generate the output. */
   public void handleFileGeneration(GradleFileParser parser) throws IOException
   {
     for (File file : filesToRender)
@@ -293,11 +292,11 @@ public class GradleScriptMainFrame
       parser.parseFile(file);
       System.out.println("selectedFile = " + file);
 
-      List<Task> tasks = parser.getTasks();
-      DotFileGenerator dotFileGenerator = new DotFileGenerator();
-      List<String> lines = dotFileGenerator.createOutput(tasks, preferences);
-      File dotFile = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
-      GraphicFileCreator fileCreator = new GraphicFileCreator();
+      List<Task>         tasks            = parser.getTasks();
+      DotFileGenerator   dotFileGenerator = new DotFileGenerator();
+      List<String>       lines            = dotFileGenerator.createOutput(tasks, preferences);
+      File               dotFile          = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
+      GraphicFileCreator fileCreator      = new GraphicFileCreator();
 
       fileCreator.processDotFile(dotFile, preferences, os);
     }
@@ -310,14 +309,11 @@ public class GradleScriptMainFrame
     System.exit(0);
   }
 
-  private void getOutputPreferencesFromUi()
-  {
-  }
+  private void getOutputPreferencesFromUi() {}
 
   // --------------------------- main() method ---------------------------
   public static void main(String[] args)
   {
     GradleScriptMainFrame ui = new GradleScriptMainFrame();
   }
-
 }

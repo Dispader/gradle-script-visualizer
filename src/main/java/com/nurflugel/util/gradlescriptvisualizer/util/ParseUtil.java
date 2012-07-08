@@ -1,10 +1,13 @@
 package com.nurflugel.util.gradlescriptvisualizer.util;
 
+import com.nurflugel.util.Util;
 import java.util.ArrayList;
 import java.util.List;
+import static com.nurflugel.util.Util.CLOSE_CURLY_BRACE;
+import static com.nurflugel.util.Util.OPEN_CURLY_BRACE;
 import static org.apache.commons.lang.StringUtils.countMatches;
 
-/** Created with IntelliJ IDEA. User: douglas_bullard Date: 6/10/12 Time: 18:34 To change this template use File | Settings | File Templates. */
+/** Util class to help with parsing. */
 public class ParseUtil
 {
   /**
@@ -19,29 +22,29 @@ public class ParseUtil
     int          index      = lines.indexOf(line);
 
     // in case the opening { is on the next (or later) lines, scan ahead until we find it
-    while (!line.contains("{") && (index < lines.size()))
+    while (!line.contains(OPEN_CURLY_BRACE) && (index < lines.size()))
     {
       index++;
     }
 
     String text = line;
 
-    if (text.contains("{"))
+    if (text.contains(OPEN_CURLY_BRACE))
     {
       scopeLines.add(text);
 
       int levelOfNesting = 0;
 
-      levelOfNesting += countMatches(text, "{");
-      levelOfNesting -= countMatches(text, "}");  // I'm assuming braces will be nicely formatted and not all on one line, bad assumption as that's
-                                                  // legal
+      levelOfNesting += countMatches(text, OPEN_CURLY_BRACE);
+      levelOfNesting -= countMatches(text, CLOSE_CURLY_BRACE);  // I'm assuming braces will be nicely formatted and not all on one line, bad
+                                                                // assumption as that's legal
 
       while ((levelOfNesting > 0) && (++index < lines.size()))
       {
         text = lines.get(index);
         scopeLines.add(text);
-        levelOfNesting += countMatches(text, "{");
-        levelOfNesting -= countMatches(text, "}");
+        levelOfNesting += countMatches(text, OPEN_CURLY_BRACE);
+        levelOfNesting -= countMatches(text, CLOSE_CURLY_BRACE);
       }
     }
 

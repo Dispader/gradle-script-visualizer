@@ -47,9 +47,11 @@ public class Util
   public static final String BACKSLASH            = "\\";
   public static final String HYPHEN               = "-";
   public static final String HTTP                 = "http:";
+  public static final String OPEN_CURLY_BRACE     = "{";
+  public static final String CLOSE_CURLY_BRACE    = "}";
   // -------------------------- STATIC METHODS --------------------------
 
-  /** Sets the look and feel. */
+  /** Sets the look and feel. Todo - put into shared library. */
   @SuppressWarnings("UseOfSystemOutOrSystemErr")
   public static LookAndFeel setLookAndFeel(String feelName, Component component)
   {
@@ -68,11 +70,13 @@ public class Util
     return currentLAF;
   }
 
+  /** Todo - put into shared library. */
   public static LookAndFeel setLookAndFeel(LookAndFeel lookAndFeel, Component component)
   {
     return setLookAndFeel(lookAndFeel.getName(), component);
   }
 
+  /** Todo - put into shared library. */
   public static void centerApp(Object object)
   {
     if (object instanceof Container)
@@ -83,7 +87,7 @@ public class Util
     }
   }
 
-  /** Centers the component on the screen. */
+  /** Centers the component on the screen. Todo - put into shared library. */
   @SuppressWarnings("NumericCastThatLosesPrecision")
   public static void center(Container container)
   {
@@ -95,7 +99,7 @@ public class Util
     container.setBounds(x, y, container.getWidth(), container.getHeight());
   }
 
-  /** Add the help listener - link to the help files. */
+  /** Add the help listener - link to the help files. Todo - put into shared library. */
   public static void addHelpListener(String helpSetName, JButton helpButton, JFrame theFrame)
   {
     /*

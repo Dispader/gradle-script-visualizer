@@ -5,7 +5,7 @@ import static com.nurflugel.util.OutputFormat.PDF;
 import static com.nurflugel.util.OutputFormat.PNG;
 import static java.util.prefs.Preferences.userNodeForPackage;
 
-/** Created with IntelliJ IDEA. User: douglas_bullard Date: 6/6/12 Time: 18:23 To change this template use File | Settings | File Templates. */
+/** Base class for my Ant and Gradle script parsers. Need to move this to shared code library. */
 public abstract class ScriptPreferences
 {
   private static final String   CONCENTRATE_LINES          = "concentrateLines";

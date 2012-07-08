@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Enum of operating systems, and methods to deal with differenes between them. */
+/** Enum of operating systems, and methods to deal with differences between them. */
 @SuppressWarnings({ "EnumeratedClassNamingConvention", "EnumeratedConstantNamingConvention" })
 public enum Os
 {
@@ -51,6 +51,8 @@ public enum Os
     return basePath + separator + buildCommand;
   }
 
+  /** Open the file in the OS's default application. */
+  @SuppressWarnings("CallToRuntimeExec")
   public void openFile(String filePath) throws IOException, InvocationTargetException, IllegalAccessException, NoSuchMethodException,
                                                ClassNotFoundException
   {
@@ -78,15 +80,6 @@ public enum Os
       Method   method         = aClass.getMethod("openURL", String.class);
 
       method.invoke(null, fileUrl);
-    }
-  }
-
-  @SuppressWarnings({ "CallToPrintStackTrace", "OverlyBroadCatchBlock" })
-  public void setLookAndFeel(Component component)
-  {
-    if (lookAndFeel.length() > 0)
-    {
-      Util.setLookAndFeel(lookAndFeel, component);
     }
   }
 

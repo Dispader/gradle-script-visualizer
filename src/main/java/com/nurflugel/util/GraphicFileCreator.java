@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.Date;
 import static com.nurflugel.util.Os.OS_X;
 
-/** Created with IntelliJ IDEA. User: douglas_bullard Date: 6/6/12 Time: 18:17 To change this template use File | Settings | File Templates. */
+/** TODO - I'm thinking of just removing all this - calling DOT directly seems to work, and the user can output graphics if they feel like it. */
 public class GraphicFileCreator
 {
   // public static final Logger logger = LogFactory.getLogger(GraphicFileCreator.class);
