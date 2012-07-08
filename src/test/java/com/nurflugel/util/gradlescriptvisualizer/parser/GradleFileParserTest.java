@@ -56,13 +56,6 @@ public class GradleFileParserTest
     }
   }
 
-  // @Test(expectedExceptions = IOException.class)
-  // public void testReadBadFile() throws IOException
-  // {
-  // GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
-  //
-  // parser.parseFile("dibble.gradle");
-  // }
   @Test
   public void testReadLinesFromFile() throws IOException
   {

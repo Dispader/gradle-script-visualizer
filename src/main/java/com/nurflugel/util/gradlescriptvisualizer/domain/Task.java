@@ -4,9 +4,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.GRADLE;
 import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.addToTaskMap;
@@ -117,18 +115,20 @@ public class Task
   }
 
   /**
+   * Find tasks referenced but not declared in this script. For example:
+   *
    * <p>check.dependsOn integrationTest</p>
    *
-   * @param   taskMap
-   * @param   trimmedLine
+   * @param   taskMap  map of tasks
+   * @param   line     the line of text we're parsing
    *
-   * @return
+   * @return  a list of tasks found
    */
-  public static List<Task> findOrCreateImplicitTasksByLine(Map<String, Task> taskMap, String trimmedLine)
+  public static List<Task> findOrCreateImplicitTasksByLine(Map<String, Task> taskMap, String line)
   {
     List<Task> tasks       = new ArrayList<Task>();
     String     dependsText = ".dependsOn";
-    String     text        = substringBefore(trimmedLine, dependsText);
+    String     text        = substringBefore(line, dependsText);
 
     if (text.contains(OPEN_SQUARE_BRACKET))  // it's a list
     {
@@ -139,14 +139,14 @@ public class Task
 
       for (String token : tokens)
       {
-        Task task = extractTaskByName(taskMap, trimmedLine, dependsText, token);
+        Task task = extractTaskByName(taskMap, line, dependsText, token);
 
         tasks.add(task);
       }
     }
     else
     {
-      Task task = extractTaskByName(taskMap, trimmedLine, dependsText, text);
+      Task task = extractTaskByName(taskMap, line, dependsText, text);
 
       tasks.add(task);
     }
@@ -154,16 +154,32 @@ public class Task
     return tasks;
   }
 
-  private static Task extractTaskByName(Map<String, Task> taskMap, String trimmedLine, String dependsText, String taskName)
+  /**
+   * Find a task in the line, and finds any dependsOn explicitly declared.
+   *
+   * @param   taskMap      map of tasks
+   * @param   line         the line of text we're parsing
+   * @param   dependsText  the text pattern used to parse for dependsOn text.
+   * @param   taskName     raw name of the task
+   *
+   * @return  the task found or created
+   */
+  private static Task extractTaskByName(Map<String, Task> taskMap, String line, String dependsText, String taskName)
   {
     String name = taskName.trim();
     Task   task = findOrCreateTaskByName(taskMap, name);
 
-    task.findTaskDependsOn(taskMap, trimmedLine, dependsText);
+    task.findTaskDependsOn(taskMap, line, dependsText);
 
     return task;
   }
 
+  /**
+   * Finds the task in the map, or creates it if it's not already there.
+   *
+   * @param  taskMap   map of existing tasks
+   * @param  taskName  the task name to look for
+   */
   public static Task findOrCreateTaskByName(Map<String, Task> taskMap, String taskName)
   {
     Task result;
@@ -181,6 +197,15 @@ public class Task
     return result;
   }
 
+  /**
+   * Find any dependsOn tasks explicitly declared in this task. For example:
+   *
+   * <p>task dibble (dependsOn: ['alpha', beta])</p>
+   *
+   * @param  taskMap      the map of existing tasks
+   * @param  line         the line of text to parse
+   * @param  dependsText  text to parse dependsOn for
+   */
   public void findTaskDependsOn(Map<String, Task> taskMap, String line, String dependsText)
   {
     String text = substringAfter(line, dependsText);
@@ -212,10 +237,16 @@ public class Task
     }
   }
 
+  /**
+   * Add a single dependency to the task.
+   *
+   * @param  taskMap  map of tasks
+   * @param  oldText  text with dependency name
+   */
   private void addSingleDependsOnTask(Map<String, Task> taskMap, String oldText)
   {
     // remove any quotes
-    String text = substringBefore(oldText, ",");
+    String text = substringBefore(oldText, COMMA);
 
     text = remove(text, '\"');
     text = remove(text, '\'');
@@ -271,11 +302,20 @@ public class Task
     return null;
   }
 
+  /** Helper method to prevent .getDependsOn().add(xxxx) type of code. I hate those, plus it exposes the collection. */
   private void addDependsOn(Task task)
   {
     dependsOnTasks.add(task);
   }
 
+  /**
+   * Go through forEach line and find tasks.
+   *
+   * @param   line     the line of text to parse
+   * @param   taskMap  the map of existing tasks
+   *
+   * @return  list of tasks found
+   */
   public static List<Task> findOrCreateTaskInForEach(String line, Map<String, Task> taskMap)
   {
     List<Task> foundTasks = new ArrayList<Task>();
@@ -300,12 +340,18 @@ public class Task
     return foundTasks;
   }
 
+  /** simple constructor to just set the name. */
   public Task(String name)
   {
     this.name = name;
   }
 
-  // todo maybe a better way of doing this would be to have a subclass which takes the other constructor??
+  /**
+   * Constructor which takes a line of text and parses it for information.
+   *
+   * @param  taskMap  the map of existing tasks
+   * @param  line     the line of text to parse
+   */
   Task(Map<String, Task> taskMap, String line)
   {
     name = findTaskName(line);
@@ -313,13 +359,12 @@ public class Task
     findTaskDependsOn(taskMap, line);
   }
 
+  /** Determine the task type, if possible. If not, returns NO_TYPE. */
   private static String findTaskType(String line)
   {
-    String type = "type:";
-
-    if (line.contains(type))
+    if (line.contains(TYPE))
     {
-      String taskType = substringAfter(line, type);
+      String taskType = substringAfter(line, TYPE);
 
       taskType = trim(taskType);
       taskType = getTextBeforeIfExists(taskType, CLOSE_PARENTHESIS);
@@ -340,8 +385,14 @@ public class Task
       return NO_TYPE;
     }
   }
-
   // -------------------------- OTHER METHODS --------------------------
+
+  /**
+   * Go through the lines in scope and see if there are any executes hiding in there. If so, those are implicit tasks being used, add them to the map.
+   *
+   * @param  taskMap       the map of existing tasks
+   * @param  linesInScope  the lines in scope
+   */
   public void analyzeScopeLinesForExecuteDependencies(Map<String, Task> taskMap, String... linesInScope)
   {
     for (String line : linesInScope)
@@ -358,6 +409,7 @@ public class Task
     }
   }
 
+  /** Finds any execute tasks, returns the name of the executed task. */
   public static String findExecuteDependency(String text)
   {
     if (contains(text, EXECUTE_TEXT))
@@ -376,26 +428,33 @@ public class Task
 
   public List<Task> getDependsOn()
   {
-    return dependsOnTasks;
+    return Collections.unmodifiableList(dependsOnTasks);
   }
 
+  /** Get the declaration for the DOT language. */
   public String getDotDeclaration()
   {
     return name + " [label=\"" + getDeclarationLabel() + "\" shape=" + usage.getShape() + " color=" + usage.getColor() + " ];";
   }
 
+  /** Get the label used to display the task in DOT. */
   private String getDeclarationLabel()
   {
     boolean shouldShowType = showType;
-    boolean noType         = StringUtils.equals(type, NO_TYPE);
+    boolean isType         = !StringUtils.equals(type, NO_TYPE);
 
-    shouldShowType &= !noType;
+    shouldShowType &= isType;
     shouldShowType &= isNotEmpty(type);
 
     return shouldShowType ? (name + "\\n" + "Type: " + type)
                           : name;
   }
 
+  /**
+   * get the list of dependencies in the DOT language.
+   *
+   * @return  list of lines for output
+   */
   public List<String> getDotDependencies()
   {
     List<String> lines = new ArrayList<String>();
@@ -408,6 +467,11 @@ public class Task
     return lines;
   }
 
+  /**
+   * pretty print the task.
+   *
+   * @param  nestingLevel  number of tabs to use in output
+   */
   public void printTask(int nestingLevel)
   {
     System.out.println(leftPad("", nestingLevel * 4) + "task = " + this);
@@ -469,7 +533,7 @@ public class Task
     return scopeLines;
   }
 
-  public void setScopeLines(String[] scopeLines)
+  public void setScopeLines(String... scopeLines)
   {
     this.scopeLines = scopeLines;
   }

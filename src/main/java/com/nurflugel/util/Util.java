@@ -40,6 +40,7 @@ public class Util
   public static final String EMPTY_TEXT           = "";
   public static final String OPEN_PARENTHESIS     = "(";
   public static final String CLOSE_PARENTHESIS    = ")";
+  public static final String TYPE                 = "type:";
   // -------------------------- STATIC METHODS --------------------------
 
   /** Sets the look and feel. */
