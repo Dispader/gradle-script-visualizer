@@ -1,5 +1,6 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
+/** Enum to show the different types of task usage. Tasks invoked using execute() are shown in red (bad programmer, no donut). */
 public enum TaskUsage
 {
   GRADLE ("box", "black"),

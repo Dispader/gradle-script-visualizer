@@ -41,6 +41,11 @@ public class Util
   public static final String OPEN_PARENTHESIS     = "(";
   public static final String CLOSE_PARENTHESIS    = ")";
   public static final String TYPE                 = "type:";
+  public static final String UNDERSCORE           = "_";
+  public static final String COLON                = ":";
+  public static final String SLASH                = "/";
+  public static final String BACKSLASH            = "\\";
+  public static final String HYPHEN               = "-";
   // -------------------------- STATIC METHODS --------------------------
 
   /** Sets the look and feel. */
