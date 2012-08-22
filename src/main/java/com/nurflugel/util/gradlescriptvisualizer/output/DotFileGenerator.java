@@ -4,9 +4,11 @@ import com.nurflugel.util.ScriptPreferences;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.lang.StringUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
 import static com.nurflugel.util.Util.*;
 import static org.apache.commons.io.FileUtils.writeLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;

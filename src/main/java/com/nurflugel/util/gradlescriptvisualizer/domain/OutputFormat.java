@@ -1,4 +1,4 @@
-package com.nurflugel.util;
+package com.nurflugel.util.gradlescriptvisualizer.domain;
 
 /** Enum for the various types of output. */
 public enum OutputFormat

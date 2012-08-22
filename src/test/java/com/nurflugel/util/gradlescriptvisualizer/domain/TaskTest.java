@@ -1,15 +1,16 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
 import org.testng.annotations.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.EXECUTE;
 import static com.nurflugel.util.test.TestResources.getLinesFromArray;
 import static org.testng.Assert.*;
-import static org.testng.Assert.assertEquals;
 
 @Test(groups = "gradle")
 public class TaskTest

@@ -1,16 +1,17 @@
 package com.nurflugel.util;
 
+import com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat;
 import org.apache.commons.lang.SystemUtils;
-import static com.nurflugel.util.OutputFormat.PDF;
-import static com.nurflugel.util.OutputFormat.PNG;
-import static java.io.File.separator;
-import java.awt.Component;
-import java.io.File;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PDF;
+import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PNG;
+import static java.io.File.separator;
 
 /** Enum of operating systems, and methods to deal with differences between them. */
 @SuppressWarnings({ "EnumeratedClassNamingConvention", "EnumeratedConstantNamingConvention" })

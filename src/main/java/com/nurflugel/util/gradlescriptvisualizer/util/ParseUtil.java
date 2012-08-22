@@ -1,8 +1,8 @@
 package com.nurflugel.util.gradlescriptvisualizer.util;
 
-import com.nurflugel.util.Util;
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.nurflugel.util.Util.CLOSE_CURLY_BRACE;
 import static com.nurflugel.util.Util.OPEN_CURLY_BRACE;
 import static org.apache.commons.lang.StringUtils.countMatches;

@@ -3,12 +3,13 @@ package com.nurflugel.util.gradlescriptvisualizer.output;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
-import com.nurflugel.util.test.TestResources;
 import org.testng.annotations.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
 import static com.nurflugel.util.test.TestResources.getFilePath;
 import static org.testng.Assert.assertEquals;
 

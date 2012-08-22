@@ -2,7 +2,7 @@ package com.nurflugel.util.gradlescriptvisualizer.ui;
 
 import com.nurflugel.util.ScriptPreferences;
 
-/** Preferences controlling class - saves user's output between sessions, reads it back in at startup.. */
+/** Preferences controlling class - saves user's output between sessions, reads it back in at startup. */
 public class GradleScriptPreferences extends ScriptPreferences
 {
   private static final String WATCH_FILES_FOR_CHANGES  = "watch files for changes";

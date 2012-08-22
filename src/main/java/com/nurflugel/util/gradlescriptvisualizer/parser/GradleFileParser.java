@@ -1,14 +1,15 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
-import com.nurflugel.util.Util;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+
 import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
 import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
@@ -47,6 +48,7 @@ public class GradleFileParser
   }
 
   // -------------------------- OTHER METHODS --------------------------
+  /** Gets a list of the tasks in the task map. */
   public List<Task> getTasks() throws IOException
   {
     return new ArrayList<Task>(taskMap.values());
@@ -160,7 +162,7 @@ public class GradleFileParser
           }
           catch (IOException e)
           {
-            // e.printStackTrace();//todo something where we tell the user we can't go through the firewall
+            // e.printStackTrace();//todo something where we tell the user we can't go through the firewall or the file doesn't exist
           }
         }
         else
@@ -248,7 +250,7 @@ public class GradleFileParser
         }
         else
         {
-          // todo we can't parse a file import in a remote URL - thow some sort of exception
+          // todo we can't parse a file import in a remote URL - throw some sort of exception
         }
       }
     }

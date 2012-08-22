@@ -3,12 +3,14 @@ package com.nurflugel.util.gradlescriptvisualizer.parser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.testng.annotations.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static com.nurflugel.util.test.TestResources.getFilePath;
 import static com.nurflugel.util.test.TestResources.getLinesFromArray;
 import static org.apache.commons.lang.ArrayUtils.contains;

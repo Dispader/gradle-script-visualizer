@@ -6,7 +6,7 @@ import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
 import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
-import org.apache.commons.io.FileUtils;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
@@ -16,6 +16,7 @@ import java.awt.event.FocusEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
 import static com.nurflugel.util.Os.findOs;
 import static com.nurflugel.util.Util.*;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
