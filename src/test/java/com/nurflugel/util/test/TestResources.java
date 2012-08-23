@@ -1,7 +1,6 @@
 package com.nurflugel.util.test;
 
 import org.apache.commons.lang.BooleanUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 

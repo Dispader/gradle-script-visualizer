@@ -1,9 +1,7 @@
 package com.nurflugel.util;
 
 import com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat;
-
 import java.util.prefs.Preferences;
-
 import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PDF;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PNG;
 import static java.util.prefs.Preferences.userNodeForPackage;
@@ -27,7 +25,7 @@ public abstract class ScriptPreferences
   private boolean               shouldIncludeImportedFiles = true;
   private boolean               shouldConcentrate          = true;
   private boolean               shouldDeleteDotFilesOnExit = true;
-  private OutputFormat outputFormat               = PDF;
+  private OutputFormat          outputFormat               = PDF;
   private String                lastDir;
   private String                dotExecutablePath;
   private String                previousVersion;

@@ -1,10 +1,8 @@
 package com.nurflugel.util;
 
 // import com.nurflugel.util.LogFactory;
-
 import java.io.File;
 import java.util.Date;
-
 import static com.nurflugel.util.Os.OS_X;
 
 /** TODO - I'm thinking of just removing all this - calling DOT directly seems to work, and the user can output graphics if they feel like it. */

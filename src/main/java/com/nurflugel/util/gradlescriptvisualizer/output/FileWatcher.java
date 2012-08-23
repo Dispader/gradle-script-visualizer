@@ -3,7 +3,6 @@ package com.nurflugel.util.gradlescriptvisualizer.output;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptMainFrame;
 import org.apache.commons.io.FileUtils;
-
 import javax.swing.*;
 import java.io.File;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class FileWatcher extends SwingWorker<Object, Object>
   @Override
   protected Object doInBackground() throws Exception
   {
-
+    // noinspection InfiniteLoopStatement
     while (true)
     {
       // wake up every second to check the files

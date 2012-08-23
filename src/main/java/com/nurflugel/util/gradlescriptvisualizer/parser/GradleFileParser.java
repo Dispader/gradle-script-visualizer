@@ -3,13 +3,11 @@ package com.nurflugel.util.gradlescriptvisualizer.parser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.io.IOUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-
 import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
 import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
