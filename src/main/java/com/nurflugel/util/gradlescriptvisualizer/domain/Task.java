@@ -1,9 +1,9 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +12,7 @@ import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.GRADLE;
 import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.addToTaskMap;
 import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * Representation of a Gradle task.

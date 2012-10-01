@@ -1,7 +1,7 @@
-package com.nurflugel.util;
+package com.nurflugel.util.gradlescriptvisualizer.domain;
 
-import com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat;
-import org.apache.commons.lang.SystemUtils;
+// import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.SystemUtils;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,6 +10,7 @@ import java.util.List;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PDF;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PNG;
 import static java.io.File.separator;
+import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 
 /** Enum of operating systems, and methods to deal with differences between them. */
 @SuppressWarnings({ "EnumeratedClassNamingConvention", "EnumeratedConstantNamingConvention" })
@@ -40,8 +41,8 @@ public enum Os
   // ------------------------ STATIC METHODS ------------------------
   public static Os findOs()
   {
-    return SystemUtils.IS_OS_WINDOWS ? WINDOWS
-                                     : OS_X;
+    return IS_OS_WINDOWS ? WINDOWS
+                         : OS_X;
   }
 
   // -------------------------- OTHER METHODS --------------------------

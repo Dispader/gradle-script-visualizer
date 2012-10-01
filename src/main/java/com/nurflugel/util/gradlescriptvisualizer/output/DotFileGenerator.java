@@ -3,7 +3,7 @@ package com.nurflugel.util.gradlescriptvisualizer.output;
 import com.nurflugel.util.ScriptPreferences;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -11,7 +11,7 @@ import static com.nurflugel.util.Util.*;
 import static org.apache.commons.io.FileUtils.writeLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.apache.commons.io.FilenameUtils.getFullPath;
-import static org.apache.commons.lang.StringUtils.replace;
+import static org.apache.commons.lang3.StringUtils.replace;
 
 /**
  * class responsible for generating the DOT output. Since Dot monitors the files it's showing in realtime, this can be called multiple times for the

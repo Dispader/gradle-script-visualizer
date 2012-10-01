@@ -1,8 +1,9 @@
 package com.nurflugel.util.test;
 
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import java.util.ArrayList;
 import java.util.List;
+import static org.apache.commons.lang3.BooleanUtils.toBooleanObject;
 
 /** Util class to help with test resources. */
 public class TestResources
@@ -16,7 +17,7 @@ public class TestResources
   public static String getFilePath(String fileName)
   {
     String  property            = System.getProperty("running.in.gradle");
-    boolean isGradleEnvironment = BooleanUtils.toBooleanObject(property, "yes", null, "dibble");
+    boolean isGradleEnvironment = toBooleanObject(property, "yes", null, "dibble");
 
     return isGradleEnvironment ? (SOURCE_PATH_GRADLE + fileName)
                                : (SOURCE_PATH_IDEA + fileName);

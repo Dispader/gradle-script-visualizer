@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static com.nurflugel.util.Util.CLOSE_CURLY_BRACE;
 import static com.nurflugel.util.Util.OPEN_CURLY_BRACE;
-import static org.apache.commons.lang.StringUtils.countMatches;
+import static org.apache.commons.lang3.StringUtils.countMatches;
 
 /** Util class to help with parsing. */
 public class ParseUtil

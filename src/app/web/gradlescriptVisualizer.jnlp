@@ -29,7 +29,7 @@
         <jar href="lib/commons-io-@commons_io@.jar"/>
         <jar href="lib/commons-collections-@commons_collections@.jar"/>
         <jar href="lib/asm-@asm@.jar"/>
-        <jar href="lib/commons-lang-@commons_lang@.jar"/>
+        <jar href="lib/commons-lang3-@commons_lang@.jar"/>
         <jar href="lib/log4j-@log4j@.jar"/>
         <jar href="lib/jhall-@jhall@.jar"/>
     </resources>

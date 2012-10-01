@@ -15,7 +15,7 @@ import static org.apache.commons.io.FileUtils.checksumCRC32;
 import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.apache.commons.io.FilenameUtils.getFullPath;
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /** Class with parses the Gradle scripts. */
 public class GradleFileParser
@@ -174,6 +174,7 @@ public class GradleFileParser
             String parent = getFullPath(baseFile.getAbsolutePath());
 
             newFile = new File(parent, fileName);
+            fileChecksums.put(newFile, checksumCRC32(newFile));
           }
 
           parseFile(newFile);

@@ -12,7 +12,7 @@
     </groups>
       <packages>
             <!--<package name="com.nurflugel.util.gradlescriptvisualizer.domain.*" />-->
-            <package name="com.nurflugel.util.gradlescriptvisualizer.*" />
+            <package name="com.nurflugel.util.*" />
             <package name="dibble.*" />
       </packages>
   </test>

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import static com.nurflugel.util.test.TestResources.getFilePath;
 import static com.nurflugel.util.test.TestResources.getLinesFromArray;
-import static org.apache.commons.lang.ArrayUtils.contains;
+import static org.apache.commons.lang3.ArrayUtils.contains;
 import static org.testng.Assert.*;
 
 @Test(groups = "gradle")
@@ -130,7 +130,7 @@ public class GradleFileParserTest
     assertTrue(tasks.containsKey("publishWebstart"));
   }
 
-  @Test
+  @Test(groups = "failed")
   public void testFindUrlImports() throws IOException
   {
     GradleFileParser parser = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
@@ -142,7 +142,7 @@ public class GradleFileParserTest
     assertTrue(tasks.containsKey("publishWebstart"));
   }
 
-  @Test
+  @Test(groups = "failed")
   public void testFindUrlImportsWithAuthentication() throws IOException
   {
     // read saved values for resetting after test

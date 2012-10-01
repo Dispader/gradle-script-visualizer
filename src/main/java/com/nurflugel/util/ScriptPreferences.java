@@ -1,7 +1,10 @@
 package com.nurflugel.util;
 
+import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat;
 import java.util.prefs.Preferences;
+import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.OS_X;
+import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PDF;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PNG;
 import static java.util.prefs.Preferences.userNodeForPackage;
@@ -43,8 +46,8 @@ public abstract class ScriptPreferences
     lastDir                    = preferencesStore.get(LAST_DIR, "");
     previousVersion            = preferencesStore.get(PREVIOUS_VERSION, "");
 
-    String defaultOutputFormat = (Os.findOs() == Os.OS_X) ? PDF.getDisplayLabel()
-                                                          : PNG.getDisplayLabel();
+    String defaultOutputFormat = (findOs() == OS_X) ? PDF.getDisplayLabel()
+                                                    : PNG.getDisplayLabel();
 
     outputFormat = OutputFormat.valueOf(preferencesStore.get(OUTPUT_FORMAT, defaultOutputFormat));
 

@@ -5,43 +5,57 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
-      <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/build/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/build/dependency-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/build/out" />
+      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
+      <excludeFolder url="file://$MODULE_DIR$/build/test-results" />
+      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="sequence-library-1.0.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="velocity-1.4" level="project" />
-    <orderEntry type="library" exported="" name="jna-3.4.0" level="project" />
     <orderEntry type="library" scope="TEST" name="aopalliance-1.0" level="project" />
-    <orderEntry type="library" exported="" name="snakeyaml-1.6" level="project" />
-    <orderEntry type="library" scope="TEST" name="guice-3.0" level="project" />
-    <orderEntry type="library" exported="" name="jhall-2.0.6" level="project" />
-    <orderEntry type="library" exported="" name="commons-logging-1.0.4" level="project" />
-    <orderEntry type="library" exported="" name="commons-io-2.2" level="project" />
-    <orderEntry type="library" exported="" name="testng-6.4" level="project" />
-    <orderEntry type="library" exported="" name="sqljet-1.1.1" level="project" />
-    <orderEntry type="library" exported="" name="buildtasks-1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" exported="" name="commons-lang-2.4" level="project" />
-    <orderEntry type="library" exported="" name="jcommander-1.12" level="project" />
-    <orderEntry type="library" exported="" name="version_tool-1.1.4_fixed" level="project" />
-    <orderEntry type="library" exported="" name="junit-3.8.1" level="project" />
-    <orderEntry type="library" exported="" name="svnkit-1.7.4-v1" level="project" />
-    <orderEntry type="library" exported="" name="org.objectweb.asm-asm-3.1-jar-c157def142714c544bdea2e6144645702adf7097-asm-3.1.jar-asm-3.1" level="project" />
-    <orderEntry type="library" exported="" name="forms_rt-11.0.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="velocity-dep-1.4" level="project" />
-    <orderEntry type="library" exported="" name="bsh-2.0b4" level="project" />
     <orderEntry type="library" exported="" name="jdom-1.0" level="project" />
+    <orderEntry type="library" exported="" name="svnkit-1.7.4-v1" level="project" />
+    <orderEntry type="library" exported="" name="sqljet-1.1.1" level="project" />
+    <orderEntry type="library" exported="" name="asm-3.1.jar-asm-3.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="velocity-1.4" level="project" />
+    <orderEntry type="library" exported="" name="snakeyaml-1.6" level="project" />
     <orderEntry type="library" scope="TEST" name="cglib-2.2.1-v20090111" level="project" />
-    <orderEntry type="library" exported="" name="commons-collections-3.2.1" level="project" />
-    <orderEntry type="library" exported="" name="log4j-1.2.15" level="project" />
-    <orderEntry type="library" scope="TEST" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-2.2" level="project" />
+    <orderEntry type="library" exported="" name="jhall-2.0.6" level="project" />
+    <orderEntry type="library" exported="" name="sequence-library-1.0.2" level="project" />
+    <orderEntry type="library" exported="" name="testng-6.4" level="project" />
+    <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="guice-3.0" level="project" />
+    <orderEntry type="library" exported="" name="buildtasks-1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="jcommander-1.12" level="project" />
     <orderEntry type="library" exported="" name="antlr-runtime-3.4" level="project" />
+    <orderEntry type="library" exported="" name="log4j-1.2.15" level="project" />
+    <orderEntry type="library" exported="" name="version_tool-1.1.4_fixed" level="project" />
+    <orderEntry type="library" scope="TEST" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="jna-3.4.0" level="project" />
     <orderEntry type="library" exported="" name="trilead-ssh2-1.0.0-build215" level="project" />
-    <orderEntry type="library" scope="TEST" name="asm-3.1-jar-c157def142714c544bdea2e6144645702adf7097-asm-3.1.jar-asm-3.1" level="project" />
+    <orderEntry type="library" exported="" name="forms_rt-11.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="asm-3.1-sources.jar-asm-3.1" level="project" />
+    <orderEntry type="library" exported="" name="commons-collections-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="junit-3.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="reportng-1.1.2" level="project" />
+    <orderEntry type="library" exported="" name="bsh-2.0b4" level="project" />
+    <orderEntry type="library" exported="" name="commons-logging-1.0.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="velocity-dep-1.4" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/build/resources/test" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

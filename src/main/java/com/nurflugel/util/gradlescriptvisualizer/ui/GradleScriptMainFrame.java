@@ -1,7 +1,7 @@
 package com.nurflugel.util.gradlescriptvisualizer.ui;
 
 import com.nurflugel.util.GraphicFileCreator;
-import com.nurflugel.util.Os;
+import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
 import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
@@ -15,8 +15,8 @@ import java.awt.event.FocusEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import static com.nurflugel.util.Os.findOs;
 import static com.nurflugel.util.Util.*;
+import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
 import static org.apache.commons.io.FileUtils.checksumCRC32;
 
@@ -268,6 +268,7 @@ public class GradleScriptMainFrame
         long checksum = checksumCRC32(selectedFile);
 
         fileChecksums.put(selectedFile, checksum);
+        System.out.println("adding selectedFile = " + selectedFile + " to list with checksum = " + checksum);
       }
 
       handleFileGeneration(parser);
