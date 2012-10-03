@@ -2,6 +2,7 @@ package com.nurflugel.util.dependencyvisualizer.parser;
 
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
+import com.nurflugel.util.dependencyvisualizer.domain.Pointer;
 import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.isConfigurationLine;
+import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.readConfiguration;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 18:36 To change this template use File | Settings | File Templates. */
@@ -32,7 +35,7 @@ public class GradleDependencyParser
    */
   public static int parseNestingLevel(String line)
   {
-    return countMatches(line, "|");
+    return countMatches(line, "|") + countMatches(line, "+---") + countMatches(line, "\\---");
   }
 
   // -------------------------- OTHER METHODS --------------------------
@@ -67,6 +70,8 @@ public class GradleDependencyParser
       if (pastHeaders)
       {
         readConfigurations(i, lines);
+
+        break;
       }
     }
   }
@@ -98,27 +103,14 @@ public class GradleDependencyParser
     // or
     // compile - Classpath for compiling the main sources.
     // +--- org.jdom:jdom:1.0
-    if (Configuration.isConfigurationLine(i, lines))
+    Pointer pointer = new Pointer(i);
+
+    while (pointer.getIndex() < lines.length)
     {
-      readConfiguration(i, lines);
+      if (isConfigurationLine(pointer, lines))
+      {
+        readConfiguration(pointer, lines, masterArtifactMap);
+      }
     }
-  }
-
-  public static Configuration readConfiguration(int i, String[] lines)
-  {
-    String[]      tokens        = split(lines[i], "-");
-    Configuration configuration = new Configuration(tokens[0].trim(), masterArtifactMap);
-
-    if (tokens.length > 1)
-    {
-      configuration.setDescription(tokens[1].trim());
-    }
-
-    String[] configurationLines = Configuration.getConfigurationLines(i, lines);
-
-    configuration.setLines(configurationLines);
-    configuration.parseLines();
-
-    return configuration;
   }
 }

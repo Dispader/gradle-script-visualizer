@@ -1,10 +1,7 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
-import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.split;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 13:08 To change this template use File | Settings | File Templates. */
 public class Configuration extends ObjectWithArtifacts
@@ -12,33 +9,30 @@ public class Configuration extends ObjectWithArtifacts
   private String[] lines;
   private String   description;
 
-  public Configuration(String name, Map<String, Artifact> masterArtifactList)
-  {
-    super(name, masterArtifactList);
-  }
-
   // is this a configuration line?
-  public static boolean isConfigurationLine(int i, String... lines)
+  public static boolean isConfigurationLine(Pointer pointer, String... lines)
   {
-    if (i < lines.length)
+    int index = pointer.getIndex();
+
+    if (index < lines.length)
     {
       // todo nice to use Java 7 switch with strings here...
-      if (lines[i + 1].equalsIgnoreCase("No dependencies"))
+      if (lines[index + 1].equalsIgnoreCase("No dependencies"))
       {
         return true;
       }
 
-      if (lines[i + 1].startsWith("+---"))
+      if (lines[index + 1].startsWith("+---"))
       {
         return true;
       }
 
-      if (lines[i + 1].startsWith("| "))
+      if (lines[index + 1].startsWith("| "))
       {
         return true;
       }
 
-      if (lines[i + 1].startsWith("\\-"))
+      if (lines[index + 1].startsWith("\\-"))
       {
         return true;
       }
@@ -47,79 +41,41 @@ public class Configuration extends ObjectWithArtifacts
     return false;
   }
 
-  /** For now, just keep reading lines until you get an empty one. */
-  public static String[] getConfigurationLines(int startingIndex, String... lines)
+  public static Configuration readConfiguration(Pointer pointer, String[] lines, Map<String, Artifact> masterArtifactMap)
   {
-    List<String> configurationLineList = new ArrayList<String>();
+    int           i             = pointer.getIndex();
+    String[]      tokens        = split(lines[i], "-");
+    Configuration configuration = new Configuration(tokens[0].trim(), masterArtifactMap);
 
-    for (int i = startingIndex + 1; i < lines.length; i++)
+    if (tokens.length > 1)
     {
-      String line = lines[i];
-
-      if (isEmpty(line))
-      {
-        // return new array of startIndex to i
-        return configurationLineList.toArray(new String[configurationLineList.size()]);
-      }
-      else
-      {
-        configurationLineList.add(line);
-      }
+      configuration.setDescription(tokens[1].trim());
     }
 
-    return configurationLineList.toArray(new String[configurationLineList.size()]);
+    String[] configurationLines = getArtifactLines(new Pointer(i), lines);     // todo can I just pass in the pointer to this?  Do I need to create a
+                                                                               // new one?
+
+    configuration.setLines(configurationLines);
+    configuration.parseLines();
+    pointer.increment(configurationLines.length);
+
+    return configuration;
   }
-  // -------------------------- OTHER METHODS --------------------------
+
+  public void setLines(String[] lines)
+  {
+    this.lines = lines;
+  }
 
   /** Go through the configuration and parse the lines. */
-  // todo put this into parent class and make it recursive
   public void parseLines()
   {
-    int                 currentNestingLevel  = 0;
-    ObjectWithArtifacts currentArtifact      = this;
-    ObjectWithArtifacts currentChildArtifact = null;
-
-    for (String line : lines)
-    {
-      if (line.equals("No dependencies"))
-      {
-        return;
-      }
-      else
-      {
-        // todo I really need to do is figure out a recursive algorithm for this
-        int lineNestingLevel = GradleDependencyParser.parseNestingLevel(line);
-
-        // we're adding a sibling to the current level
-        if (lineNestingLevel == currentNestingLevel)
-        {
-          currentChildArtifact = addChildArtifact(line);
-        }
-
-        // dependencies of the current artifact
-        else if (lineNestingLevel > currentNestingLevel)
-        {
-          currentChildArtifact = addChildToChild(currentChildArtifact, line);
-          currentNestingLevel  = lineNestingLevel;
-        }
-        else  // lineNestingLevel < currentNestingLevel
-        {
-          currentArtifact = currentArtifact.getParent();
-          addChildArtifact(line);
-        }
-      }
-    }
+    parseArtifacts(0, this, lines);
   }
 
-  private ObjectWithArtifacts addChildToChild(ObjectWithArtifacts currentChildArtifact, String line)
+  public Configuration(String name, Map<String, Artifact> masterArtifactList)
   {
-    // we're going to recurse into the child
-    String   key      = GradleDependencyParser.parseKey(line);
-    Artifact artifact = new Artifact(key, getMasterArtifactList());
-
-    currentChildArtifact.addArtifact(artifact);
-
-    return artifact;
+    super(name, masterArtifactList);
   }
 
   // --------------------- GETTER / SETTER METHODS ---------------------
@@ -131,10 +87,5 @@ public class Configuration extends ObjectWithArtifacts
   public void setDescription(String description)
   {
     this.description = description;
-  }
-
-  public void setLines(String[] lines)
-  {
-    this.lines = lines;
   }
 }

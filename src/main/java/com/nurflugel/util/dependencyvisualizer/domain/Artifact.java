@@ -33,16 +33,10 @@ public class Artifact extends ObjectWithArtifacts
     name     = strings[1];
     revision = strings[2];
   }
-  // -------------------------- OTHER METHODS --------------------------
-
-  /** Something like "org.apache:commons-lang:2.2.1". */
-  public String getKey()
-  {
-    return org + COLON + name + COLON + revision;
-  }
 
   // ------------------------ CANONICAL METHODS ------------------------
   @Override
+  @SuppressWarnings("AccessingNonPublicFieldOfAnotherObject")
   public boolean equals(Object obj)
   {
     if (obj == null)
@@ -57,14 +51,26 @@ public class Artifact extends ObjectWithArtifacts
 
     Artifact other = (Artifact) obj;
 
-    return new EqualsBuilder().appendSuper(super.equals(obj)).append(org, other.org).append(name, other.name).append(revision, other.revision)
-                              .isEquals();
+    return new EqualsBuilder().append(org, other.org).append(name, other.name).append(revision, other.revision).isEquals();
   }
 
   @Override
   public int hashCode()
   {
-    return new HashCodeBuilder().appendSuper(super.hashCode()).append(org).append(name).append(revision).toHashCode();
+    return new HashCodeBuilder().append(org).append(name).append(revision).toHashCode();
+  }
+
+  @Override
+  public String toString()
+  {
+    return "Artifact{"
+             + "key='" + getKey() + '\'' + '}';
+  }
+
+  /** Something like "org.apache:commons-lang:2.2.1". */
+  public String getKey()
+  {
+    return org + COLON + name + COLON + revision;
   }
   // --------------------- GETTER / SETTER METHODS ---------------------
 
