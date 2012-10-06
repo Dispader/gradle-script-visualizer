@@ -3,12 +3,26 @@ package com.nurflugel.util;
 // import com.nurflugel.util.LogFactory;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import java.io.File;
-import java.util.Date;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.OS_X;
 
 /** TODO - I'm thinking of just removing all this - calling DOT directly seems to work, and the user can output graphics if they feel like it. */
 public class GraphicFileCreator
 {
+  // -------------------------- OTHER METHODS --------------------------
+
+  /** Join the array together as one string, with spaces between the elements. */
+  private String concatenate(String[] commands)
+  {
+    StringBuilder stringBuffer = new StringBuilder();
+
+    for (String command : commands)
+    {
+      stringBuffer.append(' ');
+      stringBuffer.append(command);
+    }
+
+    return stringBuffer.toString().trim();
+  }
   // public static final Logger logger = LogFactory.getLogger(GraphicFileCreator.class);
 
   /** Convert the .dot file into png, pdf, svg, whatever. */
@@ -34,10 +48,6 @@ public class GraphicFileCreator
 
       if (outputFile.exists())
       {
-        // if (logger.isDebugEnabled())
-        // {
-        // logger.debug("Deleting existing version of " + outputFilePath);
-        // }
         outputFile.delete();  // delete the file before generating it if it exists
       }
 
@@ -52,22 +62,9 @@ public class GraphicFileCreator
       }
 
       String[] command = { dotExecutablePath, "-T" + outputFormatName, "-o" + outputFilePath, dotFilePath };
-
-      // if (logger.isDebugEnabled())
-      // {
-      // logger.debug("Command to run: " + concatenate(command) + " parent file is " + parentFile.getPath());
-      // }
-      Runtime runtime = Runtime.getRuntime();
-      long    start   = new Date().getTime();
+      Runtime  runtime = Runtime.getRuntime();
 
       runtime.exec(command).waitFor();
-
-      long end = new Date().getTime();
-
-      // if (logger.isDebugEnabled())
-      // {
-      // logger.debug("Took " + (end - start) + " milliseconds to generate graphic");
-      // }
       os.openFile(outputFilePath);
     }
     catch (Exception e)  // todo handle error
@@ -85,19 +82,5 @@ public class GraphicFileCreator
     results = results.substring(0, index) + outputExtension;
 
     return results;
-  }
-
-  /** Join the array together as one string, with spaces between the elements. */
-  private String concatenate(String[] commands)
-  {
-    StringBuilder stringBuffer = new StringBuilder();
-
-    for (String command : commands)
-    {
-      stringBuffer.append(' ');
-      stringBuffer.append(command);
-    }
-
-    return stringBuffer.toString().trim();
   }
 }

@@ -1,5 +1,7 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
+import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Map;
@@ -16,6 +18,7 @@ public class Artifact extends ObjectWithArtifacts
   public Artifact(String key, Map<String, Artifact> masterArtifactList)
   {
     super(key, masterArtifactList);
+    key = StringUtils.substringBefore(key, " [");
 
     if (!masterArtifactList.containsKey(key))
     {
@@ -26,12 +29,45 @@ public class Artifact extends ObjectWithArtifacts
 
     if (strings.length != 3)
     {
-      // do something ot tell user they've got bad input
+      System.out.println("Artifact.Artifact - expecting 3 args, got " + strings.length + " in " + key);
+      // do something to tell user they've got bad input
     }
+    else
+    {
+      org      = strings[0];
+      name     = strings[1];
+      revision = strings[2];
+    }
+  }
+  // ------------------------ INTERFACE METHODS ------------------------
 
-    org      = strings[0];
-    name     = strings[1];
-    revision = strings[2];
+  // --------------------- Interface Comparable ---------------------
+  @Override
+  public int compareTo(Object o)
+  {
+    return getKey().compareTo(((Artifact) o).getKey());
+  }
+
+  // -------------------------- OTHER METHODS --------------------------
+  @Override
+  public String getDotDeclaration()
+  {
+    String shape = "ellipse";
+    String color = "black";
+
+    return getNiceDotName() + " [label=\"" + org + "\\n" + name + "\\n" + revision + "\" shape=" + shape + " color=" + color + " ]; ";
+  }
+
+  @Override
+  public String getNiceDotName()
+  {
+    return DotFileGenerator.replaceBadChars(getKey());
+  }
+
+  /** Something like "org.apache:commons-lang:2.2.1". */
+  public String getKey()
+  {
+    return org + COLON + name + COLON + revision;
   }
 
   // ------------------------ CANONICAL METHODS ------------------------
@@ -65,12 +101,6 @@ public class Artifact extends ObjectWithArtifacts
   {
     return "Artifact{"
              + "key='" + getKey() + '\'' + '}';
-  }
-
-  /** Something like "org.apache:commons-lang:2.2.1". */
-  public String getKey()
-  {
-    return org + COLON + name + COLON + revision;
   }
   // --------------------- GETTER / SETTER METHODS ---------------------
 

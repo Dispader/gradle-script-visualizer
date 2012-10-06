@@ -1,0 +1,213 @@
+
+========================================================================================================
+Welcome to Gradle!  This is version: 1.2
+              Gradle home is set to: /Users/douglas_bullard/.gradle/wrapper/dists/gradle-1.2-bin/35oej0jnbfh6of4dd05531edaj/gradle-1.2
+    Gradle user directory is set to: /Users/douglas_bullard/.gradle
+
+                     Base directory: /Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk
+
+
+Running build script build.gradle
+========================================================================================================
+
+
+Dynamic properties are deprecated: http://gradle.org/docs/current/dsl/org.gradle.api.plugins.ExtraPropertiesExtension.html
+Deprecated dynamic property: "transtive" on "DefaultExternalModuleDependency{group='velocity', name='velocity', version='1.4', configuration='default'}", value: "true".
+File to look for is /Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/src/main/java/overview.html
+Deprecated dynamic property: "versionClassName" on "root project 'GradleScriptVisualizer'", value: "com.nurflugel.util.Util".
+:dependencies
+
+------------------------------------------------------------
+Root project
+------------------------------------------------------------
+
+archives - Configuration for archive artifacts.
+No dependencies
+
+compile - Classpath for compiling the main sources.
++--- org.jdom:jdom:1.0
++--- org.tmatesoft.svnkit:svnkit:1.7.4-v1
+|    +--- de.regnis.q.sequence:sequence-library:1.0.2
+|    +--- net.java.dev.jna:jna:3.4.0
+|    +--- org.tmatesoft.sqljet:sqljet:1.1.1
+|    |    \--- org.antlr:antlr-runtime:3.4
+|    \--- com.trilead:trilead-ssh2:1.0.0-build215
++--- com.ryangrier.ant:version_tool:1.1.4_fixed
++--- com.nurflugel:buildtasks:1.0-SNAPSHOT
++--- org.apache:commons-logging:1.0.4
++--- org.apache.commons:commons-lang3:3.1
++--- org.apache:commons-collections:3.2.1
++--- org.apache:commons-io:2.2
++--- com.intellij:forms_rt:11.0.3
++--- org.apache:log4j:1.2.15
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.objectweb.asm:asm:3.1
+\--- javax.help:jhall:2.0.6
+
+default - Configuration for default artifacts.
++--- org.jdom:jdom:1.0
++--- org.tmatesoft.svnkit:svnkit:1.7.4-v1
+|    +--- de.regnis.q.sequence:sequence-library:1.0.2
+|    +--- net.java.dev.jna:jna:3.4.0
+|    +--- org.tmatesoft.sqljet:sqljet:1.1.1
+|    |    \--- org.antlr:antlr-runtime:3.4
+|    \--- com.trilead:trilead-ssh2:1.0.0-build215
++--- com.ryangrier.ant:version_tool:1.1.4_fixed
++--- com.nurflugel:buildtasks:1.0-SNAPSHOT
++--- org.apache:commons-logging:1.0.4
++--- org.apache.commons:commons-lang3:3.1
++--- org.apache:commons-collections:3.2.1
++--- org.apache:commons-io:2.2
++--- com.intellij:forms_rt:11.0.3
++--- org.apache:log4j:1.2.15
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.objectweb.asm:asm:3.1
+\--- javax.help:jhall:2.0.6
+
+dist
+No dependencies
+
+javac2
++--- com.intellij:javac2:11.0.3
++--- com.intellij:annotations:11.0.3
++--- asm:asm-commons:3.3.1
+|    \--- asm:asm-tree:3.3.1
+|         \--- asm:asm:3.3.1
++--- asm:asm-parent:3.3.1
+\--- org.jdom:jdom:1.0
+
+pmd - The PMD libraries to be used for this project.
+No dependencies
+
+presigned
+No dependencies
+
+runtime - Classpath for running the compiled main classes.
++--- org.jdom:jdom:1.0
++--- org.tmatesoft.svnkit:svnkit:1.7.4-v1
+|    +--- de.regnis.q.sequence:sequence-library:1.0.2
+|    +--- net.java.dev.jna:jna:3.4.0
+|    +--- org.tmatesoft.sqljet:sqljet:1.1.1
+|    |    \--- org.antlr:antlr-runtime:3.4
+|    \--- com.trilead:trilead-ssh2:1.0.0-build215
++--- com.ryangrier.ant:version_tool:1.1.4_fixed
++--- com.nurflugel:buildtasks:1.0-SNAPSHOT
++--- org.apache:commons-logging:1.0.4
++--- org.apache.commons:commons-lang3:3.1
++--- org.apache:commons-collections:3.2.1
++--- org.apache:commons-io:2.2
++--- com.intellij:forms_rt:11.0.3
++--- org.apache:log4j:1.2.15
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.objectweb.asm:asm:3.1
+\--- javax.help:jhall:2.0.6
+
+signatures
+No dependencies
+
+source
++--- org.jdom:jdom:1.0
++--- org.tmatesoft.svnkit:svnkit:1.7.4-v1
+|    +--- de.regnis.q.sequence:sequence-library:1.0.2
+|    +--- net.java.dev.jna:jna:3.4.0
+|    +--- org.tmatesoft.sqljet:sqljet:1.1.1
+|    |    \--- org.antlr:antlr-runtime:3.4
+|    \--- com.trilead:trilead-ssh2:1.0.0-build215
++--- com.ryangrier.ant:version_tool:1.1.4_fixed
++--- com.nurflugel:buildtasks:1.0-SNAPSHOT
++--- org.apache:commons-logging:1.0.4
++--- org.apache.commons:commons-lang3:3.1
++--- org.apache:commons-collections:3.2.1
++--- org.apache:commons-io:2.2
++--- com.intellij:forms_rt:11.0.3
++--- org.apache:log4j:1.2.15
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.objectweb.asm:asm:3.1
+\--- javax.help:jhall:2.0.6
+
+testCompile - Classpath for compiling the test sources.
++--- org.jdom:jdom:1.0
++--- org.tmatesoft.svnkit:svnkit:1.7.4-v1
+|    +--- de.regnis.q.sequence:sequence-library:1.0.2
+|    +--- net.java.dev.jna:jna:3.4.0
+|    +--- org.tmatesoft.sqljet:sqljet:1.1.1
+|    |    \--- org.antlr:antlr-runtime:3.4
+|    \--- com.trilead:trilead-ssh2:1.0.0-build215
++--- com.ryangrier.ant:version_tool:1.1.4_fixed
++--- com.nurflugel:buildtasks:1.0-SNAPSHOT
++--- org.apache:commons-logging:1.0.4
++--- org.apache.commons:commons-lang3:3.1
++--- org.apache:commons-collections:3.2.1
++--- org.apache:commons-io:2.2
++--- com.intellij:forms_rt:11.0.3
++--- org.apache:log4j:1.2.15
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.objectweb.asm:asm:3.1
++--- javax.help:jhall:2.0.6
++--- com.google.inject:guice:3.0
+|    +--- javax.inject:javax.inject:1
+|    +--- aopalliance:aopalliance:1.0
+|    \--- org.sonatype.sisu.inject:cglib:2.2.1-v20090111
+|         \--- asm:asm:3.1
++--- velocity:velocity:1.4
+|    \--- velocity:velocity-dep:1.4
+\--- org.uncommons:reportng:1.1.2
+
+testRuntime - Classpath for running the compiled test classes.
++--- org.jdom:jdom:1.0
++--- org.tmatesoft.svnkit:svnkit:1.7.4-v1
+|    +--- de.regnis.q.sequence:sequence-library:1.0.2
+|    +--- net.java.dev.jna:jna:3.4.0
+|    +--- org.tmatesoft.sqljet:sqljet:1.1.1
+|    |    \--- org.antlr:antlr-runtime:3.4
+|    \--- com.trilead:trilead-ssh2:1.0.0-build215
++--- com.ryangrier.ant:version_tool:1.1.4_fixed
++--- com.nurflugel:buildtasks:1.0-SNAPSHOT
++--- org.apache:commons-logging:1.0.4
++--- org.apache.commons:commons-lang3:3.1
++--- org.apache:commons-collections:3.2.1
++--- org.apache:commons-io:2.2
++--- com.intellij:forms_rt:11.0.3
++--- org.apache:log4j:1.2.15
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.objectweb.asm:asm:3.1
++--- javax.help:jhall:2.0.6
++--- com.google.inject:guice:3.0
+|    +--- javax.inject:javax.inject:1
+|    +--- aopalliance:aopalliance:1.0
+|    \--- org.sonatype.sisu.inject:cglib:2.2.1-v20090111
+|         \--- asm:asm:3.1
++--- velocity:velocity:1.4
+|    \--- velocity:velocity-dep:1.4
+\--- org.uncommons:reportng:1.1.2
+
+versionUpdate
+\--- com.ryangrier.ant:version_tool:1.1.4_fixed
+
+BUILD SUCCESSFUL
+
+Total time: 1.621 secs

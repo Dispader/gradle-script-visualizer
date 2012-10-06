@@ -4,8 +4,8 @@ apply from: 'dependencies.gradle'
 //apply from: 'http://ant-master-build-scripts.googlecode.com/svn/trunk/master-gradle/master-webstart-build.gradle'
 apply from:  'master-gradle/master-webstart-build.gradle'
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 mainClassName = "com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptMainFrame"
 versionClassName = 'com.nurflugel.util.Util'

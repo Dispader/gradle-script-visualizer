@@ -1,20 +1,20 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
-import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import java.util.*;
 import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.parseKey;
 import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.parseNestingLevel;
+import static org.apache.commons.lang3.StringUtils.substringBefore;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 13:16 To change this template use File | Settings | File Templates. */
 @SuppressWarnings("ClassReferencesSubclass")
-public abstract class ObjectWithArtifacts
+public abstract class ObjectWithArtifacts implements Comparable
 {
   protected String                name;
-  protected Map<String, Artifact> masterArtifactList;
-  private List<String>            artifactKeys = new ArrayList<String>();
-  private ObjectWithArtifacts     parent;
+  protected Map<String, Artifact> masterArtifactList = new HashMap<String, Artifact>();
+  protected String[]              lines;
+  private Set<String>             artifactKeys       = new TreeSet<String>();
+  // private ObjectWithArtifacts     parent;
 
   protected ObjectWithArtifacts()
   {
@@ -23,66 +23,106 @@ public abstract class ObjectWithArtifacts
 
   protected ObjectWithArtifacts(String name, Map<String, Artifact> masterArtifactList)
   {
+    name                    = substringBefore(name, " [");
     this.name               = name;
     this.masterArtifactList = masterArtifactList;
   }
 
   // -------------------------- OTHER METHODS --------------------------
+  private Artifact addChildArtifact(ObjectWithArtifacts parentArtifact, String line)
+  {
+    // we're going to recurse into the child
+    String   key      = parseKey(line);
+    Artifact artifact = masterArtifactList.containsKey(key) ? masterArtifactList.get(key)
+                                                            : new Artifact(key, masterArtifactList);
+
+    parentArtifact.addArtifact(artifact);
+
+    return artifact;
+  }
+
+  public void addArtifact(Artifact artifact)
+  {
+    artifactKeys.add(artifact.getKey());
+
+    // artifact.setParent(this);
+  }
+
+  public abstract String getDotDeclaration();
+
+  public void outputDependencies(List<String> output)
+  {
+    for (String artifactKey : artifactKeys)
+    {
+      Artifact artifact = getArtifact(artifactKey);
+      String   line     = getNiceDotName() + " -> " + artifact.getNiceDotName();
+
+      output.add(line);
+      artifact.outputDependencies(output);  // todo will this do duplicates?  Need to do a set to reduce dups?
+    }
+  }
+
   public Artifact getArtifact(String key)
   {
     return masterArtifactList.get(key);
   }
 
-  protected void parseArtifacts(int parentNestingLevel, ObjectWithArtifacts parentArtifact, String... parentArtifactLines)
+  public abstract String getNiceDotName();
+
+  /** Go through and parse the lines. */
+  public void parseLines()
   {
+    int nestingLevel = parseNestingLevel(lines[0]);
+
+    parseArtifacts(nestingLevel, lines);
+  }
+
+  protected List<Artifact> parseArtifacts(int parentNestingLevel, String... lines)
+  {
+    List<Artifact> foundArtifacts = new ArrayList<Artifact>();
+
     // find all lines for "this" artifact
-    for (int i = 1; i < parentArtifactLines.length; i++)
+    for (int i = 1; i < lines.length; i++)
     {
-      String line = parentArtifactLines[i];
+      String line = lines[i];
 
       if (line.equals("No dependencies"))
       {
-        return;
+        return foundArtifacts;
       }
 
       int lineNestingLevel = parseNestingLevel(line);
 
-      // we're adding a sibling to the current level
-      if (lineNestingLevel == parentNestingLevel)
-      {
-        // todo should I even ever get here?
-        // todo this doesn't work as it adds nested child to parent
-        Artifact artifact = addChildArtifact(parentArtifact, line);
-
-        addArtifact(artifact);
-      }
-
       // dependencies of the current artifact
-      else if (lineNestingLevel > parentNestingLevel)
+      if (lineNestingLevel == (parentNestingLevel + 1))
       {
-        String[] newLines = getArtifactLines(new Pointer(i), parentArtifactLines);
-        Artifact artifact = addChildArtifact(parentArtifact, line);
+        String[] newLines = getArtifactLines(new Pointer(i), lines);
+        Artifact artifact = new Artifact(parseKey(line), masterArtifactList);
 
+        foundArtifacts.add(artifact);
         addArtifact(artifact);
-        parseArtifacts(lineNestingLevel, artifact, newLines);
+        artifact.parseArtifacts(lineNestingLevel, newLines);
+        i += newLines.length - 1;
       }
       else  // lineNestingLevel < currentNestingLevel
       {
         // currentArtifact = currentArtifact.getParent();
         // addChildArtifact(this, line);
-        return;  // pop off the stack
+        return foundArtifacts;  // pop off the stack
       }
     }
+
+    return foundArtifacts;
   }
 
-  /** For now, just keep reading lines until you get an empty one. */
+  /** Start at the given nesting level - read lines until you get to line with equal to or greater than the current one. */
   public static String[] getArtifactLines(Pointer startingIndex, String... lines)
   {
     List<String> lineList = new ArrayList<String>();
     int          index    = startingIndex.getIndex();
     String       topLine  = lines[index];
 
-    lineList.add(topLine);
+    lineList.add(topLine);  // add the line which defines this object - all others, if they exist, are children.
 
     int nestingLevel = parseNestingLevel(topLine);
 
@@ -111,26 +151,8 @@ public abstract class ObjectWithArtifacts
     return lineList.toArray(new String[lineList.size()]);
   }
 
-  private Artifact addChildArtifact(ObjectWithArtifacts parentArtifact, String line)
-  {
-    // we're going to recurse into the child
-    String   key      = parseKey(line);
-    Artifact artifact = masterArtifactList.containsKey(key) ? masterArtifactList.get(key)
-                                                            : new Artifact(key, masterArtifactList);
-
-    parentArtifact.addArtifact(artifact);
-
-    return artifact;
-  }
-
-  public void addArtifact(Artifact artifact)
-  {
-    artifactKeys.add(artifact.getKey());
-    artifact.setParent(this);
-  }
-
   // --------------------- GETTER / SETTER METHODS ---------------------
-  public List<String> getArtifactKeys()
+  public Collection<String> getArtifactKeys()
   {
     return artifactKeys;
   }
@@ -159,13 +181,17 @@ public abstract class ObjectWithArtifacts
     return name;
   }
 
-  public ObjectWithArtifacts getParent()
+  // public ObjectWithArtifacts getParent()
+  // {
+  // return parent;
+  // }
+  //
+  // public void setParent(ObjectWithArtifacts parent)
+  // {
+  // this.parent = parent;
+  // }
+  public void setLines(String... lines)
   {
-    return parent;
-  }
-
-  public void setParent(ObjectWithArtifacts parent)
-  {
-    this.parent = parent;
+    this.lines = lines;
   }
 }

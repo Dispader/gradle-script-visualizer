@@ -4,14 +4,13 @@ import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 import com.nurflugel.util.dependencyvisualizer.domain.Pointer;
 import org.apache.commons.io.FileUtils;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.isConfigurationLine;
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.readConfiguration;
+import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 18:36 To change this template use File | Settings | File Templates. */
@@ -21,8 +20,16 @@ public class GradleDependencyParser
   private static Map<String, Artifact> masterArtifactMap = new HashMap<String, Artifact>();
   private List<Configuration>          configurations    = new ArrayList<Configuration>();
 
+  public static Map<String, Artifact> getMasterArtifactMap()
+  {
+    return masterArtifactMap;
+  }
+
   public static String parseKey(String line)
   {
+    line = remove(line, " (*)");  // remove the characters that tell you this line has dependencies listed elsewhere
+    line = substringBefore(line, " [").trim();
+
     return substringAfterLast(line, " ");
   }
 
@@ -41,7 +48,7 @@ public class GradleDependencyParser
   // -------------------------- OTHER METHODS --------------------------
   public void parseFile(File file) throws IOException
   {
-    List<String> strings = FileUtils.readLines(file);
+    List<String> strings = readLines(file);
     String[]     lines   = strings.toArray(new String[strings.size()]);
 
     parseText(lines);
@@ -69,7 +76,7 @@ public class GradleDependencyParser
 
       if (pastHeaders)
       {
-        readConfigurations(i, lines);
+        configurations = readConfigurations(i, lines);
 
         break;
       }
@@ -93,7 +100,7 @@ public class GradleDependencyParser
     return lines[i].trim().equals(DOTTED_LINE) && lines[i - 1].trim().equals("Root project") && lines[i - 2].trim().equals(DOTTED_LINE);
   }
 
-  private void readConfigurations(int i, String[] lines)
+  protected static List<Configuration> readConfigurations(int i, String[] lines)
   {
     // now we're past the list line of headers - we can start picking up configurations.  A configuration is just a name with or without
     // dependencies afterwards, like so:
@@ -103,14 +110,91 @@ public class GradleDependencyParser
     // or
     // compile - Classpath for compiling the main sources.
     // +--- org.jdom:jdom:1.0
-    Pointer pointer = new Pointer(i);
+    Pointer             pointer           = new Pointer(i);
+    List<Configuration> configurationList = new ArrayList<Configuration>();
 
     while (pointer.getIndex() < lines.length)
     {
       if (isConfigurationLine(pointer, lines))
       {
-        readConfiguration(pointer, lines, masterArtifactMap);
+        Configuration configuration = readConfiguration(pointer, lines, masterArtifactMap);
+
+        configurationList.add(configuration);
+      }
+      else
+      {
+        pointer.increment();
       }
     }
+
+    return configurationList;
+  }
+
+  public String[] runGradleExec(File gradleFile) throws IOException, InterruptedException
+  {
+    ProcessBuilder pb = new ProcessBuilder(gradleFile.getParent() + File.separator + "gradlew", "dependencies");
+
+    pb.directory(gradleFile.getParentFile());
+    pb.redirectErrorStream(true);
+
+    Process shell = pb.start();
+
+    // To capture output from the shell
+    InputStream shellIn = shell.getInputStream();
+
+    // Wait for the shell to finish and get the return code
+    int shellExitStatus = shell.waitFor();
+
+    System.out.println("Exit status" + shellExitStatus);
+
+    String response = convertStreamToStr(shellIn);
+
+    System.out.println("response = " + response);
+    shellIn.close();
+
+    String[] lines = response.split("\n");
+
+    return lines;
+  }
+
+  /*
+   * To convert the InputStream to String we use the Reader.read(char[]
+   * buffer) method. We iterate until the Reader return -1 which means
+   * there's no more data to read. We use the StringWriter class to
+   * produce the string.
+   */
+  public static String convertStreamToStr(InputStream is) throws IOException
+  {
+    if (is != null)
+    {
+      Writer writer = new StringWriter();
+
+      try
+      {
+        Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        int    n;
+        char[] buffer = new char[1024];
+
+        while ((n = reader.read(buffer)) != -1)
+        {
+          writer.write(buffer, 0, n);
+        }
+      }
+      finally
+      {
+        is.close();
+      }
+
+      return writer.toString();
+    }
+    else
+    {
+      return "";
+    }
+  }
+
+  public List<Configuration> getConfigurations()
+  {
+    return configurations;
   }
 }

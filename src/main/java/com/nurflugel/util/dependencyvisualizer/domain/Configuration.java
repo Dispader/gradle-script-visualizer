@@ -1,38 +1,40 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
 import java.util.Map;
+import static com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator.replaceBadChars;
 import static org.apache.commons.lang3.StringUtils.split;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 13:08 To change this template use File | Settings | File Templates. */
 public class Configuration extends ObjectWithArtifacts
 {
-  private String[] lines;
-  private String   description;
+  private String description;
 
   // is this a configuration line?
   public static boolean isConfigurationLine(Pointer pointer, String... lines)
   {
     int index = pointer.getIndex();
 
-    if (index < lines.length)
+    if (index < (lines.length - 1))
     {
       // todo nice to use Java 7 switch with strings here...
-      if (lines[index + 1].equalsIgnoreCase("No dependencies"))
+      String line = lines[index + 1];
+
+      if (line.equalsIgnoreCase("No dependencies"))
       {
         return true;
       }
 
-      if (lines[index + 1].startsWith("+---"))
+      if (line.startsWith("+---"))
       {
         return true;
       }
 
-      if (lines[index + 1].startsWith("| "))
+      if (line.startsWith("| "))
       {
         return true;
       }
 
-      if (lines[index + 1].startsWith("\\-"))
+      if (line.startsWith("\\-"))
       {
         return true;
       }
@@ -41,6 +43,7 @@ public class Configuration extends ObjectWithArtifacts
     return false;
   }
 
+  /** Read the configuration and it's artififacts from the lines. Increment the pointer as we do so. */
   public static Configuration readConfiguration(Pointer pointer, String[] lines, Map<String, Artifact> masterArtifactMap)
   {
     int           i             = pointer.getIndex();
@@ -52,8 +55,8 @@ public class Configuration extends ObjectWithArtifacts
       configuration.setDescription(tokens[1].trim());
     }
 
-    String[] configurationLines = getArtifactLines(new Pointer(i), lines);     // todo can I just pass in the pointer to this?  Do I need to create a
-                                                                               // new one?
+    String[] configurationLines = getArtifactLines(new Pointer(i), lines);  // todo can I just pass in the pointer to this?  Do I need to create a
+                                                                            // new one?
 
     configuration.setLines(configurationLines);
     configuration.parseLines();
@@ -62,20 +65,69 @@ public class Configuration extends ObjectWithArtifacts
     return configuration;
   }
 
-  public void setLines(String[] lines)
-  {
-    this.lines = lines;
-  }
-
-  /** Go through the configuration and parse the lines. */
-  public void parseLines()
-  {
-    parseArtifacts(0, this, lines);
-  }
-
   public Configuration(String name, Map<String, Artifact> masterArtifactList)
   {
     super(name, masterArtifactList);
+  }
+  // ------------------------ INTERFACE METHODS ------------------------
+
+  // --------------------- Interface Comparable ---------------------
+  @Override
+  public int compareTo(Object o)
+  {
+    return getName().compareTo(((Configuration) o).getName());
+  }
+
+  // -------------------------- OTHER METHODS --------------------------
+  @Override
+  public String getDotDeclaration()
+  {
+    return "label=\"" + getName() + "\"\n";
+  }
+
+  @Override
+  public String getNiceDotName()
+  {
+    return replaceBadChars(name);
+  }
+
+  // ------------------------ CANONICAL METHODS ------------------------
+  @Override
+  public boolean equals(Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+
+    if ((o == null) || (getClass() != o.getClass()))
+    {
+      return false;
+    }
+
+    Configuration that = (Configuration) o;
+
+    if ((getName() != null) ? (!getName().equals(that.getName()))
+                            : (that.getName() != null))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode()
+  {
+    return (getName() != null) ? getName().hashCode()
+                               : 0;
+  }
+
+  @Override
+  public String toString()
+  {
+    return "Configuration{"
+             + "name='" + getName() + '\'' + '}';
   }
 
   // --------------------- GETTER / SETTER METHODS ---------------------

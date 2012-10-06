@@ -1,9 +1,8 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.testng.annotations.Test;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.isConfigurationLine;
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.readConfiguration;
 import static com.nurflugel.util.dependencyvisualizer.domain.ObjectWithArtifacts.getArtifactLines;
@@ -75,26 +74,32 @@ public class ConfigurationTest
     String[] lines =
     {
       "compile - Classpath for compiling the main sources.",    //
-      "+--- org.jdom:jdom:1.0",                                 //
-      "+--- org.tmatesoft.svnkit:svnkit:1.7.4-v1",              //
-      "|    +--- de.regnis.q.sequence:sequence-library:1.0.2",  //
-      "|    +--- org.tmatesoft.sqljet:sqljet:1.1.1",            //
-      "|    |    \\--- org.antlr:antlr-runtime:3.4",            //
-      "|    \\--- com.trilead:trilead-ssh2:1.0.0-build215",     //
-      "+--- com.ryangrier.ant:version_tool:1.1.4_fixed"         //
+      "+--- org.jdom:jdom:1.0",                                 // x
+      "+--- org.tmatesoft.svnkit:svnkit:1.7.4-v1",              // x
+      "|    +--- de.regnis.q.sequence:sequence-library:1.0.2",  // x
+      "|    +--- org.tmatesoft.sqljet:sqljet:1.1.1",            // x
+      "|    |    \\--- org.antlr:antlr-runtime:3.4",            // x
+      "|    \\--- com.trilead:trilead-ssh2:1.0.0-build215",     // x
+      "+--- com.ryangrier.ant:version_tool:1.1.4_fixed"         // x
     };
     Map<String, Artifact> map           = new HashMap<String, Artifact>();
     Configuration         configuration = readConfiguration(new Pointer(0), lines, map);
 
     assertEquals(configuration.getName(), "compile");
 
+    Collection<String> keys = configuration.getArtifactKeys();
+
+    assertEquals(keys.size(), 3, "Should only have 3 direct dependencies - " + outputKeys(keys));
+
     Map<String, Artifact> masterArtifactList = configuration.getMasterArtifactList();
 
     assertNotNull(masterArtifactList.get("org.jdom:jdom:1.0"), "jdom should have been found");
+    assertNotNull(masterArtifactList.get("org.tmatesoft.svnkit:svnkit:1.7.4-v1"), "svnkit should have been found");
+    assertNotNull(masterArtifactList.get("com.ryangrier.ant:version_tool:1.1.4_fixed"), "version_tool should have been found");
 
-    Artifact     artifact     = masterArtifactList.get("org.tmatesoft.svnkit:svnkit:1.7.4-v1");
-    List<String> artifactKeys = artifact.getArtifactKeys();
-    String       regnis       = "de.regnis.q.sequence:sequence-library:1.0.2";
+    Artifact           artifact     = masterArtifactList.get("org.tmatesoft.svnkit:svnkit:1.7.4-v1");
+    Collection<String> artifactKeys = artifact.getArtifactKeys();
+    String             regnis       = "de.regnis.q.sequence:sequence-library:1.0.2";
 
     assertTrue(artifactKeys.contains(regnis), "regnis should have been found");
     assertTrue(artifactKeys.contains("com.trilead:trilead-ssh2:1.0.0-build215"), "trilead should have been found");
@@ -105,6 +110,18 @@ public class ConfigurationTest
     artifact     = masterArtifactList.get(sqljet);
     artifactKeys = artifact.getArtifactKeys();
     assertTrue(artifactKeys.contains("org.antlr:antlr-runtime:3.4"), "antlr should have been found");
+  }
+
+  private String outputKeys(Collection<String> keys)
+  {
+    StringBuilder builder = new StringBuilder("\n");
+
+    for (String key : keys)
+    {
+      builder.append('\t').append(key).append('\n');
+    }
+
+    return builder.toString();
   }
 
   // archives - Configuration for archive artifacts.
