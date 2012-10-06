@@ -132,7 +132,12 @@ public class GradleDependencyParser
 
   public String[] runGradleExec(File gradleFile) throws IOException, InterruptedException
   {
-    ProcessBuilder pb = new ProcessBuilder(gradleFile.getParent() + File.separator + "gradlew", "dependencies");
+    String command  = gradleFile.getParent() + File.separator + "gradlew";
+    String argument = "dependencies";
+
+    System.out.println("GradleDependencyParser.runGradleExec - calling Processbuilder command " + command + " " + argument);
+
+    ProcessBuilder pb = new ProcessBuilder(command, argument);
 
     pb.directory(gradleFile.getParentFile());
     pb.redirectErrorStream(true);
