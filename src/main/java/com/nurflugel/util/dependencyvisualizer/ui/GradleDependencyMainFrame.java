@@ -1,9 +1,9 @@
 package com.nurflugel.util.dependencyvisualizer.ui;
 
-import com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator;
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
@@ -15,12 +15,14 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
+
 import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createOutputForFile;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 6/3/12 Time: 14:32 To change this template use File | Settings | File Templates. */
+@SuppressWarnings("MethodOnlyUsedFromInnerClass")
 public class GradleDependencyMainFrame
 {
   public static final String           TITLE_TEXT                      = "Gradle Dependency Visualizer v";
@@ -38,6 +40,13 @@ public class GradleDependencyMainFrame
   private JTextField                   portNumberField;
   private JTextField                   userNameField;
   private JPasswordField               passwordField;
+  private JTabbedPane tabbedPane1;
+  private JPanel mainUiPanel;
+  private JPanel resultsUiPanel;
+  private JButton graphButton;
+  private JButton quitButton1;
+  private JRadioButton radioButton1;
+  private JRadioButton radioButton2;
   private JFrame                       frame;
   private GradleScriptPreferences      preferences;
   private Os                           os;
@@ -207,7 +216,7 @@ public class GradleDependencyMainFrame
       chooser.setCurrentDirectory(new File(lastDir));
     }
 
-    chooser.setFileFilter(new FileNameExtensionFilter("Gradle scripts", "gradle", "groovy"));
+    chooser.setFileFilter(new FileNameExtensionFilter("Gradle scripts", "gradle"));
     chooser.setMultiSelectionEnabled(false);
 
     int returnVal = chooser.showOpenDialog(frame);

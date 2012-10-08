@@ -55,7 +55,9 @@ public class DependencyDotFileGenerator
     {
       // if (configuration.getName().equals("javac2"))  // todo figure out how to figure based on user input
       // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
-      if (configuration.getName().equals("compile"))  // todo figure out how to figure based on user input
+      // if (configuration.getName().equals("compile"))  // todo figure out how to figure based on user input
+      // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
+      if (configuration.getName().equals("plugins"))  // todo figure out how to figure based on user input
       {
         output.add(configuration.getDotDeclaration());
         selectedConfigurations.add(configuration);

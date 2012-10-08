@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.isConfigurationLine;
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.readConfiguration;
+import static java.io.File.separator;
 import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.lang3.StringUtils.*;
 
@@ -100,7 +101,7 @@ public class GradleDependencyParser
     return lines[i].trim().equals(DOTTED_LINE) && lines[i - 1].trim().equals("Root project") && lines[i - 2].trim().equals(DOTTED_LINE);
   }
 
-  protected static List<Configuration> readConfigurations(int i, String[] lines)
+  protected static List<Configuration> readConfigurations(int i, String... lines)
   {
     // now we're past the list line of headers - we can start picking up configurations.  A configuration is just a name with or without
     // dependencies afterwards, like so:
@@ -130,9 +131,10 @@ public class GradleDependencyParser
     return configurationList;
   }
 
+  @SuppressWarnings("UseOfProcessBuilder")
   public String[] runGradleExec(File gradleFile) throws IOException, InterruptedException
   {
-    String command  = gradleFile.getParent() + File.separator + "gradlew";
+    String command  = gradleFile.getParent() + separator + "gradlew";
     String argument = "dependencies";
 
     System.out.println("GradleDependencyParser.runGradleExec - calling Processbuilder command " + command + " " + argument);
