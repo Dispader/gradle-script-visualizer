@@ -7,12 +7,10 @@ import com.nurflugel.util.dependencyvisualizer.domain.ObjectWithArtifacts;
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
-import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import static com.nurflugel.util.Util.*;
-import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.getMasterArtifactMap;
 import static org.apache.commons.io.FileUtils.writeLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.apache.commons.io.FilenameUtils.getFullPath;
@@ -27,13 +25,11 @@ public class DependencyDotFileGenerator
   /**
    * For the list of tasks, create the lines for output based on the given preferences.
    *
-   * @param   masterArtifactMap
    * @param   scriptPreferences  preferences read in from disk or modified by user
    *
    * @return  list of text lines to be written to disk
    */
-  public List<String> createOutput(List<Configuration> configurations, Map<String, Artifact> masterArtifactMap,
-                                   GradleScriptPreferences scriptPreferences)
+  public List<String> createOutput(List<Configuration> configurations, GradleScriptPreferences scriptPreferences)
   {
     preferences = scriptPreferences;
 
@@ -62,6 +58,7 @@ public class DependencyDotFileGenerator
       // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
       // if (configuration.getName().equals("plugins"))  // todo figure out how to figure based on user input
       {
+        // todo either add the dot declaration here, or the title, but not both.
         output.add(configuration.getDotDeclaration());
         selectedConfigurations.add(configuration);
       }
@@ -155,7 +152,10 @@ public class DependencyDotFileGenerator
         builder.append(task.getDotDeclaration()).append("; ");
       }
 
-      output.add("subgraph cluster_" + replaceBadChars(scriptName) + " { label=\"" + scriptName + "\"; " + builder + '}');
+      output.add("subgraph cluster_" + replaceBadChars(scriptName) + " { "  //
+                   + "label=\"" + scriptName + "\"; "              // todo this line is optional - if they show the configuration, don't have
+                                                                   // it, if they don't, then show it
+                   + "" + builder + '}');                          //
     }
   }
 
@@ -229,7 +229,7 @@ public class DependencyDotFileGenerator
 
     // todo filter output by configuration
     DependencyDotFileGenerator dotFileGenerator = new DependencyDotFileGenerator();
-    List<String>               output           = dotFileGenerator.createOutput(configurations, getMasterArtifactMap(), preferences);
+    List<String>               output           = dotFileGenerator.createOutput(configurations, preferences);
     File                       file             = dotFileGenerator.writeOutput(output, outputFileName);
 
     return file;
