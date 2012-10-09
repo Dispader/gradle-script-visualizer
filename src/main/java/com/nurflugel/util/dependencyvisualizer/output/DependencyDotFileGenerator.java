@@ -55,9 +55,12 @@ public class DependencyDotFileGenerator
     {
       // if (configuration.getName().equals("javac2"))  // todo figure out how to figure based on user input
       // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
-      // if (configuration.getName().equals("compile"))  // todo figure out how to figure based on user input
+      if (configuration.getName().equals("compile"))  // todo figure out how to figure based on user input if
+                                                      // (configuration.getName().equals("bddTestCompile"))  // todo figure out how to figure based on
+                                                      // user input
+
       // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
-      if (configuration.getName().equals("plugins"))  // todo figure out how to figure based on user input
+      // if (configuration.getName().equals("plugins"))  // todo figure out how to figure based on user input
       {
         output.add(configuration.getDotDeclaration());
         selectedConfigurations.add(configuration);
@@ -99,7 +102,14 @@ public class DependencyDotFileGenerator
 
       for (Artifact artifact : artifactList)
       {
-        usedArtifacts.add(artifact);
+        if (artifact == null)
+        {
+          System.out.println("Got a null artifact due to dependency conflict!");
+        }
+        else
+        {
+          usedArtifacts.add(artifact);
+        }
       }
 
       buildMapOfUsedArtifactsInArtifact(artifactList, usedArtifacts);
@@ -110,14 +120,24 @@ public class DependencyDotFileGenerator
   {
     for (ObjectWithArtifacts artifactToExamine : artifacts)
     {
-      List<Artifact> artifactList = artifactToExamine.getArtifacts();
-
-      for (Artifact artifact : artifactList)
+      if (artifactToExamine != null)  // todo shouldn't be null, fix this later
       {
-        usedArtifacts.add(artifact);
-      }
+        List<Artifact> artifactList = artifactToExamine.getArtifacts();
 
-      buildMapOfUsedArtifactsInArtifact(artifactList, usedArtifacts);
+        for (Artifact artifact : artifactList)
+        {
+          if (artifact == null)
+          {
+            System.out.println("DependencyDotFileGenerator.buildMapOfUsedArtifactsInArtifact - got a null artifact");
+          }
+          else
+          {
+            usedArtifacts.add(artifact);
+          }
+        }
+
+        buildMapOfUsedArtifactsInArtifact(artifactList, usedArtifacts);
+      }
     }
   }
 
@@ -190,16 +210,7 @@ public class DependencyDotFileGenerator
     {
       String[] lines = parser.runGradleExec(selectedFile);
 
-      parser.parseText(lines);
-
-      List<Configuration> configurations = parser.getConfigurations();
-
-      // todo filter output by configuration
-      DependencyDotFileGenerator dotFileGenerator = new DependencyDotFileGenerator();
-      List<String>               output           = dotFileGenerator.createOutput(configurations, getMasterArtifactMap(), preferences);
-      File                       file             = dotFileGenerator.writeOutput(output, outputFileName);
-
-      return file;
+      return createDotFileFromLines(parser, preferences, outputFileName, lines);
     }
     catch (InterruptedException e)
     {
@@ -207,5 +218,20 @@ public class DependencyDotFileGenerator
     }
 
     return null;
+  }
+
+  static File createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines)
+                              throws IOException
+  {
+    parser.parseText(lines);
+
+    List<Configuration> configurations = parser.getConfigurations();
+
+    // todo filter output by configuration
+    DependencyDotFileGenerator dotFileGenerator = new DependencyDotFileGenerator();
+    List<String>               output           = dotFileGenerator.createOutput(configurations, getMasterArtifactMap(), preferences);
+    File                       file             = dotFileGenerator.writeOutput(output, outputFileName);
+
+    return file;
   }
 }

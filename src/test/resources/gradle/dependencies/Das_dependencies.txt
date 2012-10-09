@@ -1,0 +1,1829 @@
+Note: in order to honour the org.gradle.jvmargs and/or org.gradle.java.home values specified for this build, it is necessary to fork a new JVM.
+To avoid the slowdown associated with this extra process, you might want to consider running Gradle with the daemon enabled.
+Please see the user guide chapter on the daemon at http://gradle.org/docs/current/userguide/gradle_daemon.html.
+
+========================================================================================================
+Welcome to Gradle version 1.2
+
+Gradle user directory is set to: /Users/Shared/Development/NikeBuild/gradleHome
+Base directory:                  /Users/Shared/Development/NikeBuild/nikeDev/das/trunk
+Running build script             build.gradle
+========================================================================================================
+
+:dependencies
+
+------------------------------------------------------------
+Root project - DAS webapp
+------------------------------------------------------------
+
+archives - Configuration for archive artifacts.
+No dependencies
+
+bddTestCompile - Classpath for compiling the bddTest sources.
++--- junit:junit:4.10
+|    \--- org.hamcrest:hamcrest-core:1.1 -> 1.2.1
++--- info.cukes:cucumber-java:1.0.2
+|    \--- info.cukes:cucumber-core:1.0.2
+|         +--- info.cukes:gherkin:2.9.3
+|         \--- info.cukes:cucumber-html:0.2.1
++--- info.cukes:cucumber-junit:1.0.2
+|    \--- info.cukes:cucumber-core:1.0.2 (*)
++--- org.seleniumhq.selenium:selenium-java:2.20.0
+|    +--- org.seleniumhq.selenium:selenium-android-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0
+|    |         +--- cglib:cglib-nodep:2.1_3
+|    |         +--- org.json:json:20080701
+|    |         +--- org.seleniumhq.selenium:selenium-api:2.20.0
+|    |         |    \--- com.google.guava:guava:11.0.1
+|    |         |         \--- com.google.code.findbugs:jsr305:1.3.9
+|    |         +--- org.apache.httpcomponents:httpclient:4.1.2 -> 4.2
+|    |         |    +--- org.apache.httpcomponents:httpcore:4.2
+|    |         |    +--- commons-logging:commons-logging:1.1.1
+|    |         |    \--- commons-codec:commons-codec:1.6
+|    |         +--- com.google.guava:guava:11.0.1 (*)
+|    |         +--- org.apache.commons:commons-exec:1.1
+|    |         +--- net.java.dev.jna:jna:3.4.0
+|    |         \--- net.java.dev.jna:platform:3.4.0
+|    +--- org.seleniumhq.selenium:selenium-chrome-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    +--- org.seleniumhq.selenium:selenium-htmlunit-driver:2.20.0
+|    |    +--- org.seleniumhq.selenium:selenium-api:2.20.0 (*)
+|    |    +--- net.sourceforge.htmlunit:htmlunit:2.9
+|    |    |    +--- xalan:xalan:2.7.1
+|    |    |    |    \--- xalan:serializer:2.7.1
+|    |    |    |         \--- xml-apis:xml-apis:1.3.04
+|    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    +--- commons-lang:commons-lang:2.6
+|    |    |    +--- org.apache.httpcomponents:httpmime:4.1.2
+|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2 -> 4.2 (*)
+|    |    |    |    \--- commons-logging:commons-logging:1.1.1 (*)
+|    |    |    +--- commons-codec:commons-codec:1.4 -> 1.6 (*)
+|    |    |    +--- net.sourceforge.htmlunit:htmlunit-core-js:2.9
+|    |    |    +--- xerces:xercesImpl:2.9.1
+|    |    |    |    \--- xml-apis:xml-apis:1.3.04 (*)
+|    |    |    +--- net.sourceforge.nekohtml:nekohtml:1.9.15
+|    |    |    +--- net.sourceforge.cssparser:cssparser:0.9.5
+|    |    |    |    \--- org.w3c.css:sac:1.3
+|    |    |    +--- commons-io:commons-io:2.0.1 -> 2.3
+|    |    |    \--- commons-logging:commons-logging:1.1.1 (*)
+|    |    \--- org.apache.httpcomponents:httpclient:4.1.2 -> 4.2 (*)
+|    +--- org.seleniumhq.selenium:selenium-firefox-driver:2.20.0
+|    |    +--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    |    +--- commons-io:commons-io:2.0.1 -> 2.3 (*)
+|    |    \--- org.apache.commons:commons-exec:1.1 (*)
+|    +--- org.seleniumhq.selenium:selenium-ie-driver:2.20.0
+|    |    +--- net.java.dev.jna:jna:3.4.0 (*)
+|    |    +--- net.java.dev.jna:platform:3.4.0 (*)
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    +--- org.seleniumhq.selenium:selenium-iphone-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    \--- org.seleniumhq.selenium:selenium-support:2.20.0
+|         \--- org.seleniumhq.selenium:selenium-api:2.20.0 (*)
++--- org.apache.cxf:cxf-rt-frontend-jaxws:2.6.0
+|    +--- xml-resolver:xml-resolver:1.2
+|    +--- asm:asm:3.3.1
+|    +--- org.apache.cxf:cxf-api:2.6.0
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2
+|    |    +--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1
+|    |    \--- wsdl4j:wsdl4j:1.6.2
+|    +--- org.apache.cxf:cxf-rt-core:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- com.sun.xml.bind:jaxb-impl:2.1.13
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2 (*)
+|    |    \--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-databinding-jaxb:2.6.0
+|    |         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |         +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |         \--- com.sun.xml.bind:jaxb-impl:2.1.13 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-xml:2.6.0
+|    |    \--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    +--- org.apache.cxf:cxf-rt-frontend-simple:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-ws-addr:2.6.0
+|         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|         +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|         \--- org.apache.cxf:cxf-rt-ws-policy:2.6.0
+|              +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|              +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|              \--- org.apache.neethi:neethi:3.0.2
++--- org.springframework.security:spring-security-ldap:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- org.springframework:spring-core:3.2.0.M1
+|    |    |    +--- commons-logging:commons-logging:1.1.1 (*)
+|    |    |    \--- org.springframework:spring-asm:3.2.0.M1
+|    |    \--- org.springframework:spring-beans:3.2.0.M1
+|    |         \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-aop:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-expression:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework.security:spring-security-crypto:3.1.0.RELEASE
+|    |         \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE
+|         \--- commons-lang:commons-lang:2.5 -> 2.6 (*)
++--- org.springframework.security:spring-security-web:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.1.RELEASE
+|    |    \--- aopalliance:aopalliance:1.0 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework:spring-webmvc:3.1.0.RELEASE -> 3.1.1.RELEASE
+|    +--- org.springframework:spring-asm:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context-support:3.1.1.RELEASE
+|    |    \--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-web:3.1.1.RELEASE (*)
++--- org.springframework:spring-jdbc:3.1.0.RELEASE (*)
++--- org.codehaus.jackson:jackson-mapper-asl:1.9.3
+|    \--- org.codehaus.jackson:jackson-core-asl:1.9.3
++--- org.slf4j:slf4j-api:1.6.4
++--- com.nike:atlas.serviceshared:1.6_CXF_2.4.1_SPRING_3.0.5
++--- com.nike:cartorderservice:1.2
++--- com.nike:atlas.shared:0.9
++--- com.nike:productservice:5.1
++--- com.nike:referenceservice:5.0
++--- com.nike:nikenet-global:1.1.2
++--- org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1
++--- com.oracle:ojdbc6:11.2.0.2.0
++--- commons-lang:commons-lang:2.6 (*)
++--- commons-collections:commons-collections:3.2.1 (*)
++--- commons-io:commons-io:2.3 (*)
++--- org.apache.commons:commons-compress:1.2 -> 1.3
++--- de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.23
+|    \--- de.flapdoodle.embed:de.flapdoodle.embed.process:1.21
+|         +--- commons-io:commons-io:2.2 -> 2.3 (*)
+|         +--- org.apache.commons:commons-compress:1.3 (*)
+|         \--- com.google.guava:guava:11.0.1 (*)
++--- org.mongodb:mongo-java-driver:2.9.0
++--- org.springframework.data:spring-data-mongodb:1.0.2.RELEASE
+|    +--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework.data:spring-data-commons-core:1.2.1.RELEASE
+|    |    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.mongodb:mongo-java-driver:2.7.1 -> 2.9.0 (*)
+|    \--- org.slf4j:slf4j-api:1.5.10 -> 1.6.4 (*)
++--- org.apache.httpcomponents:httpclient:4.2 (*)
++--- org.apache.httpcomponents:httpcore:4.2 (*)
++--- com.thoughtworks.xstream:xstream:1.4.2
+|    +--- xmlpull:xmlpull:1.1.3.1
+|    \--- xpp3:xpp3_min:1.1.4c
++--- org.springframework:spring-aop:3.2.0.M1 (*)
++--- org.springframework:spring-asm:3.2.0.M1 (*)
++--- org.springframework:spring-beans:3.2.0.M1 (*)
++--- org.springframework:spring-context:3.2.0.M1 (*)
++--- org.springframework:spring-core:3.2.0.M1 (*)
++--- org.springframework:spring-expression:3.2.0.M1 (*)
++--- org.springframework:spring-tx:3.2.0.M1 (*)
++--- org.apache.cxf:cxf-rt-transports-http:2.6.0
+|    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
++--- javax.servlet:servlet-api:2.5
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1 -> 4.10 (*)
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.springframework:spring-test:3.1.0.RELEASE -> 3.1.1.RELEASE
++--- org.springframework:spring-test-mvc:1.0.0.M1
+|    +--- org.springframework:spring-context:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-webmvc:3.1.1.RELEASE (*)
+|    +--- org.springframework:spring-test:3.1.1.RELEASE (*)
+|    \--- org.hamcrest:hamcrest-library:1.2.1
+|         \--- org.hamcrest:hamcrest-core:1.2.1 (*)
++--- cglib:cglib:2.2.2
+|    \--- asm:asm:3.3.1 (*)
++--- org.mockito:mockito-all:1.9.0
++--- org.hamcrest:hamcrest-library:1.2.1 (*)
+\--- net.sourceforge.cobertura:cobertura:1.9.4.1
+     +--- oro:oro:2.0.8
+     +--- asm:asm:3.0 -> 3.3.1 (*)
+     +--- asm:asm-tree:3.0
+     |    \--- asm:asm:3.0 -> 3.3.1 (*)
+     +--- log4j:log4j:1.2.9
+     \--- org.apache.ant:ant:1.7.0
+          \--- org.apache.ant:ant-launcher:1.7.0
+
+bddTestRuntime - Classpath for running the compiled bddTest classes.
++--- junit:junit:4.10
+|    \--- org.hamcrest:hamcrest-core:1.1 -> 1.2.1
++--- info.cukes:cucumber-java:1.0.2
+|    \--- info.cukes:cucumber-core:1.0.2
+|         +--- info.cukes:gherkin:2.9.3
+|         \--- info.cukes:cucumber-html:0.2.1
++--- info.cukes:cucumber-junit:1.0.2
+|    \--- info.cukes:cucumber-core:1.0.2 (*)
++--- org.seleniumhq.selenium:selenium-java:2.20.0
+|    +--- org.seleniumhq.selenium:selenium-android-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0
+|    |         +--- cglib:cglib-nodep:2.1_3
+|    |         +--- org.json:json:20080701
+|    |         +--- org.seleniumhq.selenium:selenium-api:2.20.0
+|    |         |    \--- com.google.guava:guava:11.0.1
+|    |         |         \--- com.google.code.findbugs:jsr305:1.3.9
+|    |         +--- org.apache.httpcomponents:httpclient:4.1.2 -> 4.2
+|    |         |    +--- org.apache.httpcomponents:httpcore:4.2
+|    |         |    +--- commons-logging:commons-logging:1.1.1
+|    |         |    \--- commons-codec:commons-codec:1.6
+|    |         +--- com.google.guava:guava:11.0.1 (*)
+|    |         +--- org.apache.commons:commons-exec:1.1
+|    |         +--- net.java.dev.jna:jna:3.4.0
+|    |         \--- net.java.dev.jna:platform:3.4.0
+|    +--- org.seleniumhq.selenium:selenium-chrome-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    +--- org.seleniumhq.selenium:selenium-htmlunit-driver:2.20.0
+|    |    +--- org.seleniumhq.selenium:selenium-api:2.20.0 (*)
+|    |    +--- net.sourceforge.htmlunit:htmlunit:2.9
+|    |    |    +--- xalan:xalan:2.7.1
+|    |    |    |    \--- xalan:serializer:2.7.1
+|    |    |    |         \--- xml-apis:xml-apis:1.3.04
+|    |    |    +--- commons-collections:commons-collections:3.2.1
+|    |    |    +--- commons-lang:commons-lang:2.6
+|    |    |    +--- org.apache.httpcomponents:httpmime:4.1.2
+|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2 -> 4.2 (*)
+|    |    |    |    \--- commons-logging:commons-logging:1.1.1 (*)
+|    |    |    +--- commons-codec:commons-codec:1.4 -> 1.6 (*)
+|    |    |    +--- net.sourceforge.htmlunit:htmlunit-core-js:2.9
+|    |    |    +--- xerces:xercesImpl:2.9.1
+|    |    |    |    \--- xml-apis:xml-apis:1.3.04 (*)
+|    |    |    +--- net.sourceforge.nekohtml:nekohtml:1.9.15
+|    |    |    +--- net.sourceforge.cssparser:cssparser:0.9.5
+|    |    |    |    \--- org.w3c.css:sac:1.3
+|    |    |    +--- commons-io:commons-io:2.0.1 -> 2.3
+|    |    |    \--- commons-logging:commons-logging:1.1.1 (*)
+|    |    \--- org.apache.httpcomponents:httpclient:4.1.2 -> 4.2 (*)
+|    +--- org.seleniumhq.selenium:selenium-firefox-driver:2.20.0
+|    |    +--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    |    +--- commons-io:commons-io:2.0.1 -> 2.3 (*)
+|    |    \--- org.apache.commons:commons-exec:1.1 (*)
+|    +--- org.seleniumhq.selenium:selenium-ie-driver:2.20.0
+|    |    +--- net.java.dev.jna:jna:3.4.0 (*)
+|    |    +--- net.java.dev.jna:platform:3.4.0 (*)
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    +--- org.seleniumhq.selenium:selenium-iphone-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    \--- org.seleniumhq.selenium:selenium-support:2.20.0
+|         \--- org.seleniumhq.selenium:selenium-api:2.20.0 (*)
++--- org.apache.cxf:cxf-rt-frontend-jaxws:2.6.0
+|    +--- xml-resolver:xml-resolver:1.2
+|    +--- asm:asm:3.3.1
+|    +--- org.apache.cxf:cxf-api:2.6.0
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2
+|    |    +--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1
+|    |    \--- wsdl4j:wsdl4j:1.6.2
+|    +--- org.apache.cxf:cxf-rt-core:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- com.sun.xml.bind:jaxb-impl:2.1.13
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2 (*)
+|    |    \--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-databinding-jaxb:2.6.0
+|    |         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |         +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |         \--- com.sun.xml.bind:jaxb-impl:2.1.13 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-xml:2.6.0
+|    |    \--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    +--- org.apache.cxf:cxf-rt-frontend-simple:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-ws-addr:2.6.0
+|         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|         +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|         \--- org.apache.cxf:cxf-rt-ws-policy:2.6.0
+|              +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|              +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|              \--- org.apache.neethi:neethi:3.0.2
++--- org.springframework.security:spring-security-ldap:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- org.springframework:spring-core:3.2.0.M1
+|    |    |    +--- commons-logging:commons-logging:1.1.1 (*)
+|    |    |    \--- org.springframework:spring-asm:3.2.0.M1
+|    |    \--- org.springframework:spring-beans:3.2.0.M1
+|    |         \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-aop:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-expression:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework.security:spring-security-crypto:3.1.0.RELEASE
+|    |         \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE
+|         \--- commons-lang:commons-lang:2.5 -> 2.6 (*)
++--- org.springframework.security:spring-security-web:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.1.RELEASE
+|    |    \--- aopalliance:aopalliance:1.0 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework:spring-webmvc:3.1.0.RELEASE -> 3.1.1.RELEASE
+|    +--- org.springframework:spring-asm:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context-support:3.1.1.RELEASE
+|    |    \--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-web:3.1.1.RELEASE (*)
++--- org.springframework:spring-jdbc:3.1.0.RELEASE (*)
++--- org.codehaus.jackson:jackson-mapper-asl:1.9.3
+|    \--- org.codehaus.jackson:jackson-core-asl:1.9.3
++--- org.slf4j:slf4j-api:1.6.4
++--- com.nike:atlas.serviceshared:1.6_CXF_2.4.1_SPRING_3.0.5
++--- com.nike:cartorderservice:1.2
++--- com.nike:atlas.shared:0.9
++--- com.nike:productservice:5.1
++--- com.nike:referenceservice:5.0
++--- com.nike:nikenet-global:1.1.2
++--- org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1
++--- com.oracle:ojdbc6:11.2.0.2.0
++--- commons-lang:commons-lang:2.6 (*)
++--- commons-collections:commons-collections:3.2.1 (*)
++--- commons-io:commons-io:2.3 (*)
++--- org.apache.commons:commons-compress:1.2 -> 1.3
++--- de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.23
+|    \--- de.flapdoodle.embed:de.flapdoodle.embed.process:1.21
+|         +--- commons-io:commons-io:2.2 -> 2.3 (*)
+|         +--- org.apache.commons:commons-compress:1.3 (*)
+|         \--- com.google.guava:guava:11.0.1 (*)
++--- org.mongodb:mongo-java-driver:2.9.0
++--- org.springframework.data:spring-data-mongodb:1.0.2.RELEASE
+|    +--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework.data:spring-data-commons-core:1.2.1.RELEASE
+|    |    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.mongodb:mongo-java-driver:2.7.1 -> 2.9.0 (*)
+|    \--- org.slf4j:slf4j-api:1.5.10 -> 1.6.4 (*)
++--- org.apache.httpcomponents:httpclient:4.2 (*)
++--- org.apache.httpcomponents:httpcore:4.2 (*)
++--- com.thoughtworks.xstream:xstream:1.4.2
+|    +--- xmlpull:xmlpull:1.1.3.1
+|    \--- xpp3:xpp3_min:1.1.4c
++--- org.springframework:spring-aop:3.2.0.M1 (*)
++--- org.springframework:spring-asm:3.2.0.M1 (*)
++--- org.springframework:spring-beans:3.2.0.M1 (*)
++--- org.springframework:spring-context:3.2.0.M1 (*)
++--- org.springframework:spring-core:3.2.0.M1 (*)
++--- org.springframework:spring-expression:3.2.0.M1 (*)
++--- org.springframework:spring-tx:3.2.0.M1 (*)
++--- org.apache.cxf:cxf-rt-transports-http:2.6.0
+|    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1 -> 4.10 (*)
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- javax.servlet:servlet-api:2.5
++--- org.springframework.security:spring-security-config:3.1.0.RELEASE
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework.security:spring-security-taglibs:3.1.0.RELEASE
+|    +--- org.springframework.security:spring-security-web:3.1.0.RELEASE (*)
+|    +--- org.springframework.security:spring-security-acl:3.1.0.RELEASE
+|    |    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.1.RELEASE (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- javax.servlet:jstl:1.2
++--- org.slf4j:jcl-over-slf4j:1.6.4
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- ch.qos.logback:logback-core:1.0.1
++--- ch.qos.logback:logback-classic:1.0.1
+|    +--- ch.qos.logback:logback-core:1.0.1 (*)
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- org.mortbay.jetty:jetty-util:6.1.11
++--- net.sourceforge.cobertura:cobertura:1.9.4.1
+|    +--- oro:oro:2.0.8
+|    +--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- asm:asm-tree:3.0
+|    |    \--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- log4j:log4j:1.2.9
+|    \--- org.apache.ant:ant:1.7.0
+|         \--- org.apache.ant:ant-launcher:1.7.0
++--- cglib:cglib:2.2.2
+|    \--- asm:asm:3.3.1 (*)
++--- org.springframework:spring-test:3.1.0.RELEASE -> 3.1.1.RELEASE
++--- org.springframework:spring-test-mvc:1.0.0.M1
+|    +--- org.springframework:spring-context:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-webmvc:3.1.1.RELEASE (*)
+|    +--- org.springframework:spring-test:3.1.1.RELEASE (*)
+|    \--- org.hamcrest:hamcrest-library:1.2.1
+|         \--- org.hamcrest:hamcrest-core:1.2.1 (*)
++--- org.mockito:mockito-all:1.9.0
+\--- org.hamcrest:hamcrest-library:1.2.1 (*)
+
+cobertura
+\--- net.sourceforge.cobertura:cobertura:1.9.4.1
+     +--- oro:oro:2.0.8
+     +--- asm:asm:3.0
+     +--- asm:asm-tree:3.0
+     |    \--- asm:asm:3.0 (*)
+     +--- log4j:log4j:1.2.9
+     \--- org.apache.ant:ant:1.7.0
+          \--- org.apache.ant:ant-launcher:1.7.0
+
+compile - Classpath for compiling the main sources.
++--- org.apache.cxf:cxf-rt-frontend-jaxws:2.6.0
+|    +--- xml-resolver:xml-resolver:1.2
+|    +--- asm:asm:3.3.1
+|    +--- org.apache.cxf:cxf-api:2.6.0
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2
+|    |    +--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1
+|    |    \--- wsdl4j:wsdl4j:1.6.2
+|    +--- org.apache.cxf:cxf-rt-core:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- com.sun.xml.bind:jaxb-impl:2.1.13
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2 (*)
+|    |    \--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-databinding-jaxb:2.6.0
+|    |         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |         +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |         \--- com.sun.xml.bind:jaxb-impl:2.1.13 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-xml:2.6.0
+|    |    \--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    +--- org.apache.cxf:cxf-rt-frontend-simple:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-ws-addr:2.6.0
+|         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|         +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|         \--- org.apache.cxf:cxf-rt-ws-policy:2.6.0
+|              +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|              +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|              \--- org.apache.neethi:neethi:3.0.2
++--- org.springframework.security:spring-security-ldap:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- org.springframework:spring-core:3.2.0.M1
+|    |    |    +--- commons-logging:commons-logging:1.1.1
+|    |    |    \--- org.springframework:spring-asm:3.2.0.M1
+|    |    \--- org.springframework:spring-beans:3.2.0.M1
+|    |         \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-aop:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-expression:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework.security:spring-security-crypto:3.1.0.RELEASE
+|    |         \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE
+|         \--- commons-lang:commons-lang:2.5 -> 2.6
++--- org.springframework.security:spring-security-web:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    \--- aopalliance:aopalliance:1.0 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    \--- org.springframework:spring-tx:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework:spring-webmvc:3.1.0.RELEASE
+|    +--- org.springframework:spring-asm:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context-support:3.1.0.RELEASE
+|    |    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-web:3.1.0.RELEASE (*)
++--- org.springframework:spring-jdbc:3.1.0.RELEASE (*)
++--- org.codehaus.jackson:jackson-mapper-asl:1.9.3
+|    \--- org.codehaus.jackson:jackson-core-asl:1.9.3
++--- org.slf4j:slf4j-api:1.6.4
++--- com.nike:atlas.serviceshared:1.6_CXF_2.4.1_SPRING_3.0.5
++--- com.nike:cartorderservice:1.2
++--- com.nike:atlas.shared:0.9
++--- com.nike:productservice:5.1
++--- com.nike:referenceservice:5.0
++--- com.nike:nikenet-global:1.1.2
++--- org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1
++--- com.oracle:ojdbc6:11.2.0.2.0
++--- commons-lang:commons-lang:2.6 (*)
++--- commons-collections:commons-collections:3.2.1
++--- commons-io:commons-io:2.3
++--- org.apache.commons:commons-compress:1.2 -> 1.3
++--- de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.23
+|    \--- de.flapdoodle.embed:de.flapdoodle.embed.process:1.21
+|         +--- commons-io:commons-io:2.2 -> 2.3 (*)
+|         +--- org.apache.commons:commons-compress:1.3 (*)
+|         \--- com.google.guava:guava:11.0.1
+|              \--- com.google.code.findbugs:jsr305:1.3.9
++--- org.mongodb:mongo-java-driver:2.9.0
++--- org.springframework.data:spring-data-mongodb:1.0.2.RELEASE
+|    +--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework.data:spring-data-commons-core:1.2.1.RELEASE
+|    |    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.mongodb:mongo-java-driver:2.7.1 -> 2.9.0 (*)
+|    \--- org.slf4j:slf4j-api:1.5.10 -> 1.6.4 (*)
++--- org.apache.httpcomponents:httpclient:4.2
+|    +--- org.apache.httpcomponents:httpcore:4.2
+|    +--- commons-logging:commons-logging:1.1.1 (*)
+|    \--- commons-codec:commons-codec:1.6
++--- org.apache.httpcomponents:httpcore:4.2 (*)
++--- com.thoughtworks.xstream:xstream:1.4.2
+|    +--- xmlpull:xmlpull:1.1.3.1
+|    \--- xpp3:xpp3_min:1.1.4c
++--- org.springframework:spring-aop:3.2.0.M1 (*)
++--- org.springframework:spring-asm:3.2.0.M1 (*)
++--- org.springframework:spring-beans:3.2.0.M1 (*)
++--- org.springframework:spring-context:3.2.0.M1 (*)
++--- org.springframework:spring-core:3.2.0.M1 (*)
++--- org.springframework:spring-expression:3.2.0.M1 (*)
++--- org.springframework:spring-tx:3.2.0.M1 (*)
++--- org.apache.cxf:cxf-rt-transports-http:2.6.0
+|    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+\--- javax.servlet:servlet-api:2.5
+
+default - Configuration for default artifacts.
++--- org.apache.cxf:cxf-rt-frontend-jaxws:2.6.0
+|    +--- xml-resolver:xml-resolver:1.2
+|    +--- asm:asm:3.3.1
+|    +--- org.apache.cxf:cxf-api:2.6.0
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2
+|    |    +--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1
+|    |    \--- wsdl4j:wsdl4j:1.6.2
+|    +--- org.apache.cxf:cxf-rt-core:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- com.sun.xml.bind:jaxb-impl:2.1.13
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2 (*)
+|    |    \--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-databinding-jaxb:2.6.0
+|    |         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |         +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |         \--- com.sun.xml.bind:jaxb-impl:2.1.13 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-xml:2.6.0
+|    |    \--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    +--- org.apache.cxf:cxf-rt-frontend-simple:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-ws-addr:2.6.0
+|         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|         +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|         \--- org.apache.cxf:cxf-rt-ws-policy:2.6.0
+|              +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|              +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|              \--- org.apache.neethi:neethi:3.0.2
++--- org.springframework.security:spring-security-ldap:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- org.springframework:spring-core:3.2.0.M1
+|    |    |    +--- commons-logging:commons-logging:1.1.1
+|    |    |    \--- org.springframework:spring-asm:3.2.0.M1
+|    |    \--- org.springframework:spring-beans:3.2.0.M1
+|    |         \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-aop:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-expression:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework.security:spring-security-crypto:3.1.0.RELEASE
+|    |         \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE
+|         \--- commons-lang:commons-lang:2.5 -> 2.6
++--- org.springframework.security:spring-security-web:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    \--- aopalliance:aopalliance:1.0 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    \--- org.springframework:spring-tx:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework:spring-webmvc:3.1.0.RELEASE
+|    +--- org.springframework:spring-asm:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context-support:3.1.0.RELEASE
+|    |    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-web:3.1.0.RELEASE (*)
++--- org.springframework:spring-jdbc:3.1.0.RELEASE (*)
++--- org.codehaus.jackson:jackson-mapper-asl:1.9.3
+|    \--- org.codehaus.jackson:jackson-core-asl:1.9.3
++--- org.slf4j:slf4j-api:1.6.4
++--- com.nike:atlas.serviceshared:1.6_CXF_2.4.1_SPRING_3.0.5
++--- com.nike:cartorderservice:1.2
++--- com.nike:atlas.shared:0.9
++--- com.nike:productservice:5.1
++--- com.nike:referenceservice:5.0
++--- com.nike:nikenet-global:1.1.2
++--- org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1
++--- com.oracle:ojdbc6:11.2.0.2.0
++--- commons-lang:commons-lang:2.6 (*)
++--- commons-collections:commons-collections:3.2.1
++--- commons-io:commons-io:2.3
++--- org.apache.commons:commons-compress:1.2 -> 1.3
++--- de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.23
+|    \--- de.flapdoodle.embed:de.flapdoodle.embed.process:1.21
+|         +--- commons-io:commons-io:2.2 -> 2.3 (*)
+|         +--- org.apache.commons:commons-compress:1.3 (*)
+|         \--- com.google.guava:guava:11.0.1
+|              \--- com.google.code.findbugs:jsr305:1.3.9
++--- org.mongodb:mongo-java-driver:2.9.0
++--- org.springframework.data:spring-data-mongodb:1.0.2.RELEASE
+|    +--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework.data:spring-data-commons-core:1.2.1.RELEASE
+|    |    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.mongodb:mongo-java-driver:2.7.1 -> 2.9.0 (*)
+|    \--- org.slf4j:slf4j-api:1.5.10 -> 1.6.4 (*)
++--- org.apache.httpcomponents:httpclient:4.2
+|    +--- org.apache.httpcomponents:httpcore:4.2
+|    +--- commons-logging:commons-logging:1.1.1 (*)
+|    \--- commons-codec:commons-codec:1.6
++--- org.apache.httpcomponents:httpcore:4.2 (*)
++--- com.thoughtworks.xstream:xstream:1.4.2
+|    +--- xmlpull:xmlpull:1.1.3.1
+|    \--- xpp3:xpp3_min:1.1.4c
++--- org.springframework:spring-aop:3.2.0.M1 (*)
++--- org.springframework:spring-asm:3.2.0.M1 (*)
++--- org.springframework:spring-beans:3.2.0.M1 (*)
++--- org.springframework:spring-context:3.2.0.M1 (*)
++--- org.springframework:spring-core:3.2.0.M1 (*)
++--- org.springframework:spring-expression:3.2.0.M1 (*)
++--- org.springframework:spring-tx:3.2.0.M1 (*)
++--- org.apache.cxf:cxf-rt-transports-http:2.6.0
+|    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
++--- javax.servlet:servlet-api:2.5
++--- org.springframework.security:spring-security-config:3.1.0.RELEASE
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework.security:spring-security-taglibs:3.1.0.RELEASE
+|    +--- org.springframework.security:spring-security-web:3.1.0.RELEASE (*)
+|    +--- org.springframework.security:spring-security-acl:3.1.0.RELEASE
+|    |    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- javax.servlet:jstl:1.2
++--- org.slf4j:jcl-over-slf4j:1.6.4
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- ch.qos.logback:logback-core:1.0.1
++--- ch.qos.logback:logback-classic:1.0.1
+|    +--- ch.qos.logback:logback-core:1.0.1 (*)
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- org.mortbay.jetty:jetty-util:6.1.11
++--- net.sourceforge.cobertura:cobertura:1.9.4.1
+|    +--- oro:oro:2.0.8
+|    +--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- asm:asm-tree:3.0
+|    |    \--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- log4j:log4j:1.2.9
+|    \--- org.apache.ant:ant:1.7.0
+|         \--- org.apache.ant:ant-launcher:1.7.0
+\--- cglib:cglib:2.2.2
+     \--- asm:asm:3.3.1 (*)
+
+integrationTestCompile - Classpath for compiling the integrationTest sources.
++--- org.apache.cxf:cxf-rt-frontend-jaxws:2.6.0
+|    +--- xml-resolver:xml-resolver:1.2
+|    +--- asm:asm:3.3.1
+|    +--- org.apache.cxf:cxf-api:2.6.0
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2
+|    |    +--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1
+|    |    \--- wsdl4j:wsdl4j:1.6.2
+|    +--- org.apache.cxf:cxf-rt-core:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- com.sun.xml.bind:jaxb-impl:2.1.13
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2 (*)
+|    |    \--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-databinding-jaxb:2.6.0
+|    |         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |         +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |         \--- com.sun.xml.bind:jaxb-impl:2.1.13 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-xml:2.6.0
+|    |    \--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    +--- org.apache.cxf:cxf-rt-frontend-simple:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-ws-addr:2.6.0
+|         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|         +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|         \--- org.apache.cxf:cxf-rt-ws-policy:2.6.0
+|              +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|              +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|              \--- org.apache.neethi:neethi:3.0.2
++--- org.springframework.security:spring-security-ldap:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- org.springframework:spring-core:3.2.0.M1
+|    |    |    +--- commons-logging:commons-logging:1.1.1
+|    |    |    \--- org.springframework:spring-asm:3.2.0.M1
+|    |    \--- org.springframework:spring-beans:3.2.0.M1
+|    |         \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-aop:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-expression:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework.security:spring-security-crypto:3.1.0.RELEASE
+|    |         \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE
+|         \--- commons-lang:commons-lang:2.5 -> 2.6
++--- org.springframework.security:spring-security-web:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.1.RELEASE
+|    |    \--- aopalliance:aopalliance:1.0 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework:spring-webmvc:3.1.0.RELEASE -> 3.1.1.RELEASE
+|    +--- org.springframework:spring-asm:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context-support:3.1.1.RELEASE
+|    |    \--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-web:3.1.1.RELEASE (*)
++--- org.springframework:spring-jdbc:3.1.0.RELEASE (*)
++--- org.codehaus.jackson:jackson-mapper-asl:1.9.3
+|    \--- org.codehaus.jackson:jackson-core-asl:1.9.3
++--- org.slf4j:slf4j-api:1.6.4
++--- com.nike:atlas.serviceshared:1.6_CXF_2.4.1_SPRING_3.0.5
++--- com.nike:cartorderservice:1.2
++--- com.nike:atlas.shared:0.9
++--- com.nike:productservice:5.1
++--- com.nike:referenceservice:5.0
++--- com.nike:nikenet-global:1.1.2
++--- org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1
++--- com.oracle:ojdbc6:11.2.0.2.0
++--- commons-lang:commons-lang:2.6 (*)
++--- commons-collections:commons-collections:3.2.1
++--- commons-io:commons-io:2.3
++--- org.apache.commons:commons-compress:1.2 -> 1.3
++--- de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.23
+|    \--- de.flapdoodle.embed:de.flapdoodle.embed.process:1.21
+|         +--- commons-io:commons-io:2.2 -> 2.3 (*)
+|         +--- org.apache.commons:commons-compress:1.3 (*)
+|         \--- com.google.guava:guava:11.0.1
+|              \--- com.google.code.findbugs:jsr305:1.3.9
++--- org.mongodb:mongo-java-driver:2.9.0
++--- org.springframework.data:spring-data-mongodb:1.0.2.RELEASE
+|    +--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework.data:spring-data-commons-core:1.2.1.RELEASE
+|    |    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.mongodb:mongo-java-driver:2.7.1 -> 2.9.0 (*)
+|    \--- org.slf4j:slf4j-api:1.5.10 -> 1.6.4 (*)
++--- org.apache.httpcomponents:httpclient:4.2
+|    +--- org.apache.httpcomponents:httpcore:4.2
+|    +--- commons-logging:commons-logging:1.1.1 (*)
+|    \--- commons-codec:commons-codec:1.6
++--- org.apache.httpcomponents:httpcore:4.2 (*)
++--- com.thoughtworks.xstream:xstream:1.4.2
+|    +--- xmlpull:xmlpull:1.1.3.1
+|    \--- xpp3:xpp3_min:1.1.4c
++--- org.springframework:spring-aop:3.2.0.M1 (*)
++--- org.springframework:spring-asm:3.2.0.M1 (*)
++--- org.springframework:spring-beans:3.2.0.M1 (*)
++--- org.springframework:spring-context:3.2.0.M1 (*)
++--- org.springframework:spring-core:3.2.0.M1 (*)
++--- org.springframework:spring-expression:3.2.0.M1 (*)
++--- org.springframework:spring-tx:3.2.0.M1 (*)
++--- org.apache.cxf:cxf-rt-transports-http:2.6.0
+|    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1 -> 4.10
+|    |    \--- org.hamcrest:hamcrest-core:1.1 -> 1.2.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.seleniumhq.selenium:selenium-java:2.20.0
+|    +--- org.seleniumhq.selenium:selenium-android-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0
+|    |         +--- cglib:cglib-nodep:2.1_3
+|    |         +--- org.json:json:20080701
+|    |         +--- org.seleniumhq.selenium:selenium-api:2.20.0
+|    |         |    \--- com.google.guava:guava:11.0.1 (*)
+|    |         +--- org.apache.httpcomponents:httpclient:4.1.2 -> 4.2 (*)
+|    |         +--- com.google.guava:guava:11.0.1 (*)
+|    |         +--- org.apache.commons:commons-exec:1.1
+|    |         +--- net.java.dev.jna:jna:3.4.0
+|    |         \--- net.java.dev.jna:platform:3.4.0
+|    +--- org.seleniumhq.selenium:selenium-chrome-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    +--- org.seleniumhq.selenium:selenium-htmlunit-driver:2.20.0
+|    |    +--- org.seleniumhq.selenium:selenium-api:2.20.0 (*)
+|    |    +--- net.sourceforge.htmlunit:htmlunit:2.9
+|    |    |    +--- xalan:xalan:2.7.1
+|    |    |    |    \--- xalan:serializer:2.7.1
+|    |    |    |         \--- xml-apis:xml-apis:1.3.04
+|    |    |    +--- commons-collections:commons-collections:3.2.1 (*)
+|    |    |    +--- commons-lang:commons-lang:2.6 (*)
+|    |    |    +--- org.apache.httpcomponents:httpmime:4.1.2
+|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2 -> 4.2 (*)
+|    |    |    |    \--- commons-logging:commons-logging:1.1.1 (*)
+|    |    |    +--- commons-codec:commons-codec:1.4 -> 1.6 (*)
+|    |    |    +--- net.sourceforge.htmlunit:htmlunit-core-js:2.9
+|    |    |    +--- xerces:xercesImpl:2.9.1
+|    |    |    |    \--- xml-apis:xml-apis:1.3.04 (*)
+|    |    |    +--- net.sourceforge.nekohtml:nekohtml:1.9.15
+|    |    |    +--- net.sourceforge.cssparser:cssparser:0.9.5
+|    |    |    |    \--- org.w3c.css:sac:1.3
+|    |    |    +--- commons-io:commons-io:2.0.1 -> 2.3 (*)
+|    |    |    \--- commons-logging:commons-logging:1.1.1 (*)
+|    |    \--- org.apache.httpcomponents:httpclient:4.1.2 -> 4.2 (*)
+|    +--- org.seleniumhq.selenium:selenium-firefox-driver:2.20.0
+|    |    +--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    |    +--- commons-io:commons-io:2.0.1 -> 2.3 (*)
+|    |    \--- org.apache.commons:commons-exec:1.1 (*)
+|    +--- org.seleniumhq.selenium:selenium-ie-driver:2.20.0
+|    |    +--- net.java.dev.jna:jna:3.4.0 (*)
+|    |    +--- net.java.dev.jna:platform:3.4.0 (*)
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    +--- org.seleniumhq.selenium:selenium-iphone-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    \--- org.seleniumhq.selenium:selenium-support:2.20.0
+|         \--- org.seleniumhq.selenium:selenium-api:2.20.0 (*)
++--- javax.servlet:servlet-api:2.5
++--- org.springframework:spring-test:3.1.0.RELEASE -> 3.1.1.RELEASE
++--- org.springframework:spring-test-mvc:1.0.0.M1
+|    +--- org.springframework:spring-context:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-webmvc:3.1.1.RELEASE (*)
+|    +--- org.springframework:spring-test:3.1.1.RELEASE (*)
+|    \--- org.hamcrest:hamcrest-library:1.2.1
+|         \--- org.hamcrest:hamcrest-core:1.2.1 (*)
++--- cglib:cglib:2.2.2
+|    \--- asm:asm:3.3.1 (*)
++--- org.mockito:mockito-all:1.9.0
++--- org.hamcrest:hamcrest-library:1.2.1 (*)
++--- junit:junit:4.10 (*)
+\--- net.sourceforge.cobertura:cobertura:1.9.4.1
+     +--- oro:oro:2.0.8
+     +--- asm:asm:3.0 -> 3.3.1 (*)
+     +--- asm:asm-tree:3.0
+     |    \--- asm:asm:3.0 -> 3.3.1 (*)
+     +--- log4j:log4j:1.2.9
+     \--- org.apache.ant:ant:1.7.0
+          \--- org.apache.ant:ant-launcher:1.7.0
+
+integrationTestRuntime - Classpath for running the compiled integrationTest classes.
++--- org.apache.cxf:cxf-rt-frontend-jaxws:2.6.0
+|    +--- xml-resolver:xml-resolver:1.2
+|    +--- asm:asm:3.3.1
+|    +--- org.apache.cxf:cxf-api:2.6.0
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2
+|    |    +--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1
+|    |    \--- wsdl4j:wsdl4j:1.6.2
+|    +--- org.apache.cxf:cxf-rt-core:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- com.sun.xml.bind:jaxb-impl:2.1.13
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2 (*)
+|    |    \--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-databinding-jaxb:2.6.0
+|    |         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |         +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |         \--- com.sun.xml.bind:jaxb-impl:2.1.13 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-xml:2.6.0
+|    |    \--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    +--- org.apache.cxf:cxf-rt-frontend-simple:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-ws-addr:2.6.0
+|         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|         +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|         \--- org.apache.cxf:cxf-rt-ws-policy:2.6.0
+|              +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|              +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|              \--- org.apache.neethi:neethi:3.0.2
++--- org.springframework.security:spring-security-ldap:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- org.springframework:spring-core:3.2.0.M1
+|    |    |    +--- commons-logging:commons-logging:1.1.1
+|    |    |    \--- org.springframework:spring-asm:3.2.0.M1
+|    |    \--- org.springframework:spring-beans:3.2.0.M1
+|    |         \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-aop:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-expression:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework.security:spring-security-crypto:3.1.0.RELEASE
+|    |         \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE
+|         \--- commons-lang:commons-lang:2.5 -> 2.6
++--- org.springframework.security:spring-security-web:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.1.RELEASE
+|    |    \--- aopalliance:aopalliance:1.0 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework:spring-webmvc:3.1.0.RELEASE -> 3.1.1.RELEASE
+|    +--- org.springframework:spring-asm:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context-support:3.1.1.RELEASE
+|    |    \--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-web:3.1.1.RELEASE (*)
++--- org.springframework:spring-jdbc:3.1.0.RELEASE (*)
++--- org.codehaus.jackson:jackson-mapper-asl:1.9.3
+|    \--- org.codehaus.jackson:jackson-core-asl:1.9.3
++--- org.slf4j:slf4j-api:1.6.4
++--- com.nike:atlas.serviceshared:1.6_CXF_2.4.1_SPRING_3.0.5
++--- com.nike:cartorderservice:1.2
++--- com.nike:atlas.shared:0.9
++--- com.nike:productservice:5.1
++--- com.nike:referenceservice:5.0
++--- com.nike:nikenet-global:1.1.2
++--- org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1
++--- com.oracle:ojdbc6:11.2.0.2.0
++--- commons-lang:commons-lang:2.6 (*)
++--- commons-collections:commons-collections:3.2.1
++--- commons-io:commons-io:2.3
++--- org.apache.commons:commons-compress:1.2 -> 1.3
++--- de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.23
+|    \--- de.flapdoodle.embed:de.flapdoodle.embed.process:1.21
+|         +--- commons-io:commons-io:2.2 -> 2.3 (*)
+|         +--- org.apache.commons:commons-compress:1.3 (*)
+|         \--- com.google.guava:guava:11.0.1
+|              \--- com.google.code.findbugs:jsr305:1.3.9
++--- org.mongodb:mongo-java-driver:2.9.0
++--- org.springframework.data:spring-data-mongodb:1.0.2.RELEASE
+|    +--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework.data:spring-data-commons-core:1.2.1.RELEASE
+|    |    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.mongodb:mongo-java-driver:2.7.1 -> 2.9.0 (*)
+|    \--- org.slf4j:slf4j-api:1.5.10 -> 1.6.4 (*)
++--- org.apache.httpcomponents:httpclient:4.2
+|    +--- org.apache.httpcomponents:httpcore:4.2
+|    +--- commons-logging:commons-logging:1.1.1 (*)
+|    \--- commons-codec:commons-codec:1.6
++--- org.apache.httpcomponents:httpcore:4.2 (*)
++--- com.thoughtworks.xstream:xstream:1.4.2
+|    +--- xmlpull:xmlpull:1.1.3.1
+|    \--- xpp3:xpp3_min:1.1.4c
++--- org.springframework:spring-aop:3.2.0.M1 (*)
++--- org.springframework:spring-asm:3.2.0.M1 (*)
++--- org.springframework:spring-beans:3.2.0.M1 (*)
++--- org.springframework:spring-context:3.2.0.M1 (*)
++--- org.springframework:spring-core:3.2.0.M1 (*)
++--- org.springframework:spring-expression:3.2.0.M1 (*)
++--- org.springframework:spring-tx:3.2.0.M1 (*)
++--- org.apache.cxf:cxf-rt-transports-http:2.6.0
+|    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1 -> 4.10
+|    |    \--- org.hamcrest:hamcrest-core:1.1 -> 1.2.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.seleniumhq.selenium:selenium-java:2.20.0
+|    +--- org.seleniumhq.selenium:selenium-android-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0
+|    |         +--- cglib:cglib-nodep:2.1_3
+|    |         +--- org.json:json:20080701
+|    |         +--- org.seleniumhq.selenium:selenium-api:2.20.0
+|    |         |    \--- com.google.guava:guava:11.0.1 (*)
+|    |         +--- org.apache.httpcomponents:httpclient:4.1.2 -> 4.2 (*)
+|    |         +--- com.google.guava:guava:11.0.1 (*)
+|    |         +--- org.apache.commons:commons-exec:1.1
+|    |         +--- net.java.dev.jna:jna:3.4.0
+|    |         \--- net.java.dev.jna:platform:3.4.0
+|    +--- org.seleniumhq.selenium:selenium-chrome-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    +--- org.seleniumhq.selenium:selenium-htmlunit-driver:2.20.0
+|    |    +--- org.seleniumhq.selenium:selenium-api:2.20.0 (*)
+|    |    +--- net.sourceforge.htmlunit:htmlunit:2.9
+|    |    |    +--- xalan:xalan:2.7.1
+|    |    |    |    \--- xalan:serializer:2.7.1
+|    |    |    |         \--- xml-apis:xml-apis:1.3.04
+|    |    |    +--- commons-collections:commons-collections:3.2.1 (*)
+|    |    |    +--- commons-lang:commons-lang:2.6 (*)
+|    |    |    +--- org.apache.httpcomponents:httpmime:4.1.2
+|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2 -> 4.2 (*)
+|    |    |    |    \--- commons-logging:commons-logging:1.1.1 (*)
+|    |    |    +--- commons-codec:commons-codec:1.4 -> 1.6 (*)
+|    |    |    +--- net.sourceforge.htmlunit:htmlunit-core-js:2.9
+|    |    |    +--- xerces:xercesImpl:2.9.1
+|    |    |    |    \--- xml-apis:xml-apis:1.3.04 (*)
+|    |    |    +--- net.sourceforge.nekohtml:nekohtml:1.9.15
+|    |    |    +--- net.sourceforge.cssparser:cssparser:0.9.5
+|    |    |    |    \--- org.w3c.css:sac:1.3
+|    |    |    +--- commons-io:commons-io:2.0.1 -> 2.3 (*)
+|    |    |    \--- commons-logging:commons-logging:1.1.1 (*)
+|    |    \--- org.apache.httpcomponents:httpclient:4.1.2 -> 4.2 (*)
+|    +--- org.seleniumhq.selenium:selenium-firefox-driver:2.20.0
+|    |    +--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    |    +--- commons-io:commons-io:2.0.1 -> 2.3 (*)
+|    |    \--- org.apache.commons:commons-exec:1.1 (*)
+|    +--- org.seleniumhq.selenium:selenium-ie-driver:2.20.0
+|    |    +--- net.java.dev.jna:jna:3.4.0 (*)
+|    |    +--- net.java.dev.jna:platform:3.4.0 (*)
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    +--- org.seleniumhq.selenium:selenium-iphone-driver:2.20.0
+|    |    \--- org.seleniumhq.selenium:selenium-remote-driver:2.20.0 (*)
+|    \--- org.seleniumhq.selenium:selenium-support:2.20.0
+|         \--- org.seleniumhq.selenium:selenium-api:2.20.0 (*)
++--- javax.servlet:servlet-api:2.5
++--- org.springframework.security:spring-security-config:3.1.0.RELEASE
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework.security:spring-security-taglibs:3.1.0.RELEASE
+|    +--- org.springframework.security:spring-security-web:3.1.0.RELEASE (*)
+|    +--- org.springframework.security:spring-security-acl:3.1.0.RELEASE
+|    |    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.1.RELEASE (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- javax.servlet:jstl:1.2
++--- org.slf4j:jcl-over-slf4j:1.6.4
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- ch.qos.logback:logback-core:1.0.1
++--- ch.qos.logback:logback-classic:1.0.1
+|    +--- ch.qos.logback:logback-core:1.0.1 (*)
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- org.mortbay.jetty:jetty-util:6.1.11
++--- net.sourceforge.cobertura:cobertura:1.9.4.1
+|    +--- oro:oro:2.0.8
+|    +--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- asm:asm-tree:3.0
+|    |    \--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- log4j:log4j:1.2.9
+|    \--- org.apache.ant:ant:1.7.0
+|         \--- org.apache.ant:ant-launcher:1.7.0
++--- cglib:cglib:2.2.2
+|    \--- asm:asm:3.3.1 (*)
++--- org.springframework:spring-test:3.1.0.RELEASE -> 3.1.1.RELEASE
++--- org.springframework:spring-test-mvc:1.0.0.M1
+|    +--- org.springframework:spring-context:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-webmvc:3.1.1.RELEASE (*)
+|    +--- org.springframework:spring-test:3.1.1.RELEASE (*)
+|    \--- org.hamcrest:hamcrest-library:1.2.1
+|         \--- org.hamcrest:hamcrest-core:1.2.1 (*)
++--- org.mockito:mockito-all:1.9.0
++--- org.hamcrest:hamcrest-library:1.2.1 (*)
+\--- junit:junit:4.10 (*)
+
+providedCompile - Additional compile classpath for libraries that should not be part of the WAR archive.
+\--- javax.servlet:servlet-api:2.5
+
+providedRuntime - Additional runtime classpath for libraries that should not be part of the WAR archive.
+\--- javax.servlet:servlet-api:2.5
+
+runtime - Classpath for running the compiled main classes.
++--- org.apache.cxf:cxf-rt-frontend-jaxws:2.6.0
+|    +--- xml-resolver:xml-resolver:1.2
+|    +--- asm:asm:3.3.1
+|    +--- org.apache.cxf:cxf-api:2.6.0
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2
+|    |    +--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1
+|    |    \--- wsdl4j:wsdl4j:1.6.2
+|    +--- org.apache.cxf:cxf-rt-core:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- com.sun.xml.bind:jaxb-impl:2.1.13
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2 (*)
+|    |    \--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-databinding-jaxb:2.6.0
+|    |         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |         +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |         \--- com.sun.xml.bind:jaxb-impl:2.1.13 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-xml:2.6.0
+|    |    \--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    +--- org.apache.cxf:cxf-rt-frontend-simple:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-ws-addr:2.6.0
+|         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|         +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|         \--- org.apache.cxf:cxf-rt-ws-policy:2.6.0
+|              +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|              +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|              \--- org.apache.neethi:neethi:3.0.2
++--- org.springframework.security:spring-security-ldap:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- org.springframework:spring-core:3.2.0.M1
+|    |    |    +--- commons-logging:commons-logging:1.1.1
+|    |    |    \--- org.springframework:spring-asm:3.2.0.M1
+|    |    \--- org.springframework:spring-beans:3.2.0.M1
+|    |         \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-aop:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-expression:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework.security:spring-security-crypto:3.1.0.RELEASE
+|    |         \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE
+|         \--- commons-lang:commons-lang:2.5 -> 2.6
++--- org.springframework.security:spring-security-web:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    \--- aopalliance:aopalliance:1.0 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    \--- org.springframework:spring-tx:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework:spring-webmvc:3.1.0.RELEASE
+|    +--- org.springframework:spring-asm:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context-support:3.1.0.RELEASE
+|    |    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-web:3.1.0.RELEASE (*)
++--- org.springframework:spring-jdbc:3.1.0.RELEASE (*)
++--- org.codehaus.jackson:jackson-mapper-asl:1.9.3
+|    \--- org.codehaus.jackson:jackson-core-asl:1.9.3
++--- org.slf4j:slf4j-api:1.6.4
++--- com.nike:atlas.serviceshared:1.6_CXF_2.4.1_SPRING_3.0.5
++--- com.nike:cartorderservice:1.2
++--- com.nike:atlas.shared:0.9
++--- com.nike:productservice:5.1
++--- com.nike:referenceservice:5.0
++--- com.nike:nikenet-global:1.1.2
++--- org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1
++--- com.oracle:ojdbc6:11.2.0.2.0
++--- commons-lang:commons-lang:2.6 (*)
++--- commons-collections:commons-collections:3.2.1
++--- commons-io:commons-io:2.3
++--- org.apache.commons:commons-compress:1.2 -> 1.3
++--- de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.23
+|    \--- de.flapdoodle.embed:de.flapdoodle.embed.process:1.21
+|         +--- commons-io:commons-io:2.2 -> 2.3 (*)
+|         +--- org.apache.commons:commons-compress:1.3 (*)
+|         \--- com.google.guava:guava:11.0.1
+|              \--- com.google.code.findbugs:jsr305:1.3.9
++--- org.mongodb:mongo-java-driver:2.9.0
++--- org.springframework.data:spring-data-mongodb:1.0.2.RELEASE
+|    +--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework.data:spring-data-commons-core:1.2.1.RELEASE
+|    |    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.mongodb:mongo-java-driver:2.7.1 -> 2.9.0 (*)
+|    \--- org.slf4j:slf4j-api:1.5.10 -> 1.6.4 (*)
++--- org.apache.httpcomponents:httpclient:4.2
+|    +--- org.apache.httpcomponents:httpcore:4.2
+|    +--- commons-logging:commons-logging:1.1.1 (*)
+|    \--- commons-codec:commons-codec:1.6
++--- org.apache.httpcomponents:httpcore:4.2 (*)
++--- com.thoughtworks.xstream:xstream:1.4.2
+|    +--- xmlpull:xmlpull:1.1.3.1
+|    \--- xpp3:xpp3_min:1.1.4c
++--- org.springframework:spring-aop:3.2.0.M1 (*)
++--- org.springframework:spring-asm:3.2.0.M1 (*)
++--- org.springframework:spring-beans:3.2.0.M1 (*)
++--- org.springframework:spring-context:3.2.0.M1 (*)
++--- org.springframework:spring-core:3.2.0.M1 (*)
++--- org.springframework:spring-expression:3.2.0.M1 (*)
++--- org.springframework:spring-tx:3.2.0.M1 (*)
++--- org.apache.cxf:cxf-rt-transports-http:2.6.0
+|    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
++--- javax.servlet:servlet-api:2.5
++--- org.springframework.security:spring-security-config:3.1.0.RELEASE
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework.security:spring-security-taglibs:3.1.0.RELEASE
+|    +--- org.springframework.security:spring-security-web:3.1.0.RELEASE (*)
+|    +--- org.springframework.security:spring-security-acl:3.1.0.RELEASE
+|    |    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- javax.servlet:jstl:1.2
++--- org.slf4j:jcl-over-slf4j:1.6.4
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- ch.qos.logback:logback-core:1.0.1
++--- ch.qos.logback:logback-classic:1.0.1
+|    +--- ch.qos.logback:logback-core:1.0.1 (*)
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- org.mortbay.jetty:jetty-util:6.1.11
++--- net.sourceforge.cobertura:cobertura:1.9.4.1
+|    +--- oro:oro:2.0.8
+|    +--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- asm:asm-tree:3.0
+|    |    \--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- log4j:log4j:1.2.9
+|    \--- org.apache.ant:ant:1.7.0
+|         \--- org.apache.ant:ant-launcher:1.7.0
+\--- cglib:cglib:2.2.2
+     \--- asm:asm:3.3.1 (*)
+
+testCompile - Classpath for compiling the test sources.
++--- org.apache.cxf:cxf-rt-frontend-jaxws:2.6.0
+|    +--- xml-resolver:xml-resolver:1.2
+|    +--- asm:asm:3.3.1
+|    +--- org.apache.cxf:cxf-api:2.6.0
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2
+|    |    +--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1
+|    |    \--- wsdl4j:wsdl4j:1.6.2
+|    +--- org.apache.cxf:cxf-rt-core:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- com.sun.xml.bind:jaxb-impl:2.1.13
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2 (*)
+|    |    \--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-databinding-jaxb:2.6.0
+|    |         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |         +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |         \--- com.sun.xml.bind:jaxb-impl:2.1.13 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-xml:2.6.0
+|    |    \--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    +--- org.apache.cxf:cxf-rt-frontend-simple:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-ws-addr:2.6.0
+|         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|         +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|         \--- org.apache.cxf:cxf-rt-ws-policy:2.6.0
+|              +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|              +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|              \--- org.apache.neethi:neethi:3.0.2
++--- org.springframework.security:spring-security-ldap:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- org.springframework:spring-core:3.2.0.M1
+|    |    |    +--- commons-logging:commons-logging:1.1.1
+|    |    |    \--- org.springframework:spring-asm:3.2.0.M1
+|    |    \--- org.springframework:spring-beans:3.2.0.M1
+|    |         \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-aop:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-expression:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework.security:spring-security-crypto:3.1.0.RELEASE
+|    |         \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE
+|         \--- commons-lang:commons-lang:2.5 -> 2.6
++--- org.springframework.security:spring-security-web:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.1.RELEASE
+|    |    \--- aopalliance:aopalliance:1.0 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework:spring-webmvc:3.1.0.RELEASE -> 3.1.1.RELEASE
+|    +--- org.springframework:spring-asm:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context-support:3.1.1.RELEASE
+|    |    \--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-web:3.1.1.RELEASE (*)
++--- org.springframework:spring-jdbc:3.1.0.RELEASE (*)
++--- org.codehaus.jackson:jackson-mapper-asl:1.9.3
+|    \--- org.codehaus.jackson:jackson-core-asl:1.9.3
++--- org.slf4j:slf4j-api:1.6.4
++--- com.nike:atlas.serviceshared:1.6_CXF_2.4.1_SPRING_3.0.5
++--- com.nike:cartorderservice:1.2
++--- com.nike:atlas.shared:0.9
++--- com.nike:productservice:5.1
++--- com.nike:referenceservice:5.0
++--- com.nike:nikenet-global:1.1.2
++--- org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1
++--- com.oracle:ojdbc6:11.2.0.2.0
++--- commons-lang:commons-lang:2.6 (*)
++--- commons-collections:commons-collections:3.2.1
++--- commons-io:commons-io:2.3
++--- org.apache.commons:commons-compress:1.2 -> 1.3
++--- de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.23
+|    \--- de.flapdoodle.embed:de.flapdoodle.embed.process:1.21
+|         +--- commons-io:commons-io:2.2 -> 2.3 (*)
+|         +--- org.apache.commons:commons-compress:1.3 (*)
+|         \--- com.google.guava:guava:11.0.1
+|              \--- com.google.code.findbugs:jsr305:1.3.9
++--- org.mongodb:mongo-java-driver:2.9.0
++--- org.springframework.data:spring-data-mongodb:1.0.2.RELEASE
+|    +--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework.data:spring-data-commons-core:1.2.1.RELEASE
+|    |    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.mongodb:mongo-java-driver:2.7.1 -> 2.9.0 (*)
+|    \--- org.slf4j:slf4j-api:1.5.10 -> 1.6.4 (*)
++--- org.apache.httpcomponents:httpclient:4.2
+|    +--- org.apache.httpcomponents:httpcore:4.2
+|    +--- commons-logging:commons-logging:1.1.1 (*)
+|    \--- commons-codec:commons-codec:1.6
++--- org.apache.httpcomponents:httpcore:4.2 (*)
++--- com.thoughtworks.xstream:xstream:1.4.2
+|    +--- xmlpull:xmlpull:1.1.3.1
+|    \--- xpp3:xpp3_min:1.1.4c
++--- org.springframework:spring-aop:3.2.0.M1 (*)
++--- org.springframework:spring-asm:3.2.0.M1 (*)
++--- org.springframework:spring-beans:3.2.0.M1 (*)
++--- org.springframework:spring-context:3.2.0.M1 (*)
++--- org.springframework:spring-core:3.2.0.M1 (*)
++--- org.springframework:spring-expression:3.2.0.M1 (*)
++--- org.springframework:spring-tx:3.2.0.M1 (*)
++--- org.apache.cxf:cxf-rt-transports-http:2.6.0
+|    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
++--- javax.servlet:servlet-api:2.5
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1 -> 4.10
+|    |    \--- org.hamcrest:hamcrest-core:1.1 -> 1.2.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.springframework:spring-test:3.1.0.RELEASE -> 3.1.1.RELEASE
++--- org.springframework:spring-test-mvc:1.0.0.M1
+|    +--- org.springframework:spring-context:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-webmvc:3.1.1.RELEASE (*)
+|    +--- org.springframework:spring-test:3.1.1.RELEASE (*)
+|    \--- org.hamcrest:hamcrest-library:1.2.1
+|         \--- org.hamcrest:hamcrest-core:1.2.1 (*)
++--- cglib:cglib:2.2.2
+|    \--- asm:asm:3.3.1 (*)
++--- org.mockito:mockito-all:1.9.0
++--- org.hamcrest:hamcrest-library:1.2.1 (*)
++--- junit:junit:4.10 (*)
+\--- net.sourceforge.cobertura:cobertura:1.9.4.1
+     +--- oro:oro:2.0.8
+     +--- asm:asm:3.0 -> 3.3.1 (*)
+     +--- asm:asm-tree:3.0
+     |    \--- asm:asm:3.0 -> 3.3.1 (*)
+     +--- log4j:log4j:1.2.9
+     \--- org.apache.ant:ant:1.7.0
+          \--- org.apache.ant:ant-launcher:1.7.0
+
+testRuntime - Classpath for running the compiled test classes.
++--- org.apache.cxf:cxf-rt-frontend-jaxws:2.6.0
+|    +--- xml-resolver:xml-resolver:1.2
+|    +--- asm:asm:3.3.1
+|    +--- org.apache.cxf:cxf-api:2.6.0
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2
+|    |    +--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1
+|    |    \--- wsdl4j:wsdl4j:1.6.2
+|    +--- org.apache.cxf:cxf-rt-core:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- com.sun.xml.bind:jaxb-impl:2.1.13
+|    |    +--- org.apache.ws.xmlschema:xmlschema-core:2.0.2 (*)
+|    |    \--- org.apache.geronimo.specs:geronimo-javamail_1.4_spec:1.7.1 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-databinding-jaxb:2.6.0
+|    |         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |         +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |         \--- com.sun.xml.bind:jaxb-impl:2.1.13 (*)
+|    +--- org.apache.cxf:cxf-rt-bindings-xml:2.6.0
+|    |    \--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    +--- org.apache.cxf:cxf-rt-frontend-simple:2.6.0
+|    |    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    |    +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|    |    \--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-ws-addr:2.6.0
+|         +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|         +--- org.apache.cxf:cxf-rt-bindings-soap:2.6.0 (*)
+|         \--- org.apache.cxf:cxf-rt-ws-policy:2.6.0
+|              +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|              +--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
+|              \--- org.apache.neethi:neethi:3.0.2
++--- org.springframework.security:spring-security-ldap:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1
+|    |    +--- aopalliance:aopalliance:1.0
+|    |    +--- org.springframework:spring-core:3.2.0.M1
+|    |    |    +--- commons-logging:commons-logging:1.1.1
+|    |    |    \--- org.springframework:spring-asm:3.2.0.M1
+|    |    \--- org.springframework:spring-beans:3.2.0.M1
+|    |         \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    \--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1
+|    |    |    +--- org.springframework:spring-core:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-aop:3.2.0.M1 (*)
+|    |    |    +--- org.springframework:spring-expression:3.2.0.M1 (*)
+|    |    |    \--- org.springframework:spring-beans:3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework.security:spring-security-crypto:3.1.0.RELEASE
+|    |         \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE
+|         \--- commons-lang:commons-lang:2.5 -> 2.6
++--- org.springframework.security:spring-security-web:3.1.0.RELEASE
+|    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.1.RELEASE
+|    |    \--- aopalliance:aopalliance:1.0 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE
+|    |    +--- org.springframework:spring-beans:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework:spring-core:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:3.1.0.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework:spring-webmvc:3.1.0.RELEASE -> 3.1.1.RELEASE
+|    +--- org.springframework:spring-asm:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context-support:3.1.1.RELEASE
+|    |    \--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-web:3.1.1.RELEASE (*)
++--- org.springframework:spring-jdbc:3.1.0.RELEASE (*)
++--- org.codehaus.jackson:jackson-mapper-asl:1.9.3
+|    \--- org.codehaus.jackson:jackson-core-asl:1.9.3
++--- org.slf4j:slf4j-api:1.6.4
++--- com.nike:atlas.serviceshared:1.6_CXF_2.4.1_SPRING_3.0.5
++--- com.nike:cartorderservice:1.2
++--- com.nike:atlas.shared:0.9
++--- com.nike:productservice:5.1
++--- com.nike:referenceservice:5.0
++--- com.nike:nikenet-global:1.1.2
++--- org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1
++--- com.oracle:ojdbc6:11.2.0.2.0
++--- commons-lang:commons-lang:2.6 (*)
++--- commons-collections:commons-collections:3.2.1
++--- commons-io:commons-io:2.3
++--- org.apache.commons:commons-compress:1.2 -> 1.3
++--- de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.23
+|    \--- de.flapdoodle.embed:de.flapdoodle.embed.process:1.21
+|         +--- commons-io:commons-io:2.2 -> 2.3 (*)
+|         +--- org.apache.commons:commons-compress:1.3 (*)
+|         \--- com.google.guava:guava:11.0.1
+|              \--- com.google.code.findbugs:jsr305:1.3.9
++--- org.mongodb:mongo-java-driver:2.9.0
++--- org.springframework.data:spring-data-mongodb:1.0.2.RELEASE
+|    +--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-core:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-expression:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.springframework.data:spring-data-commons-core:1.2.1.RELEASE
+|    |    +--- org.springframework:spring-beans:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-tx:[3.0.7.RELEASE, 4.0.0.RELEASE) -> 3.2.0.M1 (*)
+|    +--- org.mongodb:mongo-java-driver:2.7.1 -> 2.9.0 (*)
+|    \--- org.slf4j:slf4j-api:1.5.10 -> 1.6.4 (*)
++--- org.apache.httpcomponents:httpclient:4.2
+|    +--- org.apache.httpcomponents:httpcore:4.2
+|    +--- commons-logging:commons-logging:1.1.1 (*)
+|    \--- commons-codec:commons-codec:1.6
++--- org.apache.httpcomponents:httpcore:4.2 (*)
++--- com.thoughtworks.xstream:xstream:1.4.2
+|    +--- xmlpull:xmlpull:1.1.3.1
+|    \--- xpp3:xpp3_min:1.1.4c
++--- org.springframework:spring-aop:3.2.0.M1 (*)
++--- org.springframework:spring-asm:3.2.0.M1 (*)
++--- org.springframework:spring-beans:3.2.0.M1 (*)
++--- org.springframework:spring-context:3.2.0.M1 (*)
++--- org.springframework:spring-core:3.2.0.M1 (*)
++--- org.springframework:spring-expression:3.2.0.M1 (*)
++--- org.springframework:spring-tx:3.2.0.M1 (*)
++--- org.apache.cxf:cxf-rt-transports-http:2.6.0
+|    +--- org.apache.cxf:cxf-api:2.6.0 (*)
+|    \--- org.apache.cxf:cxf-rt-core:2.6.0 (*)
++--- javax.servlet:servlet-api:2.5
++--- org.springframework.security:spring-security-config:3.1.0.RELEASE
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- aopalliance:aopalliance:1.0 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- org.springframework.security:spring-security-taglibs:3.1.0.RELEASE
+|    +--- org.springframework.security:spring-security-web:3.1.0.RELEASE (*)
+|    +--- org.springframework.security:spring-security-acl:3.1.0.RELEASE
+|    |    +--- org.springframework:spring-tx:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- aopalliance:aopalliance:1.0 (*)
+|    |    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-jdbc:3.0.6.RELEASE -> 3.1.0.RELEASE (*)
+|    |    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    |    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-web:3.0.6.RELEASE -> 3.1.1.RELEASE (*)
+|    +--- org.springframework:spring-expression:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-aop:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework.security:spring-security-core:3.1.0.RELEASE (*)
+|    +--- org.springframework:spring-beans:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-context:3.0.6.RELEASE -> 3.2.0.M1 (*)
+|    \--- org.springframework:spring-core:3.0.6.RELEASE -> 3.2.0.M1 (*)
++--- javax.servlet:jstl:1.2
++--- org.slf4j:jcl-over-slf4j:1.6.4
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- ch.qos.logback:logback-core:1.0.1
++--- ch.qos.logback:logback-classic:1.0.1
+|    +--- ch.qos.logback:logback-core:1.0.1 (*)
+|    \--- org.slf4j:slf4j-api:1.6.4 (*)
++--- org.mortbay.jetty:jetty-util:6.1.11
++--- net.sourceforge.cobertura:cobertura:1.9.4.1
+|    +--- oro:oro:2.0.8
+|    +--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- asm:asm-tree:3.0
+|    |    \--- asm:asm:3.0 -> 3.3.1 (*)
+|    +--- log4j:log4j:1.2.9
+|    \--- org.apache.ant:ant:1.7.0
+|         \--- org.apache.ant:ant-launcher:1.7.0
++--- cglib:cglib:2.2.2
+|    \--- asm:asm:3.3.1 (*)
++--- org.testng:testng:6.4
+|    +--- junit:junit:3.8.1 -> 4.10
+|    |    \--- org.hamcrest:hamcrest-core:1.1 -> 1.2.1
+|    +--- org.beanshell:bsh:2.0b4
+|    +--- com.beust:jcommander:1.12
+|    \--- org.yaml:snakeyaml:1.6
++--- org.springframework:spring-test:3.1.0.RELEASE -> 3.1.1.RELEASE
++--- org.springframework:spring-test-mvc:1.0.0.M1
+|    +--- org.springframework:spring-context:3.1.1.RELEASE -> 3.2.0.M1 (*)
+|    +--- org.springframework:spring-webmvc:3.1.1.RELEASE (*)
+|    +--- org.springframework:spring-test:3.1.1.RELEASE (*)
+|    \--- org.hamcrest:hamcrest-library:1.2.1
+|         \--- org.hamcrest:hamcrest-core:1.2.1 (*)
++--- org.mockito:mockito-all:1.9.0
++--- org.hamcrest:hamcrest-library:1.2.1 (*)
+\--- junit:junit:4.10 (*)
+
+tomcat - The Tomcat libraries to be used for this project.
++--- org.apache.tomcat.embed:tomcat-embed-core:7.0.11
++--- org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.11
+\--- org.apache.tomcat.embed:tomcat-embed-jasper:7.0.11
+     \--- org.apache.tomcat.embed:tomcat-embed-core:7.0.11 (*)
+
+(*) - dependencies omitted (listed previously)
+
+BUILD SUCCESSFUL
+
+Total time: 53.515 secs

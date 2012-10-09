@@ -1,6 +1,7 @@
 package com.nurflugel.util.dependencyvisualizer.parser;
 
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
+import com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator;
 import com.nurflugel.util.test.TestResources;
 import org.testng.annotations.Test;
 import java.io.File;

@@ -19,24 +19,27 @@ public class Configuration extends ObjectWithArtifacts
       // todo nice to use Java 7 switch with strings here...
       String line = lines[index + 1];
 
-      if (line.equalsIgnoreCase("No dependencies"))
+      if (line != null)
       {
-        return true;
-      }
+        if (line.equalsIgnoreCase("No dependencies"))
+        {
+          return true;
+        }
 
-      if (line.startsWith("+---"))
-      {
-        return true;
-      }
+        if (line.startsWith("+---"))
+        {
+          return true;
+        }
 
-      if (line.startsWith("| "))
-      {
-        return true;
-      }
+        if (line.startsWith("| "))
+        {
+          return true;
+        }
 
-      if (line.startsWith("\\-"))
-      {
-        return true;
+        if (line.startsWith("\\-"))
+        {
+          return true;
+        }
       }
     }
 

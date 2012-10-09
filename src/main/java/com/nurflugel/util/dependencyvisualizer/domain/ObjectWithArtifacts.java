@@ -55,10 +55,14 @@ public abstract class ObjectWithArtifacts implements Comparable
     for (String artifactKey : artifactKeys)
     {
       Artifact artifact = getArtifact(artifactKey);
-      String   line     = getNiceDotName() + " -> " + artifact.getNiceDotName();
 
-      output.add(line);
-      artifact.outputDependencies(output);  // todo will this do duplicates?  Need to do a set to reduce dups?
+      if (artifact != null)                   // todo fix null artifacts
+      {
+        String line = getNiceDotName() + " -> " + artifact.getNiceDotName();
+
+        output.add(line);
+        artifact.outputDependencies(output);  // todo will this do duplicates?  Need to do a set to reduce dups?
+      }
     }
   }
 
