@@ -32,14 +32,6 @@ public class GradleDependencyMainFrame
   private JPanel                       mainPanel;
   private JButton                      quitButton;
   private JCheckBox                    deleteDOTFilesOnCheckBox;
-  private JCheckBox                    useHttpProxyCheckBox;
-  private JPanel                       proxySettingsPanel;
-  private JFormattedTextField          serverNameField;
-  private JCheckBox                    useAuthenticationCheckBox;
-  private JPanel                       authenticationPanel;
-  private JTextField                   portNumberField;
-  private JTextField                   userNameField;
-  private JPasswordField               passwordField;
   private JTabbedPane tabbedPane1;
   private JPanel mainUiPanel;
   private JPanel resultsUiPanel;
@@ -67,60 +59,7 @@ public class GradleDependencyMainFrame
   /** I like to put all the listeners in one method. */
   private void addActionListeners()
   {
-    serverNameField.addFocusListener(new FocusAdapter()
-      {
-        @Override
-        public void focusLost(FocusEvent e)
-        {
-          preferences.setProxyServerName(serverNameField.getText());
-        }
-      });
-    userNameField.addFocusListener(new FocusAdapter()
-      {
-        @Override
-        public void focusLost(FocusEvent e)
-        {
-          preferences.setProxyUserName(userNameField.getText());
-        }
-      });
-    passwordField.addFocusListener(new FocusAdapter()
-      {
-        @Override
-        public void focusLost(FocusEvent e)
-        {
-          preferences.setProxyPassword(new String(passwordField.getPassword()));
-        }
-      });
-    portNumberField.addFocusListener(new FocusAdapter()
-      {
-        @Override
-        public void focusLost(FocusEvent e)
-        {
-          preferences.setProxyServerPort(Integer.parseInt(portNumberField.getText()));
-        }
-      });
-    useAuthenticationCheckBox.addActionListener(new ActionListener()
-      {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-          boolean selected = useAuthenticationCheckBox.isSelected();
-
-          setComponentVisibilityFromSettings();
-          preferences.setUseProxyAuthentication(selected);
-        }
-      });
-    useHttpProxyCheckBox.addActionListener(new ActionListener()
-      {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-          boolean selected = useHttpProxyCheckBox.isSelected();
-
-          setComponentVisibilityFromSettings();
-          preferences.setUseHttpProxy(selected);
-        }
-      });
+   
     deleteDOTFilesOnCheckBox.addActionListener(new ActionListener()
       {
         @Override
@@ -179,19 +118,7 @@ public class GradleDependencyMainFrame
     deleteDOTFilesOnCheckBox.setSelected(preferences.shouldDeleteDotFilesOnExit());
     generateJustDOTFilesRadioButton.setSelected(preferences.generateJustDotFiles());
 
-    if (preferences.shouldUseHttpProxy())
-    {
-      serverNameField.setText(preferences.getProxyServerName());
-      portNumberField.setText(preferences.getProxyServerPort() + "");
-
-      if (preferences.shouldUseProxyAuthentication())
-      {
-        userNameField.setText(preferences.getProxyUserName());
-      }
-    }
-
-    useHttpProxyCheckBox.setSelected(preferences.shouldUseHttpProxy());
-    useAuthenticationCheckBox.setSelected(preferences.shouldUseProxyAuthentication());
+   
     setComponentVisibilityFromSettings();
     frame.setTitle(TITLE_TEXT + VERSION);
     frame.setVisible(true);
@@ -200,8 +127,7 @@ public class GradleDependencyMainFrame
   /** Called at startup and when the user clicks on one of the checkboxes. */
   private void setComponentVisibilityFromSettings()
   {
-    proxySettingsPanel.setVisible(useHttpProxyCheckBox.isSelected());
-    authenticationPanel.setVisible(useAuthenticationCheckBox.isSelected());
+  
     frame.pack();
   }
 

@@ -7,6 +7,6 @@ apply from:  'master-gradle/master-webstart-build.gradle'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-mainClassName = "com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptMainFrame"
+mainClassName = "com.nurflugel.gradle.ui.Main"
 versionClassName = 'com.nurflugel.util.Util'
 

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="724.0" styleClass="theme" xmlns:fx="http://javafx.com/fxml" fx:controller="com.nurflugel.gradle.ui.GradleVisualizerUiController">
+  <children>
+    <TabPane prefHeight="376.0" prefWidth="731.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="142.0">
+      <tabs>
+        <Tab text="Script Visualizer">
+          <content>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="theme">
+              <children>
+                <AnchorPane id="AnchorPane" layoutX="65.0" layoutY="61.0" prefHeight="101.0" prefWidth="204.0" styleClass="borderedBox">
+                  <children>
+                    <CheckBox fx:id="watchFilesCheckbox" layoutY="0.0" mnemonicParsing="false" selected="true" text="Watch files for changes" AnchorPane.leftAnchor="0.0" />
+                    <CheckBox fx:id="deleteDotFilesCheckbox" layoutY="32.0" mnemonicParsing="false" selected="true" text="Delete DOT files on exit" AnchorPane.leftAnchor="0.0" />
+                    <CheckBox fx:id="groupByFilesButton" layoutY="64.0" mnemonicParsing="false" text="Group by build file" AnchorPane.leftAnchor="0.0" />
+                  </children>
+                </AnchorPane>
+                <Button fx:id="generateGraphButton" layoutX="84.0" layoutY="190.0" mnemonicParsing="false" text="Generate Graph" />
+                <Label layoutX="65.0" layoutY="40.0" styleClass="smallLabel" text="Output options" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Dependency Visualizer">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <ImageView id="gradleLogo.png" layoutX="0.0" layoutY="0.0">
+      <image>
+        <Image url="@gradleLogo.png" preserveRatio="true" smooth="true" />
+      </image>
+    </ImageView>
+    <Label id="title" layoutX="92.0" layoutY="25.0" styleClass="title" text="Gradle Visualization">
+      <stylesheets>
+        <URL value="@../../util/dependencyvisualizer/ui/ui.css" />
+      </stylesheets>
+    </Label>
+    <Button fx:id="selectScriptButton"  layoutX="24.0" layoutY="100.0" mnemonicParsing="false" onAction="#selectScriptsClickedAction" text="Select Gradle Script" />
+    <Button fx:id="quitButton" cancelButton="true" layoutX="220.0" layoutY="100.0" mnemonicParsing="false" onAction="#quitClickedAction" text="Quit" />
+  </children>
+  <stylesheets>
+    <URL value="@ui.css" />
+  </stylesheets>
+</AnchorPane>
