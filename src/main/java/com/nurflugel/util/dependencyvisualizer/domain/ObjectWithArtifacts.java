@@ -11,9 +11,9 @@ import static org.apache.commons.lang3.StringUtils.substringBefore;
 public abstract class ObjectWithArtifacts implements Comparable
 {
   protected String                name;
-  protected Map<String, Artifact> masterArtifactList = new HashMap<String, Artifact>();
+  protected Map<String, Artifact> masterArtifactList = new HashMap<>();
   protected String[]              lines;
-  private Set<String>             artifactKeys       = new TreeSet<String>();
+  private Set<String>             artifactKeys       = new TreeSet<>();
   // private ObjectWithArtifacts     parent;
 
   protected ObjectWithArtifacts()
@@ -83,7 +83,7 @@ public abstract class ObjectWithArtifacts implements Comparable
 
   protected List<Artifact> parseArtifacts(int parentNestingLevel, String... lines)
   {
-    List<Artifact> foundArtifacts = new ArrayList<Artifact>();
+    List<Artifact> foundArtifacts = new ArrayList<>();
 
     // find all lines for "this" artifact
     for (int i = 1; i < lines.length; i++)
@@ -122,7 +122,7 @@ public abstract class ObjectWithArtifacts implements Comparable
   /** Start at the given nesting level - read lines until you get to line with equal to or greater than the current one. */
   public static String[] getArtifactLines(Pointer startingIndex, String... lines)
   {
-    List<String> lineList = new ArrayList<String>();
+    List<String> lineList = new ArrayList<>();
     int          index    = startingIndex.getIndex();
     String       topLine  = lines[index];
 
@@ -163,7 +163,7 @@ public abstract class ObjectWithArtifacts implements Comparable
 
   public List<Artifact> getArtifacts()
   {
-    List<Artifact> artifacts = new ArrayList<Artifact>();
+    List<Artifact> artifacts = new ArrayList<>();
 
     for (String key : artifactKeys)
     {

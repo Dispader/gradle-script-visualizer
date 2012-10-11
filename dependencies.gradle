@@ -38,7 +38,7 @@ dependencies {
             'org.objectweb.asm:asm:'+               libraryVersions.asm,
             'javax.help:jhall:'+                    libraryVersions.jhall
 //         'org.springframework:spring-aop:3.1.1.RELEASE',
-    compile fileTree (dir: '/Library/Java/JavaVirtualMachines/jdk1.7.0_10.jdk/Contents/Home/jre/lib', includes: ['*.jar']) 
+    compile fileTree (dir: '/Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/jre/lib', includes: ['*.jar']) 
 
 
     runtime 'org.jdom:jdom:'+                    libraryVersions.jdom,
@@ -52,7 +52,7 @@ dependencies {
             'org.testng:testng:'+                libraryVersions.testng,
             'org.objectweb.asm:asm:'+            libraryVersions.asm,
             'javax.help:jhall:'+                 libraryVersions.jhall
-    runtime fileTree (dir: '/Library/Java/JavaVirtualMachines/jdk1.7.0_10.jdk/Contents/Home/jre/lib', includes: ['*.jar']) 
+    runtime fileTree (dir: '/Library/Java/JavaVirtualMachines/jdk1.7.0_07.jdk/Contents/Home/jre/lib', includes: ['*.jar']) 
 //  ,
 //            'org.springframework:spring-aop:3.1.1.RELEASE'
 

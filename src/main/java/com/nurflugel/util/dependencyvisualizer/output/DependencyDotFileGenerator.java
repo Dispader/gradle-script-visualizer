@@ -206,18 +206,9 @@ public class DependencyDotFileGenerator
   {
     preferences.setLastDir(selectedFile.getParent());
 
-    try
-    {
-      String[] lines = parser.runGradleExec(selectedFile);
+    String[] lines = parser.runGradleExec(selectedFile);
 
-      return createDotFileFromLines(parser, preferences, outputFileName, lines);
-    }
-    catch (InterruptedException e)
-    {
-      e.printStackTrace();
-    }
-
-    return null;
+    return createDotFileFromLines(parser, preferences, outputFileName, lines);
   }
 
   static File createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines)

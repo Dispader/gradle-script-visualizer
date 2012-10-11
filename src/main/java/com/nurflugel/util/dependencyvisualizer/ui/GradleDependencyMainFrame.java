@@ -3,7 +3,6 @@ package com.nurflugel.util.dependencyvisualizer.ui;
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
-
 import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createOutputForFile;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
@@ -32,17 +30,17 @@ public class GradleDependencyMainFrame
   private JPanel                       mainPanel;
   private JButton                      quitButton;
   private JCheckBox                    deleteDOTFilesOnCheckBox;
-  private JTabbedPane tabbedPane1;
-  private JPanel mainUiPanel;
-  private JPanel resultsUiPanel;
-  private JButton graphButton;
-  private JButton quitButton1;
-  private JRadioButton radioButton1;
-  private JRadioButton radioButton2;
+  private JTabbedPane                  tabbedPane1;
+  private JPanel                       mainUiPanel;
+  private JPanel                       resultsUiPanel;
+  private JButton                      graphButton;
+  private JButton                      quitButton1;
+  private JRadioButton                 radioButton1;
+  private JRadioButton                 radioButton2;
   private JFrame                       frame;
   private GradleScriptPreferences      preferences;
   private Os                           os;
-  private final Set<File>              filesToRender                   = new HashSet<File>();
+  private final Set<File>              filesToRender                   = new HashSet<>();
   private final GradleDependencyParser parser;
 
   public GradleDependencyMainFrame()
@@ -59,7 +57,6 @@ public class GradleDependencyMainFrame
   /** I like to put all the listeners in one method. */
   private void addActionListeners()
   {
-   
     deleteDOTFilesOnCheckBox.addActionListener(new ActionListener()
       {
         @Override
@@ -117,8 +114,6 @@ public class GradleDependencyMainFrame
     center(frame);
     deleteDOTFilesOnCheckBox.setSelected(preferences.shouldDeleteDotFilesOnExit());
     generateJustDOTFilesRadioButton.setSelected(preferences.generateJustDotFiles());
-
-   
     setComponentVisibilityFromSettings();
     frame.setTitle(TITLE_TEXT + VERSION);
     frame.setVisible(true);
@@ -127,7 +122,6 @@ public class GradleDependencyMainFrame
   /** Called at startup and when the user clicks on one of the checkboxes. */
   private void setComponentVisibilityFromSettings()
   {
-  
     frame.pack();
   }
 
@@ -149,9 +143,12 @@ public class GradleDependencyMainFrame
 
     if (returnVal == APPROVE_OPTION)
     {
-      File selectedFile = chooser.getSelectedFile();chooser.hide();
+      File selectedFile = chooser.getSelectedFile();
+
+      chooser.hide();
 
       File outputForFile = createOutputForFile(selectedFile, parser, preferences, "dibble.dot");
+
       if (outputForFile != null)
       {
         try

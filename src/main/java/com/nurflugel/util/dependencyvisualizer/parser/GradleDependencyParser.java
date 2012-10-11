@@ -4,7 +4,10 @@ import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 import com.nurflugel.util.dependencyvisualizer.domain.Pointer;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.concurrent.ConcurrentException;
+import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -18,8 +21,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class GradleDependencyParser
 {
   public static final String           DOTTED_LINE       = "------------------------------------------------------------";
-  private static Map<String, Artifact> masterArtifactMap = new HashMap<String, Artifact>();
-  private List<Configuration>          configurations    = new ArrayList<Configuration>();
+  private static Map<String, Artifact> masterArtifactMap = new HashMap<>();
+  private List<Configuration>          configurations    = new ArrayList<>();
 
   public static Map<String, Artifact> getMasterArtifactMap()
   {
@@ -28,9 +31,9 @@ public class GradleDependencyParser
 
   public static String parseKey(String line)
   {
-    line = remove(line, " (*)");  // remove the characters that tell you this line has dependencies listed elsewhere
+    line = remove(line, " (*)");                 // remove the characters that tell you this line has dependencies listed elsewhere
     line = substringBefore(line, " [").trim();
-    line = substringBefore(line, " ->").trim();//for now, have to deal with reslution conflicts later
+    line = substringBefore(line, " ->").trim();  // for now, have to deal with resolution conflicts later
 
     return substringAfterLast(line, " ");
   }
@@ -48,7 +51,7 @@ public class GradleDependencyParser
   }
 
   // -------------------------- OTHER METHODS --------------------------
-  //todo this is only used in tests
+  // todo this is only used in tests
   public void parseFile(File file) throws IOException
   {
     List<String> strings = readLines(file);
@@ -114,7 +117,7 @@ public class GradleDependencyParser
     // compile - Classpath for compiling the main sources.
     // +--- org.jdom:jdom:1.0
     Pointer             pointer           = new Pointer(i);
-    List<Configuration> configurationList = new ArrayList<Configuration>();
+    List<Configuration> configurationList = new ArrayList<>();
 
     while (pointer.getIndex() < lines.length)
     {
@@ -134,103 +137,41 @@ public class GradleDependencyParser
   }
 
   @SuppressWarnings("UseOfProcessBuilder")
-  public String[] runGradleExec(File gradleFile) throws IOException, InterruptedException
+  public String[] runGradleExec(File gradleFile) throws IOException  // throws IOException, InterruptedException
   {
-    String command  = gradleFile.getParent() + separator + "gradlew";
-    String[] arguments = {command,"dependencies","--no-daemon"};
+    String   command   = gradleFile.getParent() + separator + "gradlew";
+    String[] arguments = { command, "dependencies", "--no-daemon" };
 
-    System.out.println("GradleDependencyParser.runGradleExec - calling Processbuilder command " + command + " " + arguments);
+    System.out.println("GradleDependencyParser.runGradleExec - calling Processbuilder command " + command + " " + ArrayUtils.toString(arguments));
 
-    ProcessBuilder pb = new ProcessBuilder( arguments);
+    ProcessBuilder pb = new ProcessBuilder(arguments);
 
     pb.directory(gradleFile.getParentFile());
     pb.redirectErrorStream(true);
 
-    Process proc = pb.start();
-    
-    
-    PrintWriter out = new PrintWriter(new OutputStreamWriter(proc.getOutputStream()));
-    BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-     
+    List<String>   outputLines = new ArrayList<>();
+    Process        proc        = pb.start();
+    PrintWriter    out         = new PrintWriter(new OutputStreamWriter(proc.getOutputStream()));
+    BufferedReader in          = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
     // feed in the program
     out.println("Some line here");
     out.flush();
-     List<String> outputLines = new ArrayList<>();
+
     String resultLine = in.readLine();
-     
-    while (resultLine != null) {
+
+    while (resultLine != null)
+    {
       System.out.println(resultLine);
       resultLine = in.readLine();
       outputLines.add(resultLine);
     }
-     
+
     proc.destroy();
 
-String[ ] lines=    outputLines.toArray(new String[outputLines.size()]);
-
-//    
-//    
-//
-//    // To capture output from the shell
-//    InputStream shellIn = proc.getInputStream();
-//
-//    // Wait for the shell to finish and get the return code
-//    int shellExitStatus = proc.waitFor();
-//
-//    System.out.println("Exit status" + shellExitStatus);
-//
-//    String response = convertStreamToStr(shellIn);
-//
-//    System.out.println("response = " + response);
-//    shellIn.close();
-//
-//    String[] lines = response.split("\n");
+    String[] lines = outputLines.toArray(new String[outputLines.size()]);
 
     return lines;
-  }
-
-  /*
-   * To convert the InputStream to String we use the Reader.read(char[]
-   * buffer) method. We iterate until the Reader return -1 which means
-   * there's no more data to read. We use the StringWriter class to
-   * produce the string.
-   */
-  public static String convertStreamToStr(InputStream is) throws IOException
-  {
-    if (is != null)
-    {
-      Writer writer = new StringWriter();
-
-      char[] buffer = new char[1024];
-      int    n=0;
-      try
-      {
-        Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-
-        while ((n = reader.read(buffer)) != -1)
-        {
-          writer.write(buffer, 0, n);
-          System.out.println(buffer);
-        }
-        
-      }
-      catch (Exception e){
-        e.printStackTrace();
-      }
-      finally
-      {
-        is.close();
-//        writer.write(buffer, 0, n);
-        System.out.println(buffer);
-        
-      }
-
-      return writer.toString();
-    }
-    else
-    {
-      return "";
-    }
   }
 
   public List<Configuration> getConfigurations()
