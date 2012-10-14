@@ -25,7 +25,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class GradleFileParser
 {
   /** map of all the tasks found. */
-  private Map<String, Task> taskMap = new HashMap<String, Task>();
+  private Map<String, Task> taskMap = new HashMap<>();
 
   /** map of checksums for all the build files. If any of these change, the graph is regenerated. Presto! */
   private Map<File, Long>         fileChecksums = new HashMap<>();
@@ -60,7 +60,7 @@ public class GradleFileParser
   /** Gets a list of the tasks in the task map. */
   public List<Task> getTasks() throws IOException
   {
-    return new ArrayList<Task>(taskMap.values());
+    return new ArrayList<>(taskMap.values());
   }
 
   public Map<String, Task> getTasksMap()
@@ -93,7 +93,7 @@ public class GradleFileParser
    */
   static List<String> readLinesInFile(File file) throws IOException
   {
-    List<String> lines     = new ArrayList<String>();
+    List<String> lines     = new ArrayList<>();
     List<String> textLines = readLines(file);
 
     for (String textLine : textLines)
@@ -123,7 +123,7 @@ public class GradleFileParser
   void findTasksInLines(List<String> lines, String sourceFile)
   {
     Task       taskInContext = null;
-    List<Task> executeTasks  = new ArrayList<Task>();
+    List<Task> executeTasks  = new ArrayList<>();
 
     for (String line : lines)
     {
@@ -134,7 +134,7 @@ public class GradleFileParser
         Task task = findOrCreateTaskByLine(taskMap, line, lines, sourceFile);
 
         taskInContext = task;
-        executeTasks  = new ArrayList<Task>();
+        executeTasks  = new ArrayList<>();
         taskMap.put(task.getName(), task);
       }
 
@@ -225,7 +225,7 @@ public class GradleFileParser
     URL          url       = new URL(location);
     String       bigString = IOUtils.toString(url);
     String[]     tokens    = bigString.split("\n");
-    List<String> lines     = new ArrayList<String>();
+    List<String> lines     = new ArrayList<>();
 
     Collections.addAll(lines, tokens);
     processLines(url, lines);

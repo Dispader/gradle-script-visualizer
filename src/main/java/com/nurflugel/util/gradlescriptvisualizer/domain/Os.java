@@ -16,6 +16,7 @@ import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
 @SuppressWarnings({ "EnumeratedClassNamingConvention", "EnumeratedConstantNamingConvention" })
 public enum Os
 {
+  // todo remove command args for dot
   OS_X   ("Mac OS X", "build.sh", new String[] {}, "javax.swing.plaf.mac.MacLookAndFeel", "/usr/local/bin/dot", PDF),
   WINDOWS("Windows", "build.cmd", new String[] { "cmd.exe", "/C" }, "com.sun.java.swing.plaf.windows.WindowsLookAndFeel",
           "\"C:\\Program Files\\Graphviz2.24\\bin\\dot.exe\"", PNG);
@@ -66,6 +67,7 @@ public enum Os
 
       String[] command = commandList.toArray(new String[commandList.size()]);
 
+      // todo move to ProcessBuilder
       // logger.debug("Command to run: " + concatenate(command));
       Runtime runtime = Runtime.getRuntime();
 

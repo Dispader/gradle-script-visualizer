@@ -22,6 +22,7 @@ import java.net.URL;
 import static javafx.geometry.Pos.CENTER;
 import static javafx.scene.paint.Color.BLACK;
 import static javafx.scene.paint.Color.TRANSPARENT;
+import static javafx.stage.Modality.APPLICATION_MODAL;
 
 /** {@linkplain DialogService} Demo. */
 public class DialogServiceTest extends Application
@@ -153,8 +154,8 @@ public class DialogServiceTest extends Application
 
   /**
    * Creates a dialog window {@linkplain Stage} that is shown when the {@linkplain DialogService#start()} is called and hidden when the submit
-   * {@linkplain Service#restart()} returns {@linkplain State#SUCCEEDED}. When a {@linkplain Task} throws an {@linkplain Exception} the
-   * {@linkplain Exception#getMessage()} will be used to update the messageHeader of the dialog.
+   * {@linkplain Service#restart()} returns success. When a {@linkplain Task} throws an {@linkplain Exception} the {@linkplain Exception#getMessage()}
+   * will be used to update the messageHeader of the dialog.
    *
    * @param   parent         the parent {@linkplain Stage}
    * @param   title          the text for the {@linkplain Stage#setTitle(String)}
@@ -178,7 +179,7 @@ public class DialogServiceTest extends Application
     Text          messageHeader = TextBuilder.create().styleClass("dialog-message").wrappingWidth(width / 1.2d).build();
     DialogService service       = new DialogService(parent, window, messageHeader, submitService);
 
-    window.initModality(Modality.APPLICATION_MODAL);
+    window.initModality(APPLICATION_MODAL);
     window.initStyle(StageStyle.TRANSPARENT);
 
     if (icon != null)

@@ -1,6 +1,7 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
 /** Enum for the various types of output. */
+@Deprecated
 public enum OutputFormat
 {
   SVG("SVG", "svg", ".svg"),

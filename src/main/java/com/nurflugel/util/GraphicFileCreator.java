@@ -6,6 +6,7 @@ import java.io.File;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.OS_X;
 
 /** TODO - I'm thinking of just removing all this - calling DOT directly seems to work, and the user can output graphics if they feel like it. */
+@Deprecated
 public class GraphicFileCreator
 {
   // -------------------------- OTHER METHODS --------------------------

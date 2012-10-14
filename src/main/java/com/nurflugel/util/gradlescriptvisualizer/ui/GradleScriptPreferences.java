@@ -5,14 +5,14 @@ import com.nurflugel.util.ScriptPreferences;
 /** Preferences controlling class - saves user's output between sessions, reads it back in at startup. */
 public class GradleScriptPreferences extends ScriptPreferences
 {
+  public static final int     DEFAULT_PROXY_PORT       = 8080;
+  public static final String  SELECT_SECOND_TAB        = "select second tab";
   private static final String WATCH_FILES_FOR_CHANGES  = "watch files for changes";
   private static final String USE_HTTP_PROXY           = "useHttpProxy";
   private static final String PROXY_SERVER_NAME        = "proxyServerName";
   private static final String PROXY_SERVER_PORT        = "proxyServerPort";
   private static final String USE_PROXY_AUTHENTICATION = "useProxyAuthentication";
   private static final String PROXY_USER_NAME          = "proxyUserName";
-  private static final String PROXY_PASSWORD           = "proxyPassword";
-  public static final int     DEFAULT_PROXY_PORT       = 8080;
   private boolean             watchFilesForChanges;
   private boolean             useHttpProxy;
   private String              proxyServerName;
@@ -20,6 +20,7 @@ public class GradleScriptPreferences extends ScriptPreferences
   private boolean             useProxyAuthentication;
   private String              proxyUserName;
   private String              proxyPassword;
+  private boolean             selectSecondTab;
 
   public GradleScriptPreferences()
   {
@@ -33,6 +34,7 @@ public class GradleScriptPreferences extends ScriptPreferences
   private void get()
   {
     watchFilesForChanges   = preferencesStore.getBoolean(WATCH_FILES_FOR_CHANGES, false);
+    selectSecondTab        = preferencesStore.getBoolean(SELECT_SECOND_TAB, false);
     useHttpProxy           = preferencesStore.getBoolean(USE_HTTP_PROXY, false);
     proxyServerName        = preferencesStore.get(PROXY_SERVER_NAME, "");
     proxyServerPort        = preferencesStore.getInt(PROXY_SERVER_PORT, DEFAULT_PROXY_PORT);
@@ -46,6 +48,55 @@ public class GradleScriptPreferences extends ScriptPreferences
     get();
   }
 
+  // -------------------------- OTHER METHODS --------------------------
+  public void setProxyPassword(String proxyPassword)
+  {
+    this.proxyPassword = proxyPassword;
+    save();
+  }
+
+  public void setProxyServerName(String proxyServerName)
+  {
+    this.proxyServerName = proxyServerName;
+    save();
+  }
+
+  public void setProxyServerPort(int proxyServerPort)
+  {
+    this.proxyServerPort = proxyServerPort;
+    save();
+  }
+
+  public void setProxyUserName(String proxyUserName)
+  {
+    this.proxyUserName = proxyUserName;
+    save();
+  }
+
+  public void setSelectSecondTab(boolean selectSecondTab)
+  {
+    this.selectSecondTab = selectSecondTab;
+    save();
+  }
+
+  public void setUseHttpProxy(boolean useHttpProxy)
+  {
+    this.useHttpProxy = useHttpProxy;
+    save();
+  }
+
+  public void setUseProxyAuthentication(boolean useProxyAuthentication)
+  {
+    this.useProxyAuthentication = useProxyAuthentication;
+    save();
+  }
+
+  public void setWatchFilesForChanges(boolean watchFilesForChanges)
+  {
+    this.watchFilesForChanges = watchFilesForChanges;
+    save();
+  }
+
   /** Save the preferences to disk. */
   @Override
   public void save()
@@ -57,58 +108,12 @@ public class GradleScriptPreferences extends ScriptPreferences
     preferencesStore.putInt(PROXY_SERVER_PORT, proxyServerPort);
     preferencesStore.putBoolean(USE_PROXY_AUTHENTICATION, useProxyAuthentication);
     preferencesStore.put(PROXY_USER_NAME, proxyUserName);
-
-    // preferencesStore.put(PROXY_USER_NAME,proxyUserName);
+    preferencesStore.putBoolean(SELECT_SECOND_TAB, selectSecondTab);
   }
 
-  public void setWatchFilesForChanges(boolean watchFilesForChanges)
+  public boolean shouldUseHttpProxy()
   {
-    this.watchFilesForChanges = watchFilesForChanges;
-    save();
-  }
-
-  public String getProxyPassword()
-  {
-    return proxyPassword;
-  }
-
-  public void setProxyPassword(String proxyPassword)
-  {
-    this.proxyPassword = proxyPassword;
-    save();
-  }
-
-  public String getProxyServerName()
-  {
-    return proxyServerName;
-  }
-
-  public void setProxyServerName(String proxyServerName)
-  {
-    this.proxyServerName = proxyServerName;
-    save();
-  }
-
-  public int getProxyServerPort()
-  {
-    return proxyServerPort;
-  }
-
-  public void setProxyServerPort(int proxyServerPort)
-  {
-    this.proxyServerPort = proxyServerPort;
-    save();
-  }
-
-  public String getProxyUserName()
-  {
-    return proxyUserName;
-  }
-
-  public void setProxyUserName(String proxyUserName)
-  {
-    this.proxyUserName = proxyUserName;
-    save();
+    return useHttpProxy;
   }
 
   public boolean shouldUseProxyAuthentication()
@@ -116,25 +121,29 @@ public class GradleScriptPreferences extends ScriptPreferences
     return useProxyAuthentication;
   }
 
-  public void setUseProxyAuthentication(boolean useProxyAuthentication)
-  {
-    this.useProxyAuthentication = useProxyAuthentication;
-    save();
-  }
-
   public boolean watchFilesForChanges()
   {
     return watchFilesForChanges;
   }
 
-  public void setUseHttpProxy(boolean useHttpProxy)
+  // --------------------- GETTER / SETTER METHODS ---------------------
+  public String getProxyPassword()
   {
-    this.useHttpProxy = useHttpProxy;
-    save();
+    return proxyPassword;
   }
 
-  public boolean shouldUseHttpProxy()
+  public String getProxyServerName()
   {
-    return useHttpProxy;
+    return proxyServerName;
+  }
+
+  public int getProxyServerPort()
+  {
+    return proxyServerPort;
+  }
+
+  public String getProxyUserName()
+  {
+    return proxyUserName;
   }
 }

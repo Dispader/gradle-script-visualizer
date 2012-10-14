@@ -9,9 +9,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import static com.nurflugel.util.Util.*;
+import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.EXECUTE;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.GRADLE;
 import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.addToTaskMap;
 import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
+import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**
@@ -20,12 +22,13 @@ import static org.apache.commons.lang3.StringUtils.*;
  * <p>A Task can depend on other tasks, it can be a "Gradle" task, or, if an execute method is called on it, an "execute" task - we do that because
  * you're not supposed to call "execute" on tasks.</p>
  */
+@SuppressWarnings("UseOfSystemOutOrSystemErr")
 public class Task
 {
   private static boolean showFullyQualifiedTaskType = false;
   private String         name;
   private String         type;
-  private List<Task>     dependsOnTasks             = new ArrayList<Task>();
+  private List<Task>     dependsOnTasks             = new ArrayList<>();
 
   /** Default is GRADLE, can be switched to EXECUTE if that method is used. */
   private TaskUsage usage = GRADLE;
@@ -129,7 +132,7 @@ public class Task
    */
   public static List<Task> findOrCreateImplicitTasksByLine(Map<String, Task> taskMap, String line)
   {
-    List<Task> tasks       = new ArrayList<Task>();
+    List<Task> tasks       = new ArrayList<>();
     String     dependsText = ".dependsOn";
     String     text        = substringBefore(line, dependsText);
 
@@ -289,7 +292,7 @@ public class Task
         System.out.println("Task.findOrCreateImplicitTasksByExecute - we need to have a task in context");
       }
 
-      if (CollectionUtils.isNotEmpty(executeTasks))
+      if (isNotEmpty(executeTasks))
       {
         Task previousExecuteTask = executeTasks.get(executeTasks.size() - 1);
 
@@ -297,7 +300,7 @@ public class Task
       }
 
       executeTasks.add(executeTask);
-      executeTask.setUsage(TaskUsage.EXECUTE);
+      executeTask.setUsage(EXECUTE);
 
       return executeTask;
     }
@@ -321,7 +324,7 @@ public class Task
    */
   public static List<Task> findOrCreateTaskInForEach(String line, Map<String, Task> taskMap)
   {
-    List<Task> foundTasks = new ArrayList<Task>();
+    List<Task> foundTasks = new ArrayList<>();
     String     text       = line;
 
     text = substringBefore(text, EACH);
@@ -406,7 +409,7 @@ public class Task
       {
         Task newTask = findOrCreateTaskByName(taskMap, executeDependency);
 
-        newTask.setUsage(TaskUsage.EXECUTE);
+        newTask.setUsage(EXECUTE);
         dependsOnTasks.add(newTask);
       }
     }
@@ -447,7 +450,7 @@ public class Task
     boolean isType         = !StringUtils.equals(type, NO_TYPE);
 
     shouldShowType &= isType;
-    shouldShowType &= isNotEmpty(type);
+    shouldShowType &= StringUtils.isNotEmpty(type);
 
     return shouldShowType ? (name + "\\n" + "Type: " + type)
                           : name;
@@ -460,7 +463,7 @@ public class Task
    */
   public List<String> getDotDependencies()
   {
-    List<String> lines = new ArrayList<String>();
+    List<String> lines = new ArrayList<>();
 
     for (Task dependsOnTask : dependsOnTasks)
     {

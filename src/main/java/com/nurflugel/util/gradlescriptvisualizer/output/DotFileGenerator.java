@@ -11,6 +11,7 @@ import static com.nurflugel.util.Util.*;
 import static org.apache.commons.io.FileUtils.writeLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.apache.commons.io.FilenameUtils.getFullPath;
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 import static org.apache.commons.lang3.StringUtils.replace;
 
 /**
@@ -34,8 +35,8 @@ public class DotFileGenerator
   {
     preferences = scriptPreferences;
 
-    List<String>            output           = new ArrayList<String>();
-    Map<String, List<Task>> buildFileTaskMap = new HashMap<String, List<Task>>();
+    List<String>            output           = new ArrayList<>();
+    Map<String, List<Task>> buildFileTaskMap = new HashMap<>();
 
     output.add("digraph G {");
     output.add("node [shape=box,fontname=\"Arial\",fontsize=\"10\"];");
@@ -79,12 +80,12 @@ public class DotFileGenerator
   /** Build up the map of tasks. */
   private static void buildMapOfTasks(Map<String, List<Task>> buildFileTaskMap, Task task)
   {
-    String     buildScript = StringUtils.defaultIfEmpty(task.getBuildScript(), "no build script");
+    String     buildScript = defaultIfEmpty(task.getBuildScript(), "no build script");
     List<Task> tasks1      = buildFileTaskMap.get(buildScript);
 
     if (tasks1 == null)
     {
-      tasks1 = new ArrayList<Task>();
+      tasks1 = new ArrayList<>();
       buildFileTaskMap.put(buildScript, tasks1);
     }
 

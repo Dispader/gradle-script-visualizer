@@ -17,7 +17,7 @@ public class ParseUtil
    */
   public static String[] findLinesInScope(String line, List<String> lines)
   {
-    List<String> scopeLines = new ArrayList<String>();
+    List<String> scopeLines = new ArrayList<>();
     int          index      = lines.indexOf(line);
 
     // in case the opening { is on the next (or later) lines, scan ahead until we find it
