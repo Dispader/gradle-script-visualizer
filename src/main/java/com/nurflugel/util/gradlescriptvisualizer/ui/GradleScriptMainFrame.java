@@ -277,7 +277,7 @@ public class GradleScriptMainFrame
     if (watchFileForChangesCheckBox.isSelected())
     {
       // set a thread timer, pass it the maps, and have it call handleFileGeneration if any file in the map changes
-      FileWatcher fileWatcher = new FileWatcher(fileChecksums, this, parser);
+      FileWatcher fileWatcher = new FileWatcher(fileChecksums, parser);
 
       fileWatcher.execute();
     }

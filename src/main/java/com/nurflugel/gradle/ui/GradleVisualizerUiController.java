@@ -11,8 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.stage.FileChooser;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import static com.nurflugel.util.Util.VERSION;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 10/10/12 Time: 19:28 To change this template use File | Settings | File Templates. */
@@ -56,7 +58,16 @@ public class GradleVisualizerUiController implements Initializable
 
   public void generateScriptGraphButtonClicked(ActionEvent event)
   {
-    System.out.println("GradleVisualizerUiController.selectGenerateScriptGraphButton");
+    parser.purgeAll();
+
+    try
+    {
+      parser.beginOnFile(watchFilesCheckbox.isSelected(), gradleFile);
+    }
+    catch (IOException e)
+    {
+      Dialog.showThrowable("Error parsing files", "Something bad happened, here's the stack trace", e);
+    }
   }
 
   public void generateDependencyGraphButtonClicked(ActionEvent event)

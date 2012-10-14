@@ -10,15 +10,13 @@ import java.util.Map;
 /** Watches the files in the map every second, and puts the current checkums into the map. */
 public class FileWatcher extends SwingWorker<Object, Object>
 {
-  private final Map<File, Long>       fileChecksums;
-  private final GradleScriptMainFrame gradleScriptMainFrame;
-  private GradleFileParser            parser;
+  private final Map<File, Long> fileChecksums;
+  private GradleFileParser      parser;
 
-  public FileWatcher(Map<File, Long> fileChecksums, GradleScriptMainFrame gradleScriptMainFrame, GradleFileParser parser)
+  public FileWatcher(Map<File, Long> fileChecksums, GradleFileParser parser)
   {
-    this.fileChecksums         = fileChecksums;
-    this.gradleScriptMainFrame = gradleScriptMainFrame;
-    this.parser                = parser;
+    this.fileChecksums = fileChecksums;
+    this.parser        = parser;
   }
 
   @Override
@@ -47,7 +45,7 @@ public class FileWatcher extends SwingWorker<Object, Object>
           // update the checksum
           fileChecksums.put(file, currentChecksum);
           parser.purgeAll();
-          gradleScriptMainFrame.handleFileGeneration(parser);
+          parser.handleFileGeneration();
         }
       }
     }

@@ -1,7 +1,10 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
+import com.nurflugel.util.GraphicFileCreator;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
+import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
+import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.io.IOUtils;
 import java.io.File;
@@ -28,6 +31,7 @@ public class GradleFileParser
   private Map<File, Long>         fileChecksums = new HashMap<>();
   private GradleScriptPreferences preferences;
   private Os                      os;
+  private final Set<File>         filesToRender = new HashSet<>();
 
   /** The starting point - the entry script. */
   private File baseFile;
@@ -335,5 +339,57 @@ public class GradleFileParser
   public void setBaseFile(File baseFile)
   {
     this.baseFile = baseFile;
+  }
+
+  /** Generate the output. */
+  public void handleFileGeneration() throws IOException
+  {
+    for (File file : filesToRender)
+    {
+      purgeAll();
+      parseFile(file);
+      System.out.println("selectedFile = " + file);
+
+      List<Task>         tasks            = getTasks();
+      DotFileGenerator   dotFileGenerator = new DotFileGenerator();
+      List<String>       lines            = dotFileGenerator.createOutput(tasks, preferences);
+      File               dotFile          = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
+      GraphicFileCreator fileCreator      = new GraphicFileCreator();
+
+      fileCreator.processDotFile(dotFile, preferences, os);
+    }
+  }
+
+  public void beginOnFile(boolean watchFileForChanges, File... gradleFiles) throws IOException
+  {
+    filesToRender.addAll(Arrays.asList(gradleFiles));
+
+    // chooser.hide();
+    if (gradleFiles.length > 0)
+    {
+      File selectedFile = gradleFiles[0];
+
+      baseFile = selectedFile;
+      preferences.setLastDir(selectedFile.getParent());
+    }
+
+    for (File selectedFile : gradleFiles)
+    {
+      // put the file checksum into a map so we can check it later if need be...
+      long checksum = checksumCRC32(selectedFile);
+
+      fileChecksums.put(selectedFile, checksum);
+      System.out.println("adding selectedFile = " + selectedFile + " to list with checksum = " + checksum);
+    }
+
+    handleFileGeneration();
+
+    if (watchFileForChanges)
+    {
+      // set a thread timer, pass it the maps, and have it call handleFileGeneration if any file in the map changes
+      FileWatcher fileWatcher = new FileWatcher(fileChecksums, this);
+
+      fileWatcher.execute();
+    }
   }
 }
