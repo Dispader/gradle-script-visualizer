@@ -1,5 +1,6 @@
 package com.nurflugel.util.dependencyvisualizer.ui;
 
+import com.nurflugel.gradle.ui.dialog.Dialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

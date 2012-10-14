@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="724.0" styleClass="theme" xmlns:fx="http://javafx.com/fxml" fx:controller="com.nurflugel.gradle.ui.GradleVisualizerUiController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="518.0" styleClass="theme" xmlns:fx="http://javafx.com/fxml" fx:controller="com.nurflugel.gradle.ui.GradleVisualizerUiController">
   <children>
     <TabPane prefHeight="376.0" prefWidth="731.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="142.0">
       <tabs>
@@ -17,22 +17,73 @@
           <content>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="theme">
               <children>
-                <AnchorPane id="AnchorPane" layoutX="65.0" layoutY="61.0" prefHeight="101.0" prefWidth="204.0" styleClass="borderedBox">
+                <VBox id="VBox" alignment="CENTER" layoutX="154.0" layoutY="40.0" spacing="15.0">
                   <children>
-                    <CheckBox fx:id="watchFilesCheckbox" layoutY="0.0" mnemonicParsing="false" selected="true" text="Watch files for changes" AnchorPane.leftAnchor="0.0" />
-                    <CheckBox fx:id="deleteDotFilesCheckbox" layoutY="32.0" mnemonicParsing="false" selected="true" text="Delete DOT files on exit" AnchorPane.leftAnchor="0.0" />
-                    <CheckBox fx:id="groupByFilesButton" layoutY="64.0" mnemonicParsing="false" text="Group by build file" AnchorPane.leftAnchor="0.0" />
+                    <AnchorPane id="AnchorPane" prefHeight="112.0" prefWidth="206.0">
+                      <children>
+                        <GridPane id="GridPane" layoutX="0.0" layoutY="21.0" styleClass="borderedBox" vgap="10.0">
+                          <children>
+                            <CheckBox fx:id="watchFilesCheckbox" mnemonicParsing="false" onAction="#saveCheckboxSettings" selected="true" text="Watch files for changes" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <CheckBox fx:id="deleteDotFilesCheckbox" mnemonicParsing="false" onAction="#saveCheckboxSettings" selected="true" text="Delete DOT files on exit" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <CheckBox fx:id="groupByFilesButton" mnemonicParsing="false" onAction="#groupByBuildFileClicked" text="Group by build file" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                        <Label layoutX="0.0" layoutY="0.0" styleClass="smallLabel" text="Output options" />
+                      </children>
+                    </AnchorPane>
+                    <Button id="generateGraphButton" fx:id="generateScriptGraphButton" disable="true" mnemonicParsing="false" onAction="#generateScriptGraphButtonClicked" text="Generate Graph" />
                   </children>
-                </AnchorPane>
-                <Button fx:id="generateGraphButton" layoutX="84.0" layoutY="190.0" mnemonicParsing="false" text="Generate Graph" />
-                <Label layoutX="65.0" layoutY="40.0" styleClass="smallLabel" text="Output options" />
+                </VBox>
               </children>
             </AnchorPane>
           </content>
         </Tab>
         <Tab text="Dependency Visualizer">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="theme">
+              <children>
+                <VBox id="VBox" alignment="CENTER" layoutX="103.0" layoutY="47.0" spacing="5.0">
+                  <children>
+                    <VBox id="VBox" alignment="TOP_LEFT" spacing="5.0">
+                      <children>
+                        <Label styleClass="smallLabel" text="Output options" />
+                        <GridPane id="GridPane" styleClass="borderedBox" vgap="10.0">
+                          <children>
+                            <CheckBox mnemonicParsing="false" onAction="#saveCheckboxSettings" text="Delete DOT files on exit" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Group id="Group" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                              <children>
+                                <RadioButton layoutX="0.0" layoutY="-9.0" mnemonicParsing="false" onAction="#saveCheckboxSettings" text="Show multiple configurations per graph">
+                                  <toggleGroup>
+                                    <ToggleGroup fx:id="configurationsGroup" />
+                                  </toggleGroup>
+                                </RadioButton>
+                                <RadioButton layoutX="0.0" layoutY="18.0" mnemonicParsing="false" onAction="#saveCheckboxSettings" selected="true" text="One configuration per graph" toggleGroup="$configurationsGroup" />
+                              </children>
+                            </Group>
+                          </children>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                      </children>
+                    </VBox>
+                    <Button fx:id="generateDependencyGraphButton" disable="true" mnemonicParsing="false" onAction="#generateDependencyGraphButtonClicked" text="Visualize Dependencies" />
+                  </children>
+                </VBox>
+              </children>
+            </AnchorPane>
           </content>
         </Tab>
       </tabs>
@@ -47,8 +98,19 @@
         <URL value="@../../util/dependencyvisualizer/ui/ui.css" />
       </stylesheets>
     </Label>
-    <Button fx:id="selectScriptButton"  layoutX="24.0" layoutY="100.0" mnemonicParsing="false" onAction="#selectScriptsClickedAction" text="Select Gradle Script" />
-    <Button fx:id="quitButton" cancelButton="true" layoutX="220.0" layoutY="100.0" mnemonicParsing="false" onAction="#quitClickedAction" text="Quit" />
+    <GridPane id="GridPane" hgap="30.0" layoutX="148.0" layoutY="100.0">
+      <children>
+        <Button fx:id="selectScriptButton" defaultButton="true" mnemonicParsing="false" onAction="#selectScriptsClickedAction" text="Select Gradle Script" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Button fx:id="quitButton" cancelButton="true" mnemonicParsing="false" onAction="#quitClickedAction" text="Quit" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="144.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="51.0" minWidth="10.0" prefWidth="49.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
   </children>
   <stylesheets>
     <URL value="@ui.css" />

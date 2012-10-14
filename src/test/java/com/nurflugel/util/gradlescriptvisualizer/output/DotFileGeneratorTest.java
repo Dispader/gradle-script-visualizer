@@ -4,9 +4,7 @@ import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.testng.annotations.Test;
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import static com.nurflugel.util.test.TestResources.getFilePath;
 import static org.testng.Assert.assertEquals;
@@ -19,7 +17,7 @@ public class DotFileGeneratorTest
   public void testGenerateSimpleDotFile() throws IOException
   {
     String           gradleFileName = getFilePath("gradle/dasbuild.gradle");
-    GradleFileParser parser         = new GradleFileParser(new HashMap<File, Long>(), new GradleScriptPreferences());
+    GradleFileParser parser         = new GradleFileParser(new GradleScriptPreferences());
 
     parser.parseFile(gradleFileName);
 

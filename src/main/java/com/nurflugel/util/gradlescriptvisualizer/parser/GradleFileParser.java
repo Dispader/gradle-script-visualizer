@@ -1,5 +1,6 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
+import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.io.IOUtils;
@@ -24,11 +25,17 @@ public class GradleFileParser
   private Map<String, Task> taskMap = new HashMap<String, Task>();
 
   /** map of checksums for all the build files. If any of these change, the graph is regenerated. Presto! */
-  private Map<File, Long>         fileChecksums;
+  private Map<File, Long>         fileChecksums = new HashMap<>();
   private GradleScriptPreferences preferences;
+  private Os                      os;
 
   /** The starting point - the entry script. */
   private File baseFile;
+
+  public GradleFileParser(GradleScriptPreferences preferences)
+  {
+    this.preferences = preferences;
+  }
 
   /** if the task doesn't exist in the map, add it. */
   public static void addToTaskMap(Map<String, Task> taskMap, String name, Task task)
@@ -39,10 +46,10 @@ public class GradleFileParser
     }
   }
 
-  public GradleFileParser(Map<File, Long> fileChecksums, GradleScriptPreferences preferences)
+  public GradleFileParser(GradleScriptPreferences preferences, Os os)
   {
-    this.fileChecksums = fileChecksums;
-    this.preferences   = preferences;
+    this.preferences = preferences;
+    this.os          = os;
   }
 
   // -------------------------- OTHER METHODS --------------------------

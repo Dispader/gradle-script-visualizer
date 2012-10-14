@@ -58,7 +58,7 @@ public class GradleScriptMainFrame
     addActionListeners();
     dotExecutablePath = preferences.getDotExecutablePath();  // todo this is ugly, fix it somehow
     preferences.setDotExecutablePath(dotExecutablePath);
-    parser = new GradleFileParser(fileChecksums, preferences);
+    parser = new GradleFileParser(preferences, os);
   }
 
   /** I like to put all the listeners in one method. */
