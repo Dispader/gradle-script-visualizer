@@ -21,9 +21,10 @@
         <all-permissions/>
     </security>
     <resources>
-        <j2se version="1.6+"  initial-heap-size="64m" max-heap-size="512m"/>
+        <j2se version="1.7_07+"  initial-heap-size="64m" max-heap-size="512m"/>
         <jar href="lib/GradleScriptVisualizer.jar"/>
         <!--<jar href="lib/forms_rt-11.0.3.jar"/>-->
+        <!--<jar href="lib/jfxrt.jar.jar"/>-->
         <jar href="lib/commons-io-2.2.jar"/>
         <jar href="lib/commons-collections-3.2.1.jar"/>
         <jar href="lib/asm-3.1.jar"/>
