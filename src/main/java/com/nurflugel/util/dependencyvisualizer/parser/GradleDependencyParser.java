@@ -3,16 +3,20 @@ package com.nurflugel.util.dependencyvisualizer.parser;
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 import com.nurflugel.util.dependencyvisualizer.domain.Pointer;
+import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
+import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.ConcurrentException;
 import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.isConfigurationLine;
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.readConfiguration;
+import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createOutputForFile;
 import static java.io.File.separator;
 import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -177,5 +181,17 @@ public class GradleDependencyParser
   public List<Configuration> getConfigurations()
   {
     return configurations;
+  }
+
+  public void parseDependencies(Os os, File gradleFile, GradleScriptPreferences preferences) throws IOException, ClassNotFoundException,
+                                                                                                    InvocationTargetException, NoSuchMethodException,
+                                                                                                    IllegalAccessException
+  {
+    File outputForFile = createOutputForFile(gradleFile, this, preferences, "dibble.dot");
+
+    if (outputForFile != null)
+    {
+      os.openFile(outputForFile.getAbsolutePath());
+    }
   }
 }

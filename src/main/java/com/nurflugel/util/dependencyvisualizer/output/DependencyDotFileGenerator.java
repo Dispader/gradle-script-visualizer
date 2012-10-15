@@ -19,20 +19,17 @@ import static org.apache.commons.lang3.StringUtils.replace;
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 10/3/12 Time: 11:27 To change this template use File | Settings | File Templates. */
 public class DependencyDotFileGenerator
 {
-  public static final String SPACE       = " ";
-  private ScriptPreferences  preferences;
+  public static final String SPACE = " ";
 
   /**
    * For the list of tasks, create the lines for output based on the given preferences.
    *
-   * @param   scriptPreferences  preferences read in from disk or modified by user
+   * @param   preferences  preferences read in from disk or modified by user
    *
    * @return  list of text lines to be written to disk
    */
-  public List<String> createOutput(List<Configuration> configurations, GradleScriptPreferences scriptPreferences)
+  public List<String> createOutput(List<Configuration> configurations, GradleScriptPreferences preferences)
   {
-    preferences = scriptPreferences;
-
     List<String> output = new ArrayList<String>();
 
     output.add("digraph G {");
@@ -40,8 +37,8 @@ public class DependencyDotFileGenerator
     output.add("edge [fontname=\"Arial\",fontsize=\"8\"];");
     output.add("rankdir=BT;");
     output.add("");
-    output.add("concentrate=" + (scriptPreferences.shouldConcentrate() ? "true"
-                                                                       : "false") + ';');
+    output.add("concentrate=" + (preferences.shouldConcentrate() ? "true"
+                                                                 : "false") + ';');
 
     // build up a map of build files and their tasks - if a task has null, add it to "no build file"
     List<Configuration> selectedConfigurations = new ArrayList<Configuration>();

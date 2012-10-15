@@ -8,7 +8,7 @@
         <title>Gradle Script Visualizer</title>
         <vendor>From Nurflugel.com...</vendor>
         <homepage href="index_gradle.html"/>
-        <description>Gradle Script Dependency Visualizer</description>
+        <description>Gradle Script and Gradle Dependency Visualizer</description>
         <icon href="images/gradleLogo.jpg"/>
         <icon kind="splash"
               href="images/gradleLogo.jpg"/>
@@ -23,7 +23,8 @@
     <resources>
         <j2se version="1.6+"  initial-heap-size="64m" max-heap-size="512m"/>
         <jar href="lib/GradleScriptVisualizer.jar"/>
-        <jar href="lib/forms_rt-@forms_rt@.jar"/>
+        <!--<jar href="lib/forms_rt-@forms_rt@.jar"/>-->
+        <!--<jar href="lib/jfxrt.jar.jar"/>-->
         <jar href="lib/commons-io-@commons_io@.jar"/>
         <jar href="lib/commons-collections-@commons_collections@.jar"/>
         <jar href="lib/asm-@asm@.jar"/>
@@ -31,6 +32,6 @@
         <jar href="lib/log4j-@log4j@.jar"/>
         <jar href="lib/jhall-@jhall@.jar"/>
     </resources>
-    <application-desc main-class="com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptMainFrame"/>
+    <application-desc main-class="com.nurflugel.gradle.ui.Main"/>
 </jnlp>
 

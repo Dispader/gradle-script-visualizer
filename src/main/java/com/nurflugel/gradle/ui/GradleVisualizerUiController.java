@@ -1,6 +1,7 @@
 package com.nurflugel.gradle.ui;
 
 import com.nurflugel.gradle.ui.dialog.Dialog;
+import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
@@ -12,9 +13,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
@@ -24,7 +25,9 @@ public class GradleVisualizerUiController implements Initializable
 {
   private GradleScriptPreferences preferences;
   private Os                      os;
-  private GradleFileParser        parser;
+  private GradleFileParser        scriptParser;
+  private File                    gradleFile;
+  private GradleDependencyParser  dependencyParser;
   @FXML
   private Button                  selectScriptButton;
   @FXML
@@ -61,28 +64,53 @@ public class GradleVisualizerUiController implements Initializable
   private VBox                    userBox;
   @FXML
   private TabPane                 tabPane;
-  private File                    gradleFile;
+
+  // --------------------------- main() method ---------------------------
+  public static void main(String[] args)
+  {
+    GradleVisualizerUiController controller = new GradleVisualizerUiController();
+
+    controller.initialize(null, null);
+  }
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle)
   {
-    preferences = new GradleScriptPreferences();
-    os          = findOs();
-    parser      = new GradleFileParser(preferences, os);
+    preferences      = new GradleScriptPreferences();
+    os               = findOs();
+    scriptParser     = new GradleFileParser(preferences, os);
+    dependencyParser = new GradleDependencyParser();
     instantiateUiFromSettings();  // todo figure out why this isn't being done after the UI is created - NPEs are being thrown
   }
 
-  private void instantiateUiFromSettings()
+  // -------------------------- OTHER METHODS --------------------------
+  public void generateDependencyGraphButtonClicked(ActionEvent event)
   {
-    // watchFilesCheckbox.setSelected(preferences.watchFilesForChanges());
-    // deleteDotFilesCheckbox.setSelected(preferences.shouldDeleteDotFilesOnExit());
-    // groupByFilesCheckbox.setSelected(preferences.shouldGroupByBuildfiles());
-    // shouldIncludeImportedFilesCheckbox.setSelected(preferences.shouldIncludeImportedFiles());
-    // useHttpProxyCheckbox.setSelected(preferences.shouldUseHttpProxy());
-    // useHttpProxyAuthenticationCheckbox.setSelected(preferences.shouldUseProxyAuthentication());
-    proxyServerNameField.setText(preferences.getProxyServerName());  // these override the helpful text if not empty or null
-    proxyServerPortField.setText(preferences.getProxyServerPort() + "");
-    proxyUserNameField.setText(preferences.getProxyUserName());
+    System.out.println("GradleVisualizerUiController.generateDependencyGraphButtonClicked");
+
+    try
+    {
+      dependencyParser.parseDependencies(os, gradleFile, preferences);
+    }
+    catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e)
+    {
+      Dialog.showThrowable("Error parsing dependencies", "Something bad happened, here's the stack trace", e);
+    }
+  }
+
+  public void generateScriptGraphButtonClicked(ActionEvent event)
+  {
+    scriptParser.purgeAll();
+
+    try
+    {
+      saveSettings();
+      scriptParser.beginOnFile(watchFilesCheckbox.isSelected(), gradleFile);
+    }
+    catch (IOException e)
+    {
+      Dialog.showThrowable("Error parsing files", "Something bad happened, here's the stack trace", e);
+    }
   }
 
   // todo as tab selection changes, let the file chooser select multiple or single Gradle files
@@ -91,26 +119,6 @@ public class GradleVisualizerUiController implements Initializable
     System.out.println("GradleVisualizerUiController.groupByBuildFileClicked");
     saveSettings();
     // reparse scripts
-  }
-
-  public void generateScriptGraphButtonClicked(ActionEvent event)
-  {
-    parser.purgeAll();
-
-    try
-    {
-      saveSettings();
-      parser.beginOnFile(watchFilesCheckbox.isSelected(), gradleFile);
-    }
-    catch (IOException e)
-    {
-      Dialog.showThrowable("Error parsing files", "Something bad happened, here's the stack trace", e);
-    }
-  }
-
-  public void generateDependencyGraphButtonClicked(ActionEvent event)
-  {
-    System.out.println("GradleVisualizerUiController.generateDependencyGraphButtonClicked");
   }
 
   public void saveSettings()
@@ -146,7 +154,7 @@ public class GradleVisualizerUiController implements Initializable
     }
   }
 
-  /** check to see if everything's been instantiated yet, as it seems that events are being called before everythings instantiated. */
+  /** check to see if everything's been instantiated yet, as it seems that events are being called before everything's instantiated. */
   private static boolean areAllNotNull(Object... components)
   {
     for (Object component : components)
@@ -160,29 +168,30 @@ public class GradleVisualizerUiController implements Initializable
     return true;
   }
 
-  public void useHttpProxyBoxClicked()
+  private void instantiateUiFromSettings()
   {
-    System.out.println("GradleVisualizerUiController.useHttpProxyBoxClicked");
+    // watchFilesCheckbox.setSelected(preferences.watchFilesForChanges());
+    // deleteDotFilesCheckbox.setSelected(preferences.shouldDeleteDotFilesOnExit());
+    // groupByFilesCheckbox.setSelected(preferences.shouldGroupByBuildfiles());
+    // shouldIncludeImportedFilesCheckbox.setSelected(preferences.shouldIncludeImportedFiles());
+    // useHttpProxyCheckbox.setSelected(preferences.shouldUseHttpProxy());
+    // useHttpProxyAuthenticationCheckbox.setSelected(preferences.shouldUseProxyAuthentication());
+    proxyServerNameField.setText(preferences.getProxyServerName());  // these override the helpful text if not empty or null
+    proxyServerPortField.setText(preferences.getProxyServerPort() + "");
+    proxyUserNameField.setText(preferences.getProxyUserName());
 
-    boolean selected = useHttpProxyCheckbox.isSelected();
+    boolean                   selectSecondTab = preferences.getSelectSecondTab();
+    SingleSelectionModel<Tab> selectionModel  = tabPane.getSelectionModel();
+    int                       tabToSelect     = selectSecondTab ? 1
+                                                                : 0;
 
-    proxyBox.setVisible(selected);
-    useHttpProxyAuthenticationCheckbox.setVisible(selected);
-
-    if (!selected)
-    {
-      useHttpProxyAuthenticationCheckbox.setSelected(false);
-      userBox.setVisible(false);
-    }
-
-    saveSettings();
+    selectionModel.select(tabToSelect);
   }
 
-  public void useHttpAuthenticationBoxClicked()
+  public void quitClickedAction(ActionEvent event)
   {
-    System.out.println("GradleVisualizerUiController.useHttpAuthenticationBoxClicked");
-    userBox.setVisible(useHttpProxyAuthenticationCheckbox.isSelected());
     saveSettings();
+    System.exit(0);
   }
 
   public void selectScriptsClickedAction(ActionEvent event)
@@ -215,16 +224,28 @@ public class GradleVisualizerUiController implements Initializable
     // doing").addYesButton(actionHandler).addNoButton(actionHandler).build().show();
   }
 
-  public void quitClickedAction(ActionEvent event)
+  public void useHttpAuthenticationBoxClicked()
   {
+    System.out.println("GradleVisualizerUiController.useHttpAuthenticationBoxClicked");
+    userBox.setVisible(useHttpProxyAuthenticationCheckbox.isSelected());
     saveSettings();
-    System.exit(0);
   }
 
-  public static void main(String[] args)
+  public void useHttpProxyBoxClicked()
   {
-    GradleVisualizerUiController controller = new GradleVisualizerUiController();
+    System.out.println("GradleVisualizerUiController.useHttpProxyBoxClicked");
 
-    controller.initialize(null, null);
+    boolean selected = useHttpProxyCheckbox.isSelected();
+
+    proxyBox.setVisible(selected);
+    useHttpProxyAuthenticationCheckbox.setVisible(selected);
+
+    if (!selected)
+    {
+      useHttpProxyAuthenticationCheckbox.setSelected(false);
+      userBox.setVisible(false);
+    }
+
+    saveSettings();
   }
 }

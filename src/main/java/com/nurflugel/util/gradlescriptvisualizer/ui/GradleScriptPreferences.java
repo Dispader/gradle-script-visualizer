@@ -146,4 +146,9 @@ public class GradleScriptPreferences extends ScriptPreferences
   {
     return proxyUserName;
   }
+
+  public boolean getSelectSecondTab()
+  {
+    return selectSecondTab;
+  }
 }
