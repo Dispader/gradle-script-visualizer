@@ -21,7 +21,7 @@
         <all-permissions/>
     </security>
     <resources>
-      <j2se version="1.7+" href="http://java.sun.com/products/autodl/j2se" initial-heap-size="64m" max-heap-size="512m"/>
+      <j2se version="1.7+" initial-heap-size="64m" max-heap-size="512m"/>
         <jar href="lib/GradleScriptVisualizer.jar"/>
         <!--<jar href="lib/forms_rt-@forms_rt@.jar"/>-->
         <jar href="lib/jfxrt.jar"/>
