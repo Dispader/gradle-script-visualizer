@@ -5,7 +5,7 @@
     codebase="http://gradle-script-visualizer.googlecode.com/svn/@subversion_trunk_or_branch@/webstart/"
     href="gradlescriptVisualizer.jnlp">
     <information>
-        <title>Gradle Script Visualizer</title>
+        <title>Gradle Script and Gradle Dependency  Visualizer</title>
         <vendor>From Nurflugel.com...</vendor>
         <homepage href="index_gradle.html"/>
         <description>Gradle Script and Gradle Dependency Visualizer</description>
