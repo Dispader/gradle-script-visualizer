@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import static com.nurflugel.gradle.ui.dialog.Dialog.showError;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 10/10/12 Time: 19:28 To change this template use File | Settings | File Templates. */
@@ -26,12 +27,11 @@ public class GradleVisualizerUiController implements Initializable
   private GradleScriptPreferences preferences;
   private Os                      os;
   private GradleFileParser        scriptParser;
-  private File                    gradleFile;
   private GradleDependencyParser  dependencyParser;
   @FXML
-  private Button                  selectScriptButton;
-  @FXML
   private Button                  quitButton;
+  @FXML
+  private Button                  quitButton2;
   @FXML
   private Button                  generateScriptGraphButton;
   @FXML
@@ -73,6 +73,17 @@ public class GradleVisualizerUiController implements Initializable
     controller.initialize(null, null);
   }
 
+  public void tabClosed(ActionEvent e)
+  {
+    System.out.println("GradleVisualizerUiController.tabClosed");
+  }
+
+  public void tabSwitched()
+  {
+    setDefaultButton(null);
+    saveSettings();
+  }
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle)
   {
@@ -88,6 +99,8 @@ public class GradleVisualizerUiController implements Initializable
   {
     System.out.println("GradleVisualizerUiController.generateDependencyGraphButtonClicked");
 
+    File gradleFile = selectScriptsClickedAction();
+
     try
     {
       dependencyParser.parseDependencies(os, gradleFile, preferences);
@@ -100,6 +113,8 @@ public class GradleVisualizerUiController implements Initializable
 
   public void generateScriptGraphButtonClicked(ActionEvent event)
   {
+    File gradleFile = selectScriptsClickedAction();
+
     scriptParser.purgeAll();
 
     try
@@ -170,12 +185,12 @@ public class GradleVisualizerUiController implements Initializable
 
   private void instantiateUiFromSettings()
   {
-    // watchFilesCheckbox.setSelected(preferences.watchFilesForChanges());
-    // deleteDotFilesCheckbox.setSelected(preferences.shouldDeleteDotFilesOnExit());
-    // groupByFilesCheckbox.setSelected(preferences.shouldGroupByBuildfiles());
-    // shouldIncludeImportedFilesCheckbox.setSelected(preferences.shouldIncludeImportedFiles());
-    // useHttpProxyCheckbox.setSelected(preferences.shouldUseHttpProxy());
-    // useHttpProxyAuthenticationCheckbox.setSelected(preferences.shouldUseProxyAuthentication());
+    watchFilesCheckbox.setSelected(preferences.watchFilesForChanges());
+    deleteDotFilesCheckbox.setSelected(preferences.shouldDeleteDotFilesOnExit());
+    groupByFilesCheckbox.setSelected(preferences.shouldGroupByBuildfiles());
+    shouldIncludeImportedFilesCheckbox.setSelected(preferences.shouldIncludeImportedFiles());
+    useHttpProxyCheckbox.setSelected(preferences.shouldUseHttpProxy());
+    useHttpProxyAuthenticationCheckbox.setSelected(preferences.shouldUseProxyAuthentication());
     proxyServerNameField.setText(preferences.getProxyServerName());  // these override the helpful text if not empty or null
     proxyServerPortField.setText(preferences.getProxyServerPort() + "");
     proxyUserNameField.setText(preferences.getProxyUserName());
@@ -186,6 +201,7 @@ public class GradleVisualizerUiController implements Initializable
                                                                 : 0;
 
     selectionModel.select(tabToSelect);
+    setDefaultButton(null);
   }
 
   public void quitClickedAction(ActionEvent event)
@@ -194,7 +210,7 @@ public class GradleVisualizerUiController implements Initializable
     System.exit(0);
   }
 
-  public void selectScriptsClickedAction(ActionEvent event)
+  public File selectScriptsClickedAction()
   {
     FileChooser fileChooser = new FileChooser();
     File        lastDir     = new File(preferences.getLastDir());
@@ -208,20 +224,31 @@ public class GradleVisualizerUiController implements Initializable
 
     if (file != null)
     {
-      gradleFile = file;
+      // gradleFile = file;
       preferences.setLastDir(file.getParent());
       generateDependencyGraphButton.setDisable(false);
       generateScriptGraphButton.setDisable(false);
-      selectScriptButton.setDefaultButton(false);
+
+      // setDefaultButton();
+      return file;
     }
-    else
-    {
-      Dialog.showError("No file selected", "Nothing will happen until you select a file first");
-    }
+
+    showError("No file selected", "Nothing will happen until you select a file first");
+
     // examples of dialogs - one with a handler, one without Dialog.showError("You're fucked", "Bend over and smile"); EventHandler actionHandler =
     // new EventHandler() { @Override public void handle(Event event) { System.out.println("GradleVisualizerUiController.handle"); } };
     // Dialog.buildConfirmation("you need to OK this", "Think about what you're
     // doing").addYesButton(actionHandler).addNoButton(actionHandler).build().show();
+    return null;
+  }
+
+  private void setDefaultButton(ActionEvent e)
+  {
+    boolean isFirstTabSelected  = tabPane.getTabs().get(0).isSelected();
+    boolean isFirstTabSelected2 = tabPane.getSelectionModel().getSelectedIndex() == 0;
+
+    generateScriptGraphButton.setDefaultButton(true);
+    generateDependencyGraphButton.setDefaultButton(true);
   }
 
   public void useHttpAuthenticationBoxClicked()

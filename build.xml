@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+    
+    
+<project name="fxml packager"
+         xmlns:fx="javafx:com.sun.javafx.tools.ant">
+
+ <property name="javafx.sdk.path"
+           value="/Library/Java/JavaVirtualMachines/jdk1.7.0_10.jdk/Contents/Home/"/>
+  
+ <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+          uri="javafx:com.sun.javafx.tools.ant"
+          classpath="${javafx.sdk.path}/lib/ant-javafx.jar"/>
+  
+ <fx:jar destfile="dist-web/ColorfulCircles.jar">
+     <fx:application mainClass="com.nurflugel.gradle.ui.Main"/>
+     <fileset dir="build/classes/">
+         <include name="**"/>
+     </fileset>
+ </fx:jar>
+  
+ <fx:deploy width="800"
+            height="600"
+            outdir="dist-web"
+            outfile="ColorfulCircles"
+            nativeBundles="all">
+     <fx:info title="Colorful Circles"/>
+     <fx:application name="Colorful Circles example"
+                     mainClass="com.nurflugel.gradle.ui.Main"/>
+     <fx:resources>
+         <fx:fileset dir="dist-web"
+                     includes="ColorfulCircles.jar"/>
+         <fx:fileset dir="webstart/lib"
+                     includes="*.jar"
+                     excludes="GradleScriptVisualizer.jar"/>
+     </fx:resources>
+ </fx:deploy> 
+ 
+  
+  
+  
+</project>

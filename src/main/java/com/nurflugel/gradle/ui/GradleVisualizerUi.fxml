@@ -68,12 +68,13 @@
                     </VBox>
                   </children>
                 </VBox>
-                <Button fx:id="generateScriptGraphButton" layoutX="180.0" layoutY="215.0" mnemonicParsing="false" onAction="#generateScriptGraphButtonClicked" text="Generate Graph" />
+                <Button fx:id="generateScriptGraphButton" layoutX="65.0" layoutY="215.0" mnemonicParsing="false" onAction="#generateScriptGraphButtonClicked" text="Select Script and Generate Graph" />
+                <Button fx:id="quitButton" cancelButton="true" layoutX="318.0" layoutY="215.0" mnemonicParsing="false" onAction="#quitClickedAction" text="Quit" />
               </children>
             </AnchorPane>
           </content>
         </Tab>
-        <Tab onSelectionChanged="#saveSettings" text="Dependency Visualizer">
+        <Tab onClosed="#tabClosed" onSelectionChanged="#tabSwitched" text="Dependency Visualizer">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="theme">
               <children>
@@ -106,9 +107,10 @@
                         </GridPane>
                       </children>
                     </VBox>
-                    <Button fx:id="generateDependencyGraphButton" disable="true" mnemonicParsing="false" onAction="#generateDependencyGraphButtonClicked" text="Visualize Dependencies" />
                   </children>
                 </VBox>
+                <Button fx:id="generateDependencyGraphButton" disable="false" layoutX="74.0" layoutY="207.0" mnemonicParsing="false" onAction="#generateDependencyGraphButtonClicked" text="Select Script and Visualize Dependencies" />
+                <Button id="quitButton" fx:id="quitButton2" cancelButton="true" layoutX="371.0" layoutY="207.0" mnemonicParsing="false" onAction="#quitClickedAction" text="Quit" />
               </children>
             </AnchorPane>
           </content>
@@ -121,10 +123,6 @@
       </image>
     </ImageView>
     <GridPane id="GridPane" hgap="30.0" layoutX="148.0" layoutY="90.0">
-      <children>
-        <Button fx:id="selectScriptButton" defaultButton="true" mnemonicParsing="false" onAction="#selectScriptsClickedAction" text="Select Gradle Script" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <Button fx:id="quitButton" cancelButton="true" mnemonicParsing="false" onAction="#quitClickedAction" text="Quit" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-      </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="144.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="51.0" minWidth="10.0" prefWidth="49.0" />
