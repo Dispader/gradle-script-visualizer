@@ -1,33 +1,24 @@
 package com.nurflugel.gradle.ui.dialog;
 
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
-import com.sun.javafx.scene.layout.region.StrokeBorder;
+import com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator;
+import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.DataFormat;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderPaneBuilder;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Window;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import static com.nurflugel.gradle.ui.dialog.StacktraceExtractor.extract;
 import static javafx.geometry.Pos.BOTTOM_CENTER;
 import static javafx.geometry.Pos.CENTER;
 import static javafx.geometry.Pos.CENTER_LEFT;
@@ -38,18 +29,26 @@ import static javafx.stage.StageStyle.UTILITY;
 /** Dialog builder. */
 public class ConfigurationsDialogBuilder
 {
-  private static final int          STACKTRACE_LABEL_MAXHEIGHT = 240;
-  private static final int          MESSAGE_MIN_WIDTH          = 180;
-  private static final int          MESSAGE_MAX_WIDTH          = 800;
-  private static final int          BUTTON_WIDTH               = 60;
-  private static final double       MARGIN                     = 10;
-  private static final String       ICON_PATH                  = "/com/nurflugel/gradle/ui/dialog/";
-  private ConfigurationChoiceDialog dialog;
+  private static final int           STACKTRACE_LABEL_MAXHEIGHT = 240;
+  private static final int           MESSAGE_MIN_WIDTH          = 180;
+  private static final int           MESSAGE_MAX_WIDTH          = 800;
+  private static final int           BUTTON_WIDTH               = 60;
+  private static final double        MARGIN                     = 10;
+  private static final String        ICON_PATH                  = "/com/nurflugel/gradle/ui/dialog/";
+  private ConfigurationChoiceDialog  dialog;
+  private DependencyDotFileGenerator dependencyDotFileGenerator;
+  private List<String>               output;
+  private Os                         os;
+  private String                     outputFileName;
 
-  public ConfigurationsDialogBuilder create()
+  public ConfigurationsDialogBuilder create(DependencyDotFileGenerator dependencyDotFileGenerator, List<String> output, Os os, String outputFileName)
   {
-    dialog = new ConfigurationChoiceDialog();
-    dialog.setResizable(false);
+    this.outputFileName             = outputFileName;
+    this.dependencyDotFileGenerator = dependencyDotFileGenerator;
+    this.output                     = output;
+    this.os                         = os;
+    dialog                          = new ConfigurationChoiceDialog();
+    dialog.setResizable(true);
     dialog.initStyle(UTILITY);
     dialog.initModality(APPLICATION_MODAL);
     dialog.setIconified(false);
@@ -60,8 +59,10 @@ public class ConfigurationsDialogBuilder
     VBox configurationsBox = new VBox();
 
     dialog.configurationsBox = configurationsBox;
+    configurationsBox.setSpacing(15);
     configurationsBox.setAlignment(CENTER_LEFT);
     dialog.scrollPane = new ScrollPane();
+    dialog.scrollPane.setContent(dialog.configurationsBox);
 
     // dialog.messageLabel = new Label();
     // dialog.messageLabel.setWrapText(true);
@@ -107,6 +108,11 @@ public class ConfigurationsDialogBuilder
       dialog.borderPanel.setMaxWidth(owner.getWidth());
       dialog.borderPanel.setMaxHeight(owner.getHeight());
     }
+    else
+    {
+      dialog.setWidth(400);
+      dialog.setHeight(500);
+    }
 
     return this;
   }
@@ -140,6 +146,7 @@ public class ConfigurationsDialogBuilder
         public void handle(ActionEvent t)
         {
           dialog.chosenConfiguration = getChosenConfiguration();
+          dependencyDotFileGenerator.generateOutputForConfigurations(output, dialog.chosenConfiguration, outputFileName, os);
           dialog.close();
         }
       });
@@ -165,7 +172,9 @@ public class ConfigurationsDialogBuilder
 
           for (Configuration configuration : configurations)
           {
-            if (configuration.getNiceDotName().equals(text))
+            String name = configuration.getName();
+
+            if (name.equals(text))
             {
               return configuration;
             }
@@ -232,7 +241,7 @@ public class ConfigurationsDialogBuilder
       RadioButton configurationRadioButton = new RadioButton(configuration.getName());
 
       configurationRadioButton.setToggleGroup(toggleGroup);
-      dialog.configurationsBox.getChildren().add(configurationRadioButton);
+      dialog.configurationsBox.getChildren().add(configurationRadioButton);  // todo select default
     }
 
     return this;

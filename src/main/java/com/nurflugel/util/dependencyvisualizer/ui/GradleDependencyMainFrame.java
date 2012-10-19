@@ -8,8 +8,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -147,20 +145,7 @@ public class GradleDependencyMainFrame
       File selectedFile = chooser.getSelectedFile();
 
       chooser.hide();
-
-      File outputForFile = createOutputForFile(selectedFile, parser, preferences, "dibble.dot");
-
-      if (outputForFile != null)
-      {
-        try
-        {
-          os.openFile(outputForFile.getAbsolutePath());
-        }
-        catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | ClassNotFoundException e)
-        {
-          e.printStackTrace();
-        }
-      }
+      createOutputForFile(selectedFile, parser, preferences, "dibble.dot", os);
     }
   }
 

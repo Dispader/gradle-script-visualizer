@@ -1,9 +1,8 @@
 package com.nurflugel.util.dependencyvisualizer.output;
 
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
+import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
-import com.nurflugel.util.test.TestResources;
-import org.apache.commons.io.FileUtils;
 import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +29,8 @@ public class DependencyDotFileGeneratorTest
     GradleDependencyParser  parser         = new GradleDependencyParser();
     GradleScriptPreferences preferences    = new GradleScriptPreferences();
     String                  outputFileName = "das_dibble.dot";
-    File                    fileFromLines  = createDotFileFromLines(parser, preferences, outputFileName, lines.toArray(new String[lines.size()]));
+
+    createDotFileFromLines(parser, preferences, outputFileName, lines.toArray(new String[lines.size()]), Os.findOs());
   }
 
   @Test(groups = "long")
@@ -38,6 +38,6 @@ public class DependencyDotFileGeneratorTest
   {
     File file = new File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build.gradle");  // todo parameterize
 
-    createOutputForFile(file, new GradleDependencyParser(), new GradleScriptPreferences(), "dibble.dot");
+    createOutputForFile(file, new GradleDependencyParser(), new GradleScriptPreferences(), "dibble.dot", Os.findOs());
   }
 }

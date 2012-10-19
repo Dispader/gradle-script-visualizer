@@ -239,12 +239,8 @@ public class GradleDependencyParser
   {
     try
     {
-      File outputForFile = createOutputForFile(gradleFile, this, preferences, "dibble.dot");
+      createOutputForFile(gradleFile, this, preferences, "dibble.dot", os);
 
-      if (outputForFile != null)
-      {
-        os.openFile(outputForFile.getAbsolutePath());
-      }
     }
     catch (NoConfigurationsFoundException e)
     {

@@ -2,7 +2,7 @@ package com.nurflugel.util.dependencyvisualizer.output;
 
 import com.nurflugel.gradle.ui.dialog.ConfigurationChoiceDialog;
 import com.nurflugel.gradle.ui.dialog.ConfigurationsDialogBuilder;
-import com.nurflugel.util.ScriptPreferences;
+import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 import com.nurflugel.util.dependencyvisualizer.domain.ObjectWithArtifacts;
@@ -11,7 +11,9 @@ import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import static com.nurflugel.gradle.ui.dialog.Dialog.showThrowable;
 import static com.nurflugel.util.Util.*;
 import static org.apache.commons.io.FileUtils.writeLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
@@ -26,11 +28,14 @@ public class DependencyDotFileGenerator
   /**
    * For the list of tasks, create the lines for output based on the given preferences.
    *
-   * @param   preferences  preferences read in from disk or modified by user
+   * @param   preferences     preferences read in from disk or modified by user
+   * @param   outputFileName
+   * @param   os
    *
    * @return  list of text lines to be written to disk
    */
-  public List<String> createOutput(List<Configuration> configurations, GradleScriptPreferences preferences) throws NoConfigurationsFoundException
+  public void createOutput(List<Configuration> configurations, GradleScriptPreferences preferences, String outputFileName,
+                           Os os) throws NoConfigurationsFoundException
   {
     List<String> output = new ArrayList<>();
 
@@ -43,14 +48,10 @@ public class DependencyDotFileGenerator
                                                                  : "false") + ';');
 
     // build up a map of build files and their tasks - if a task has null, add it to "no build file"
-    List<Configuration> selectedConfigurations = new ArrayList<>();
-
     // for now, just allow one config to be graphed
-    Configuration configuration;
-
     if (configurations.size() > 1)
     {
-      configuration = getConfigurationFromDialog(configurations);
+      getConfigurationFromDialog(configurations, this, output, os, outputFileName);
     }
     else if (configurations.isEmpty())
     {
@@ -58,31 +59,17 @@ public class DependencyDotFileGenerator
     }
     else
     {
-      configuration = configurations.get(0);
+      generateOutputForConfigurations(output, configurations.get(0), outputFileName, os);
     }
+  }
 
-    if (configuration == null)
-    {
-      throw new NoConfigurationsFoundException();
-    }
-    // declare tasks
-    // for (Configuration configuration : configurations)
-    // {
-    // if (configuration.getName().equals("javac2"))  // todo figure out how to figure based on user input
-    // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
-    // if (configuration.getName().equals("compile"))  // todo figure out how to figure based on user input if
-    // (configuration.getName().equals("bddTestCompile"))  // todo figure out how to figure based on
-    // user input
+  public void generateOutputForConfigurations(List<String> output, Configuration configuration, String outputFileName, Os os)
+  {
+    List<Configuration> selectedConfigurations = new ArrayList<>();
 
-    // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
-    // if (configuration.getName().equals("plugins"))  // todo figure out how to figure based on user input
-    // {
-    // todo either add the dot declaration here, or the title, but not both.
     output.add(configuration.getDotDeclaration());
     selectedConfigurations.add(configuration);
 
-    // }
-    // }
     Set<Artifact> usedArtifacts = new TreeSet<>();
 
     buildMapOfUsedArtifacts(selectedConfigurations, usedArtifacts);
@@ -93,12 +80,7 @@ public class DependencyDotFileGenerator
     }
 
     output.add("\n\n");
-
-    // list their dependencies
-    // for (Configuration configuration : selectedConfigurations)
-    // {
     configuration.outputDependencies(output);
-    // }
 
     // if desired, group the tasks
     // if (scriptPreferences.shouldGroupByBuildfiles())
@@ -107,19 +89,41 @@ public class DependencyDotFileGenerator
     // }
     output.add("}");
 
-    return output;
+    try
+    {
+      createAndOpenFile(output, outputFileName, this, os);
+    }
+    catch (IOException e)
+    {
+      showThrowable("Something bad happened", "Unexpected error", e);
+    }
+    catch (ClassNotFoundException e)
+    {
+      e.printStackTrace();
+    }
+    catch (InvocationTargetException e)
+    {
+      e.printStackTrace();
+    }
+    catch (NoSuchMethodException e)
+    {
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e)
+    {
+      e.printStackTrace();
+    }
   }
 
-  private Configuration getConfigurationFromDialog(List<Configuration> configurations)
+  // todo show this right away, with a busy spinner as it populates
+  private void getConfigurationFromDialog(List<Configuration> configurations, DependencyDotFileGenerator dependencyDotFileGenerator,
+                                          List<String> output, Os os, String outputFileName)
   {
-    ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create().setOwner(null).setTitle("Select a configuration to graph")
-                                                                        .addOkButton().addConfigurations(configurations).build();
+    ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(dependencyDotFileGenerator, output, os, outputFileName).setOwner(null)
+                                                                        .setTitle("Select a configuration to graph").addOkButton()
+                                                                        .addConfigurations(configurations).build();
 
-    dialog.show();  // todo make callback
-
-    Configuration chosenConfiguration = dialog.getChosenConfiguration();
-
-    return chosenConfiguration;
+    dialog.show();
   }
 
   private void buildMapOfUsedArtifacts(List<Configuration> configurations, Set<Artifact> usedArtifacts)
@@ -232,18 +236,18 @@ public class DependencyDotFileGenerator
     return newValue;
   }
 
-  public static File createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences,
-                                         String outputFileName) throws IOException, NoConfigurationsFoundException
+  public static void createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName,
+                                         Os os) throws IOException, NoConfigurationsFoundException
   {
     preferences.setLastDir(selectedFile.getParent());
 
     String[] lines = parser.runGradleExec(selectedFile);
 
-    return createDotFileFromLines(parser, preferences, outputFileName, lines);
+    createDotFileFromLines(parser, preferences, outputFileName, lines, os);
   }
 
-  static File createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName,
-                                     String[] lines) throws IOException, NoConfigurationsFoundException
+  static void createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines,
+                                     Os os) throws IOException, NoConfigurationsFoundException
   {
     parser.parseText(lines);
 
@@ -251,9 +255,16 @@ public class DependencyDotFileGenerator
 
     // todo filter output by configuration
     DependencyDotFileGenerator dotFileGenerator = new DependencyDotFileGenerator();
-    List<String>               output           = dotFileGenerator.createOutput(configurations, preferences);
-    File                       file             = dotFileGenerator.writeOutput(output, outputFileName);
 
-    return file;
+    dotFileGenerator.createOutput(configurations, preferences, outputFileName, os);
+  }
+
+  private static void createAndOpenFile(List<String> output, String outputFileName, DependencyDotFileGenerator dotFileGenerator,
+                                        Os os) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException,
+                                                      IllegalAccessException
+  {
+    File file = dotFileGenerator.writeOutput(output, outputFileName);
+
+    os.openFile(file.getAbsolutePath());
   }
 }

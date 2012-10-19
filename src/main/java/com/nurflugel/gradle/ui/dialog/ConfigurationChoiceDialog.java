@@ -17,8 +17,8 @@ import java.util.List;
 @SuppressWarnings("ProtectedField")
 public class ConfigurationChoiceDialog extends Stage
 {
-  protected double              originalWidth;
-  protected double              originalHeight;
+  protected double              originalWidth       = 400;
+  protected double              originalHeight      = 600;
   protected Scene               scene;
   protected VBox                configurationsBox;
   protected ScrollPane          scrollPane;
@@ -27,9 +27,4 @@ public class ConfigurationChoiceDialog extends Stage
   protected BorderPane          borderPanel;
   protected List<Configuration> configurations;
   protected Configuration       chosenConfiguration;
-
-  public Configuration getChosenConfiguration()
-  {
-    return chosenConfiguration;
-  }
 }
