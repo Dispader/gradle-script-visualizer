@@ -23,6 +23,28 @@ public class GradleDependencyParserTest
     assertEquals(parseKey("+--- org.jdom:jdom:1.0 (*)"), "org.jdom:jdom:1.0");
   }
 
+  public void testParseKeyWithRevisionConflict()
+  {
+    assertEquals(parseKey("|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2 -> 4.2 (*)"), "org.apache.httpcomponents:httpcore:4.2");
+  }
+
+  public void testParseKeyWithNoRevisionConflict()
+  {
+    assertEquals(parseKey("|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2"), "org.apache.httpcomponents:httpcore:4.1.2");
+  }
+
+  public void testRequestedRevision()
+  {
+    assertEquals(parseRequestedRevision("|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2 -> 4.2 (*)"), "4.1.2");
+    assertEquals(parseRequestedRevision("|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2 (*)"), "4.1.2");
+    assertEquals(parseRequestedRevision("|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2 "), "4.1.2");
+  }
+
+  public void testResolvedRevision()
+  {
+    assertEquals(parseResolvedRevision("|    |    |    |    +--- org.apache.httpcomponents:httpcore:4.1.2 -> 4.2 (*)"), "4.2");
+  }
+
   /*
    *
    * +--- org.tmatesoft.svnkit:svnkit:1.7.4-v1      0
@@ -147,6 +169,7 @@ public class GradleDependencyParserTest
     assertEquals(configurations.size(), 13);
   }
 
+  @Test(groups = "long")
   public void testRunGradlew() throws IOException, InterruptedException
   {
     GradleDependencyParser parser = new GradleDependencyParser();

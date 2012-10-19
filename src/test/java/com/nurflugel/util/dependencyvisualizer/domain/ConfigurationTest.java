@@ -82,7 +82,7 @@ public class ConfigurationTest
       "|    \\--- com.trilead:trilead-ssh2:1.0.0-build215",     // x
       "+--- com.ryangrier.ant:version_tool:1.1.4_fixed"         // x
     };
-    Map<String, Artifact> map           = new HashMap<String, Artifact>();
+    Map<String, Artifact> map           = new HashMap<>();
     Configuration         configuration = readConfiguration(new Pointer(0), lines, map);
 
     assertEquals(configuration.getName(), "compile");
@@ -140,7 +140,7 @@ public class ConfigurationTest
 
   private Map<String, Artifact> populateMap()
   {
-    HashMap<String, Artifact> map      = new HashMap<String, Artifact>();
+    HashMap<String, Artifact> map      = new HashMap<>();
     Artifact                  artifact = new Artifact("org.dibble:drabble:666", map);
 
     map.put(artifact.getKey(), artifact);

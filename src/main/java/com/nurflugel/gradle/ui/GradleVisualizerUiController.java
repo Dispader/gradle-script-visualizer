@@ -73,17 +73,6 @@ public class GradleVisualizerUiController implements Initializable
     controller.initialize(null, null);
   }
 
-  public void tabClosed(ActionEvent e)
-  {
-    System.out.println("GradleVisualizerUiController.tabClosed");
-  }
-
-  public void tabSwitched()
-  {
-    setDefaultButton(null);
-    saveSettings();
-  }
-
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle)
   {
@@ -95,7 +84,7 @@ public class GradleVisualizerUiController implements Initializable
   }
 
   // -------------------------- OTHER METHODS --------------------------
-  public void generateDependencyGraphButtonClicked(ActionEvent event)
+  public void generateDependencyGraphButtonClicked()
   {
     System.out.println("GradleVisualizerUiController.generateDependencyGraphButtonClicked");
 
@@ -111,7 +100,7 @@ public class GradleVisualizerUiController implements Initializable
     }
   }
 
-  public void generateScriptGraphButtonClicked(ActionEvent event)
+  public void generateScriptGraphButtonClicked()
   {
     File gradleFile = selectScriptsClickedAction();
 
@@ -201,10 +190,10 @@ public class GradleVisualizerUiController implements Initializable
                                                                 : 0;
 
     selectionModel.select(tabToSelect);
-    setDefaultButton(null);
+    setDefaultButton();
   }
 
-  public void quitClickedAction(ActionEvent event)
+  public void quitClickedAction()
   {
     saveSettings();
     System.exit(0);
@@ -215,7 +204,7 @@ public class GradleVisualizerUiController implements Initializable
     FileChooser fileChooser = new FileChooser();
     File        lastDir     = new File(preferences.getLastDir());
 
-    if ((lastDir != null) && lastDir.exists())
+    if (lastDir.exists())
     {
       fileChooser.setInitialDirectory(lastDir);
     }
@@ -242,11 +231,8 @@ public class GradleVisualizerUiController implements Initializable
     return null;
   }
 
-  private void setDefaultButton(ActionEvent e)
+  private void setDefaultButton()
   {
-    boolean isFirstTabSelected  = tabPane.getTabs().get(0).isSelected();
-    boolean isFirstTabSelected2 = tabPane.getSelectionModel().getSelectedIndex() == 0;
-
     generateScriptGraphButton.setDefaultButton(true);
     generateDependencyGraphButton.setDefaultButton(true);
   }

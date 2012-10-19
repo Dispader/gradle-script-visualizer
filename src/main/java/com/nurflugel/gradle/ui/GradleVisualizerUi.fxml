@@ -74,7 +74,7 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab onClosed="#tabClosed" onSelectionChanged="#tabSwitched" text="Dependency Visualizer">
+        <Tab onSelectionChanged="#saveSettings" text="Dependency Visualizer">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="theme">
               <children>

@@ -1,24 +1,28 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
+import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Map;
+import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.parseKey;
+import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.parseRequestedRevision;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 13:08 To change this template use File | Settings | File Templates. */
 public class Artifact extends ObjectWithArtifacts
 {
-  public static final String COLON = ":";
+  public static final String COLON             = ":";
   private String             org;
+  private String             revision;
+  private String             requestedRevision;
 
-  // private String name;
-  private String revision;
-
-  public Artifact(String key, Map<String, Artifact> masterArtifactList)
+  public Artifact(String line, Map<String, Artifact> masterArtifactList)
   {
-    super(key, masterArtifactList);
-    key = StringUtils.substringBefore(key, " [");
+    super(parseKey(line), masterArtifactList);
+    requestedRevision = parseRequestedRevision(line);
+
+    String key = name;
 
     if (!masterArtifactList.containsKey(key))
     {
@@ -27,16 +31,16 @@ public class Artifact extends ObjectWithArtifacts
 
     String[] strings = key.split(COLON);
 
-    if (strings.length != 3)
-    {
-      System.out.println("Artifact.Artifact - expecting 3 args, got " + strings.length + " in " + key);
-      // do something to tell user they've got bad input
-    }
-    else
+    if (strings.length == 3)
     {
       org      = strings[0];
       name     = strings[1];
       revision = strings[2];
+    }
+    else
+    {
+      System.out.println("Artifact.Artifact - expecting 3 args, got " + strings.length + " in " + key);
+      // do something to tell user they've got bad input
     }
   }
   // ------------------------ INTERFACE METHODS ------------------------
@@ -131,5 +135,10 @@ public class Artifact extends ObjectWithArtifacts
   public void setRevision(String revision)
   {
     this.revision = revision;
+  }
+
+  public String getRequestedRevision()
+  {
+    return requestedRevision;
   }
 }

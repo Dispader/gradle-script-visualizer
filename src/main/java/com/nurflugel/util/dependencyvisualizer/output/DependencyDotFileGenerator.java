@@ -1,5 +1,7 @@
 package com.nurflugel.util.dependencyvisualizer.output;
 
+import com.nurflugel.gradle.ui.dialog.ConfigurationChoiceDialog;
+import com.nurflugel.gradle.ui.dialog.ConfigurationsDialogBuilder;
 import com.nurflugel.util.ScriptPreferences;
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
@@ -28,9 +30,9 @@ public class DependencyDotFileGenerator
    *
    * @return  list of text lines to be written to disk
    */
-  public List<String> createOutput(List<Configuration> configurations, GradleScriptPreferences preferences)
+  public List<String> createOutput(List<Configuration> configurations, GradleScriptPreferences preferences) throws NoConfigurationsFoundException
   {
-    List<String> output = new ArrayList<String>();
+    List<String> output = new ArrayList<>();
 
     output.add("digraph G {");
     output.add("node [shape=box,fontname=\"Arial\",fontsize=\"10\"];");
@@ -41,27 +43,47 @@ public class DependencyDotFileGenerator
                                                                  : "false") + ';');
 
     // build up a map of build files and their tasks - if a task has null, add it to "no build file"
-    List<Configuration> selectedConfigurations = new ArrayList<Configuration>();
+    List<Configuration> selectedConfigurations = new ArrayList<>();
 
-    // declare tasks
-    for (Configuration configuration : configurations)
+    // for now, just allow one config to be graphed
+    Configuration configuration;
+
+    if (configurations.size() > 1)
     {
-      // if (configuration.getName().equals("javac2"))  // todo figure out how to figure based on user input
-      // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
-      if (configuration.getName().equals("compile"))  // todo figure out how to figure based on user input if
-                                                      // (configuration.getName().equals("bddTestCompile"))  // todo figure out how to figure based on
-                                                      // user input
-
-      // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
-      // if (configuration.getName().equals("plugins"))  // todo figure out how to figure based on user input
-      {
-        // todo either add the dot declaration here, or the title, but not both.
-        output.add(configuration.getDotDeclaration());
-        selectedConfigurations.add(configuration);
-      }
+      configuration = getConfigurationFromDialog(configurations);
+    }
+    else if (configurations.isEmpty())
+    {
+      throw new NoConfigurationsFoundException();
+    }
+    else
+    {
+      configuration = configurations.get(0);
     }
 
-    Set<Artifact> usedArtifacts = new TreeSet<Artifact>();
+    if (configuration == null)
+    {
+      throw new NoConfigurationsFoundException();
+    }
+    // declare tasks
+    // for (Configuration configuration : configurations)
+    // {
+    // if (configuration.getName().equals("javac2"))  // todo figure out how to figure based on user input
+    // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
+    // if (configuration.getName().equals("compile"))  // todo figure out how to figure based on user input if
+    // (configuration.getName().equals("bddTestCompile"))  // todo figure out how to figure based on
+    // user input
+
+    // if (configuration.getName().equals("runtime"))  // todo figure out how to figure based on user input
+    // if (configuration.getName().equals("plugins"))  // todo figure out how to figure based on user input
+    // {
+    // todo either add the dot declaration here, or the title, but not both.
+    output.add(configuration.getDotDeclaration());
+    selectedConfigurations.add(configuration);
+
+    // }
+    // }
+    Set<Artifact> usedArtifacts = new TreeSet<>();
 
     buildMapOfUsedArtifacts(selectedConfigurations, usedArtifacts);
 
@@ -73,10 +95,10 @@ public class DependencyDotFileGenerator
     output.add("\n\n");
 
     // list their dependencies
-    for (Configuration configuration : selectedConfigurations)
-    {
-      configuration.outputDependencies(output);
-    }
+    // for (Configuration configuration : selectedConfigurations)
+    // {
+    configuration.outputDependencies(output);
+    // }
 
     // if desired, group the tasks
     // if (scriptPreferences.shouldGroupByBuildfiles())
@@ -86,6 +108,18 @@ public class DependencyDotFileGenerator
     output.add("}");
 
     return output;
+  }
+
+  private Configuration getConfigurationFromDialog(List<Configuration> configurations)
+  {
+    ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create().setOwner(null).setTitle("Select a configuration to graph")
+                                                                        .addOkButton().addConfigurations(configurations).build();
+
+    dialog.show();  // todo make callback
+
+    Configuration chosenConfiguration = dialog.getChosenConfiguration();
+
+    return chosenConfiguration;
   }
 
   private void buildMapOfUsedArtifacts(List<Configuration> configurations, Set<Artifact> usedArtifacts)
@@ -198,8 +232,8 @@ public class DependencyDotFileGenerator
     return newValue;
   }
 
-  public static File createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName)
-                                  throws IOException
+  public static File createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences,
+                                         String outputFileName) throws IOException, NoConfigurationsFoundException
   {
     preferences.setLastDir(selectedFile.getParent());
 
@@ -208,8 +242,8 @@ public class DependencyDotFileGenerator
     return createDotFileFromLines(parser, preferences, outputFileName, lines);
   }
 
-  static File createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines)
-                              throws IOException
+  static File createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName,
+                                     String[] lines) throws IOException, NoConfigurationsFoundException
   {
     parser.parseText(lines);
 

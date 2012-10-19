@@ -1,5 +1,6 @@
 package com.nurflugel.util.dependencyvisualizer.ui;
 
+import com.nurflugel.util.dependencyvisualizer.output.NoConfigurationsFoundException;
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
@@ -90,7 +91,7 @@ public class GradleDependencyMainFrame
           {
             selectGradleScript();
           }
-          catch (IOException e)
+          catch (IOException | NoConfigurationsFoundException e)
           {
             e.printStackTrace();
           }
@@ -126,7 +127,7 @@ public class GradleDependencyMainFrame
   }
 
   /** Open up a file chooser and select the file(s) to process. */
-  private void selectGradleScript() throws IOException
+  private void selectGradleScript() throws IOException, NoConfigurationsFoundException
   {
     JFileChooser chooser = new JFileChooser();
     String       lastDir = preferences.getLastDir();

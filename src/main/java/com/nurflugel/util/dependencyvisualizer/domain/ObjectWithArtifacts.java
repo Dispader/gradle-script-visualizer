@@ -101,7 +101,7 @@ public abstract class ObjectWithArtifacts implements Comparable
       if (lineNestingLevel == (parentNestingLevel + 1))
       {
         String[] newLines = getArtifactLines(new Pointer(i), lines);
-        Artifact artifact = new Artifact(parseKey(line), masterArtifactList);
+        Artifact artifact = new Artifact(line, masterArtifactList);
 
         foundArtifacts.add(artifact);
         addArtifact(artifact);

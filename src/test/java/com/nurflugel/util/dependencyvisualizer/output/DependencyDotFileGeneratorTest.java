@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createDotFileFromLines;
+import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createOutputForFile;
 import static com.nurflugel.util.test.TestResources.getFilePath;
 import static org.apache.commons.io.FileUtils.readLines;
 
@@ -22,7 +23,7 @@ public class DependencyDotFileGeneratorTest
 
   public void testReplaceBadChars() throws Exception {}
 
-  public void testReadFile1() throws IOException
+  public void testReadFile1() throws IOException, NoConfigurationsFoundException
   {
     String                  filePath       = getFilePath("gradle/dependencies/Das_dependencies.txt");
     List<String>            lines          = readLines(new File(filePath));
@@ -32,10 +33,11 @@ public class DependencyDotFileGeneratorTest
     File                    fileFromLines  = createDotFileFromLines(parser, preferences, outputFileName, lines.toArray(new String[lines.size()]));
   }
 
-  public void testCreateOutputForFile() throws Exception
+  @Test(groups = "long")
+  public void testCreateOutputForFile() throws Exception, NoConfigurationsFoundException
   {
     File file = new File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build.gradle");  // todo parameterize
 
-    DependencyDotFileGenerator.createOutputForFile(file, new GradleDependencyParser(), new GradleScriptPreferences(), "dibble.dot");
+    createOutputForFile(file, new GradleDependencyParser(), new GradleScriptPreferences(), "dibble.dot");
   }
 }
