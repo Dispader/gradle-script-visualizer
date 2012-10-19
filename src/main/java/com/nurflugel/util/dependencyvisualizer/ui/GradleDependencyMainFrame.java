@@ -10,11 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 import static com.nurflugel.util.Util.*;
-import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createOutputForFile;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
 
@@ -145,7 +143,8 @@ public class GradleDependencyMainFrame
       File selectedFile = chooser.getSelectedFile();
 
       chooser.hide();
-      createOutputForFile(selectedFile, parser, preferences, "dibble.dot", os);
+
+      // createOutputForFile(selectedFile, parser, preferences, "dibble.dot", os);
     }
   }
 

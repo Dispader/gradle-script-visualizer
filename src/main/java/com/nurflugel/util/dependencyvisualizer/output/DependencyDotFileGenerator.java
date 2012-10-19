@@ -39,6 +39,24 @@ public class DependencyDotFileGenerator
   public void createOutput(List<Configuration> configurations, GradleScriptPreferences preferences, String outputFileName,
                            Os os) throws NoConfigurationsFoundException
   {
+    // build up a map of build files and their tasks - if a task has null, add it to "no build file"
+    // for now, just allow one config to be graphed
+    if (configurations.size() > 1)
+    {
+      getConfigurationFromDialog(configurations, this, preferences, os, outputFileName);
+    }
+    else if (configurations.isEmpty())
+    {
+      throw new NoConfigurationsFoundException();
+    }
+    else
+    {
+      generateOutputForConfigurations(preferences, configurations.get(0), outputFileName, os);
+    }
+  }
+
+  public void generateOutputForConfigurations(GradleScriptPreferences preferences, Configuration configuration, String outputFileName, Os os)
+  {
     List<String> output = new ArrayList<>();
 
     output.add("digraph G {");
@@ -49,24 +67,6 @@ public class DependencyDotFileGenerator
     output.add("concentrate=" + (preferences.shouldConcentrate() ? "true"
                                                                  : "false") + ';');
 
-    // build up a map of build files and their tasks - if a task has null, add it to "no build file"
-    // for now, just allow one config to be graphed
-    if (configurations.size() > 1)
-    {
-      getConfigurationFromDialog(configurations, this, output, os, outputFileName);
-    }
-    else if (configurations.isEmpty())
-    {
-      throw new NoConfigurationsFoundException();
-    }
-    else
-    {
-      generateOutputForConfigurations(output, configurations.get(0), outputFileName, os);
-    }
-  }
-
-  public void generateOutputForConfigurations(List<String> output, Configuration configuration, String outputFileName, Os os)
-  {
     List<Configuration> selectedConfigurations = new ArrayList<>();
 
     output.add(configuration.getDotDeclaration());
@@ -103,10 +103,10 @@ public class DependencyDotFileGenerator
 
   // todo show this right away, with a busy spinner as it populates
   private void getConfigurationFromDialog(List<Configuration> configurations, DependencyDotFileGenerator dependencyDotFileGenerator,
-                                          List<String> output, Os os, String outputFileName)
+                                          GradleScriptPreferences preferences, Os os, String outputFileName)
   {
-    ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(dependencyDotFileGenerator, output, os, outputFileName).setOwner(null)
-                                                                        .setTitle("Select a configuration to graph").addOkButton()
+    ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(dependencyDotFileGenerator, preferences, os, outputFileName)
+                                                                        .setOwner(null).setTitle("Select a configuration to graph").addOkButton()
                                                                         .addCancelButton(null).addConfigurations(configurations).build();
 
     dialog.show();

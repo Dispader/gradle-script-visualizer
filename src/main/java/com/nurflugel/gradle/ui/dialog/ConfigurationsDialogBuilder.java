@@ -3,6 +3,7 @@ package com.nurflugel.gradle.ui.dialog;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 import com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
+import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -33,15 +34,16 @@ public class ConfigurationsDialogBuilder
   private static final double        MARGIN                     = 10;
   private ConfigurationChoiceDialog  dialog;
   private DependencyDotFileGenerator dependencyDotFileGenerator;
-  private List<String>               output;
   private Os                         os;
   private String                     outputFileName;
+  private GradleScriptPreferences    preferences;
 
-  public ConfigurationsDialogBuilder create(DependencyDotFileGenerator dependencyDotFileGenerator, List<String> output, Os os, String outputFileName)
+  public ConfigurationsDialogBuilder create(DependencyDotFileGenerator dependencyDotFileGenerator, GradleScriptPreferences preferences, Os os,
+                                            String outputFileName)
   {
     this.outputFileName             = outputFileName;
     this.dependencyDotFileGenerator = dependencyDotFileGenerator;
-    this.output                     = output;
+    this.preferences                = preferences;
     this.os                         = os;
     dialog                          = new ConfigurationChoiceDialog();
     dialog.setResizable(true);
@@ -138,8 +140,7 @@ public class ConfigurationsDialogBuilder
         public void handle(ActionEvent t)
         {
           dialog.chosenConfiguration = getChosenConfiguration();
-          dependencyDotFileGenerator.generateOutputForConfigurations(output, dialog.chosenConfiguration, outputFileName, os);
-          dialog.close();
+          dependencyDotFileGenerator.generateOutputForConfigurations(preferences, dialog.chosenConfiguration, outputFileName, os);
         }
       });
     dialog.buttonsPanel.getChildren().add(dialog.okButton);

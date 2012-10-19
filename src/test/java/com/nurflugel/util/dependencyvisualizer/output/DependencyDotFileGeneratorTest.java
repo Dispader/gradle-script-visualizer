@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createDotFileFromLines;
-import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createOutputForFile;
 import static com.nurflugel.util.test.TestResources.getFilePath;
 import static org.apache.commons.io.FileUtils.readLines;
 
@@ -37,7 +36,8 @@ public class DependencyDotFileGeneratorTest
   public void testCreateOutputForFile() throws Exception, NoConfigurationsFoundException
   {
     File file = new File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build.gradle");  // todo parameterize
+    DependencyDotFileGenerator generator = new DependencyDotFileGenerator();
 
-    createOutputForFile(file, new GradleDependencyParser(), new GradleScriptPreferences(), "dibble.dot", Os.findOs());
+    generator.createOutputForFile(file, new GradleDependencyParser(), new GradleScriptPreferences(), "dibble.dot", Os.findOs());
   }
 }

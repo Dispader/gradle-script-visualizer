@@ -23,10 +23,7 @@ import static java.io.File.separator;
 import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.lang3.StringUtils.*;
 
-/**
- * Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 18:36 To change this template use File | Settings | File
- * Templates.
- */
+/** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 18:36 To change this template use File | Settings | File Templates. */
 public class GradleDependencyParser
 {
   public static final String DOTTED_LINE = "------------------------------------------------------------";
@@ -141,11 +138,8 @@ public class GradleDependencyParser
   }
 
   /**
-   * Determine if we're at the last line of the header.
-   * <p/>
-   * <p>------------------------------------------------------------ Root project ------------------------------------------------------------</p>
-   * <p/>
-   * <p>We do this by looking at the current line and past two lines</p>
+   * Determine if we're at the last line of the header. <p/> <p>------------------------------------------------------------ Root project
+   * ------------------------------------------------------------</p> <p/> <p>We do this by looking at the current line and past two lines</p>
    */
   public static boolean isAtLastLineOfHeaders(int i, String... lines)
   {
@@ -188,13 +182,13 @@ public class GradleDependencyParser
   }
 
   @SuppressWarnings("UseOfProcessBuilder")
-  public String[] runGradleExec(File gradleFile) throws IOException 
+  public String[] runGradleExec(File gradleFile) throws IOException
   {
     String command = gradleFile.getParent() + separator + "gradlew";
     String[] arguments = {command, "dependencies", "--no-daemon"};
 
     System.out
-        .println("GradleDependencyParser.runGradleExec - calling Processbuilder command " + command + ' ' + ArrayUtils.toString(arguments));
+        .println("GradleDependencyParser.runGradleExec - calling ProcessBuilder command " + command + ' ' + ArrayUtils.toString(arguments));
 
     ProcessBuilder pb = new ProcessBuilder(arguments);
 
@@ -205,7 +199,7 @@ public class GradleDependencyParser
     Process proc = pb.start();
 
     try (PrintWriter out = new PrintWriter(new OutputStreamWriter(proc.getOutputStream()));
-        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream())))
+         BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream())))
     {
       // feed in the program
       out.println("Some line here");
@@ -239,8 +233,8 @@ public class GradleDependencyParser
   {
     try
     {
-      DependencyDotFileGenerator generator=new DependencyDotFileGenerator();
-    generator.  createOutputForFile(gradleFile, this, preferences, "dibble.dot", os);
+      DependencyDotFileGenerator generator = new DependencyDotFileGenerator();
+      generator.createOutputForFile(gradleFile, this, preferences, "dibble.dot", os);
 
     }
     catch (NoConfigurationsFoundException e)
