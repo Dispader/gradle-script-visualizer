@@ -4,6 +4,7 @@ import com.nurflugel.gradle.ui.dialog.Dialog;
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 import com.nurflugel.util.dependencyvisualizer.domain.Pointer;
+import com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator;
 import com.nurflugel.util.dependencyvisualizer.output.NoConfigurationsFoundException;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
@@ -18,7 +19,6 @@ import java.util.Map;
 
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.isConfigurationLine;
 import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.readConfiguration;
-import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createOutputForFile;
 import static java.io.File.separator;
 import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -239,7 +239,8 @@ public class GradleDependencyParser
   {
     try
     {
-      createOutputForFile(gradleFile, this, preferences, "dibble.dot", os);
+      DependencyDotFileGenerator generator=new DependencyDotFileGenerator();
+    generator.  createOutputForFile(gradleFile, this, preferences, "dibble.dot", os);
 
     }
     catch (NoConfigurationsFoundException e)

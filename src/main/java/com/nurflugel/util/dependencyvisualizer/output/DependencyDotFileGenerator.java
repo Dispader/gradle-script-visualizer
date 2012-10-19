@@ -23,7 +23,9 @@ import static org.apache.commons.lang3.StringUtils.replace;
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 10/3/12 Time: 11:27 To change this template use File | Settings | File Templates. */
 public class DependencyDotFileGenerator
 {
-  public static final String SPACE = " ";
+  public static final String SPACE        = " ";
+  private static final File  previousFile = null;
+  private String[]           gradleLines  = new String[0];
 
   /**
    * For the list of tasks, create the lines for output based on the given preferences.
@@ -93,25 +95,9 @@ public class DependencyDotFileGenerator
     {
       createAndOpenFile(output, outputFileName, this, os);
     }
-    catch (IOException e)
+    catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e)
     {
       showThrowable("Something bad happened", "Unexpected error", e);
-    }
-    catch (ClassNotFoundException e)
-    {
-      e.printStackTrace();
-    }
-    catch (InvocationTargetException e)
-    {
-      e.printStackTrace();
-    }
-    catch (NoSuchMethodException e)
-    {
-      e.printStackTrace();
-    }
-    catch (IllegalAccessException e)
-    {
-      e.printStackTrace();
     }
   }
 
@@ -121,7 +107,7 @@ public class DependencyDotFileGenerator
   {
     ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(dependencyDotFileGenerator, output, os, outputFileName).setOwner(null)
                                                                         .setTitle("Select a configuration to graph").addOkButton()
-                                                                        .addConfigurations(configurations).build();
+                                                                        .addCancelButton(null).addConfigurations(configurations).build();
 
     dialog.show();
   }
@@ -174,7 +160,7 @@ public class DependencyDotFileGenerator
   }
 
   /** Add grouping of build files. */
-  private static void addGrouping(List<String> output, Map<String, List<Task>> buildFileTaskMap)
+  private void addGrouping(List<String> output, Map<String, List<Task>> buildFileTaskMap)
   {
     for (Map.Entry<String, List<Task>> stringListEntry : buildFileTaskMap.entrySet())
     {
@@ -236,14 +222,16 @@ public class DependencyDotFileGenerator
     return newValue;
   }
 
-  public static void createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName,
-                                         Os os) throws IOException, NoConfigurationsFoundException
+  public void createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName,
+                                  Os os) throws IOException, NoConfigurationsFoundException
   {
-    preferences.setLastDir(selectedFile.getParent());
+    if (selectedFile != previousFile)
+    {
+      preferences.setLastDir(selectedFile.getParent());
+      gradleLines = parser.runGradleExec(selectedFile);
+    }
 
-    String[] lines = parser.runGradleExec(selectedFile);
-
-    createDotFileFromLines(parser, preferences, outputFileName, lines, os);
+    createDotFileFromLines(parser, preferences, outputFileName, gradleLines, os);
   }
 
   static void createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines,
@@ -259,9 +247,8 @@ public class DependencyDotFileGenerator
     dotFileGenerator.createOutput(configurations, preferences, outputFileName, os);
   }
 
-  private static void createAndOpenFile(List<String> output, String outputFileName, DependencyDotFileGenerator dotFileGenerator,
-                                        Os os) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException,
-                                                      IllegalAccessException
+  private void createAndOpenFile(List<String> output, String outputFileName, DependencyDotFileGenerator dotFileGenerator, Os os)
+                          throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException
   {
     File file = dotFileGenerator.writeOutput(output, outputFileName);
 

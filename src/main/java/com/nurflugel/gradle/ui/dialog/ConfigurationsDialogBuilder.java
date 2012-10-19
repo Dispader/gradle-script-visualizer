@@ -29,12 +29,8 @@ import static javafx.stage.StageStyle.UTILITY;
 /** Dialog builder. */
 public class ConfigurationsDialogBuilder
 {
-  private static final int           STACKTRACE_LABEL_MAXHEIGHT = 240;
-  private static final int           MESSAGE_MIN_WIDTH          = 180;
-  private static final int           MESSAGE_MAX_WIDTH          = 800;
   private static final int           BUTTON_WIDTH               = 60;
   private static final double        MARGIN                     = 10;
-  private static final String        ICON_PATH                  = "/com/nurflugel/gradle/ui/dialog/";
   private ConfigurationChoiceDialog  dialog;
   private DependencyDotFileGenerator dependencyDotFileGenerator;
   private List<String>               output;
@@ -64,10 +60,6 @@ public class ConfigurationsDialogBuilder
     dialog.scrollPane = new ScrollPane();
     dialog.scrollPane.setContent(dialog.configurationsBox);
 
-    // dialog.messageLabel = new Label();
-    // dialog.messageLabel.setWrapText(true);
-    // dialog.messageLabel.setMinWidth(MESSAGE_MIN_WIDTH);
-    // dialog.messageLabel.setMaxWidth(MESSAGE_MAX_WIDTH);
     ObservableList<Node> children = configurationsBox.getChildren();
 
     children.add(dialog.scrollPane);
@@ -215,7 +207,15 @@ public class ConfigurationsDialogBuilder
    */
   public ConfigurationsDialogBuilder addCancelButton(EventHandler actionHandler)
   {
-    return addConfirmationButton("Cancel", actionHandler);
+    EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>()
+    {
+      public void handle(ActionEvent t)
+      {
+        dialog.close();
+      }
+    };
+
+    return addConfirmationButton("Cancel", eventHandler);
   }
 
   /**
