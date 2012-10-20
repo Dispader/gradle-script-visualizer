@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import static com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator.createDotFileFromLines;
 import static com.nurflugel.util.test.TestResources.getFilePath;
 import static org.apache.commons.io.FileUtils.readLines;
 
@@ -23,19 +22,20 @@ public class DependencyDotFileGeneratorTest
 
   public void testReadFile1() throws IOException, NoConfigurationsFoundException
   {
-    String                  filePath       = getFilePath("gradle/dependencies/Das_dependencies.txt");
-    List<String>            lines          = readLines(new File(filePath));
-    GradleDependencyParser  parser         = new GradleDependencyParser();
-    GradleScriptPreferences preferences    = new GradleScriptPreferences();
-    String                  outputFileName = "das_dibble.dot";
+    String                     filePath       = getFilePath("gradle/dependencies/Das_dependencies.txt");
+    List<String>               lines          = readLines(new File(filePath));
+    GradleDependencyParser     parser         = new GradleDependencyParser();
+    GradleScriptPreferences    preferences    = new GradleScriptPreferences();
+    String                     outputFileName = "das_dibble.dot";
+    DependencyDotFileGenerator generator      = new MockDependencyDotFileGenerator();
 
-    createDotFileFromLines(parser, preferences, outputFileName, lines.toArray(new String[lines.size()]), Os.findOs());
+    generator.createDotFileFromLines(parser, preferences, outputFileName, lines.toArray(new String[lines.size()]), Os.findOs());
   }
 
   @Test(groups = "long")
   public void testCreateOutputForFile() throws Exception, NoConfigurationsFoundException
   {
-    File file = new File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build.gradle");  // todo parameterize
+    File file = new File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build.gradle");  // todo parametrize
     DependencyDotFileGenerator generator = new DependencyDotFileGenerator();
 
     generator.createOutputForFile(file, new GradleDependencyParser(), new GradleScriptPreferences(), "dibble.dot", Os.findOs());

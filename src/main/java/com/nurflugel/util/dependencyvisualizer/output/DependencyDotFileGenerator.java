@@ -9,6 +9,7 @@ import com.nurflugel.util.dependencyvisualizer.domain.ObjectWithArtifacts;
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
+import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -102,8 +103,8 @@ public class DependencyDotFileGenerator
   }
 
   // todo show this right away, with a busy spinner as it populates
-  private void getConfigurationFromDialog(List<Configuration> configurations, DependencyDotFileGenerator dependencyDotFileGenerator,
-                                          GradleScriptPreferences preferences, Os os, String outputFileName)
+  protected void getConfigurationFromDialog(List<Configuration> configurations, DependencyDotFileGenerator dependencyDotFileGenerator,
+                                            GradleScriptPreferences preferences, Os os, String outputFileName)
   {
     ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(dependencyDotFileGenerator, preferences, os, outputFileName)
                                                                         .setOwner(null).setTitle("Select a configuration to graph").addOkButton()
@@ -173,10 +174,8 @@ public class DependencyDotFileGenerator
         builder.append(task.getDotDeclaration()).append("; ");
       }
 
-      output.add("subgraph cluster_" + replaceBadChars(scriptName) + " { "  //
-                   + "label=\"" + scriptName + "\"; "              // todo this line is optional - if they show the configuration, don't have
-                                                                   // it, if they don't, then show it
-                   + "" + builder + '}');                          //
+      // todo this line is optional - if they show the configuration, don't have it, if they don't, then show it
+      output.add("subgraph cluster_" + replaceBadChars(scriptName) + " { label=\"" + scriptName + "\"; " + "" + builder + '}');
     }
   }
 
@@ -225,7 +224,7 @@ public class DependencyDotFileGenerator
   public void createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName,
                                   Os os) throws IOException, NoConfigurationsFoundException
   {
-    if (selectedFile != previousFile)
+    if (selectedFile.equals(previousFile))
     {
       preferences.setLastDir(selectedFile.getParent());
       gradleLines = parser.runGradleExec(selectedFile);
@@ -234,21 +233,18 @@ public class DependencyDotFileGenerator
     createDotFileFromLines(parser, preferences, outputFileName, gradleLines, os);
   }
 
-  static void createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines,
-                                     Os os) throws IOException, NoConfigurationsFoundException
+  void createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines,
+                              Os os) throws IOException, NoConfigurationsFoundException
   {
     parser.parseText(lines);
 
     List<Configuration> configurations = parser.getConfigurations();
 
-    // todo filter output by configuration
-    DependencyDotFileGenerator dotFileGenerator = new DependencyDotFileGenerator();
-
-    dotFileGenerator.createOutput(configurations, preferences, outputFileName, os);
+    createOutput(configurations, preferences, outputFileName, os);
   }
 
-  private void createAndOpenFile(List<String> output, String outputFileName, DependencyDotFileGenerator dotFileGenerator, Os os)
-                          throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException
+  protected void createAndOpenFile(List<String> output, String outputFileName, DependencyDotFileGenerator dotFileGenerator, Os os)
+                            throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException
   {
     File file = dotFileGenerator.writeOutput(output, outputFileName);
 
