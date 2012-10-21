@@ -224,7 +224,7 @@ public class DependencyDotFileGenerator
   public void createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName,
                                   Os os) throws IOException, NoConfigurationsFoundException
   {
-    if (selectedFile.equals(previousFile))
+    if (!selectedFile.equals(previousFile))
     {
       preferences.setLastDir(selectedFile.getParent());
       gradleLines = parser.runGradleExec(selectedFile);

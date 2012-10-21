@@ -23,7 +23,10 @@ import static java.io.File.separator;
 import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.lang3.StringUtils.*;
 
-/** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 18:36 To change this template use File | Settings | File Templates. */
+/**
+ * Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 18:36 To change this template use File | Settings | File
+ * Templates.
+ */
 public class GradleDependencyParser
 {
   public static final String DOTTED_LINE = "------------------------------------------------------------";
@@ -139,7 +142,8 @@ public class GradleDependencyParser
 
   /**
    * Determine if we're at the last line of the header. <p/> <p>------------------------------------------------------------ Root project
-   * ------------------------------------------------------------</p> <p/> <p>We do this by looking at the current line and past two lines</p>
+   * ------------------------------------------------------------</p> <p/> <p>We do this by looking at the current line and past two
+   * lines</p>
    */
   public static boolean isAtLastLineOfHeaders(int i, String... lines)
   {
@@ -169,8 +173,11 @@ public class GradleDependencyParser
       if (isConfigurationLine(pointer, lines))
       {
         Configuration configuration = readConfiguration(pointer, lines, masterArtifactMap);
+        if (!configuration.getArtifacts().isEmpty())
 
-        configurationList.add(configuration);
+        {
+          configurationList.add(configuration);
+        }
       }
       else
       {

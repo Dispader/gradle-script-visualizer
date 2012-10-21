@@ -7,6 +7,7 @@ import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
 import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -98,10 +99,21 @@ public class GradleFileParser
 
     for (String textLine : textLines)
     {
+      textLine = filterText(textLine);
       lines.add(textLine);
     }
 
     return lines;
+  }
+
+  /** Remove any unwanted text from the line before processing further. */
+  public static String filterText(String textLine)
+  {
+    String results = remove(textLine, "${project.projectDir}/");
+
+    results = remove(results, "${projectDir}/");
+
+    return results;
   }
 
   /**

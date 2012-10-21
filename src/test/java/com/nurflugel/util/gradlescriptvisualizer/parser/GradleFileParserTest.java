@@ -535,6 +535,13 @@ public class GradleFileParserTest
     assertEquals(task1.getName(), "tomcatStop");
   }
 
+  public void testFilterLine()
+  {
+    assertEquals(GradleFileParser.filterText("dibble${projectDir}/"), "dibble");
+    assertEquals(GradleFileParser.filterText("dibble${project.projectDir}/"), "dibble");
+    assertEquals(GradleFileParser.filterText("${project.projectDir}/dibble"), "dibble");
+  }
+
   // test imported scripts recursively
   // ==>test find task dependsOn if task exists elsewhere in build script
   // test find dependsOn in task modification
