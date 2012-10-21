@@ -109,6 +109,36 @@ public class GradleFileParser
   /** Remove any unwanted text from the line before processing further. */
   public static String filterText(String textLine)
   {
+    String results = filterProjectDirs(textLine);
+
+    results = filterTripleQuotes(results);
+    results = filterEqualsDeclaration(results);
+
+    return results;
+  }
+
+  // mongoExec = ${mongoCmd}.execute() into   ${mongoCmd}.execute()
+  public static String filterEqualsDeclaration(String text)
+  {
+    if (!text.contains(".execute()"))
+    {
+      return text;
+    }
+
+    String results = filterTripleQuotes(text);
+
+    results = substringAfterLast(results, "=").trim();
+
+    return results;
+  }
+
+  public static String filterTripleQuotes(String results)
+  {
+    return remove(results, "\"\"\"");
+  }
+
+  public static String filterProjectDirs(String textLine)
+  {
     String results = remove(textLine, "${project.projectDir}/");
 
     results = remove(results, "${projectDir}/");

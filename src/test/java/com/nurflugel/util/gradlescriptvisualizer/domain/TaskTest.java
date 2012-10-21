@@ -13,7 +13,6 @@ import static org.testng.Assert.*;
 @Test(groups = "gradle")
 public class TaskTest
 {
-  @Test
   public void testFindTaskType()
   {
     Task task = new Task(new HashMap<String, Task>(), "task copyHelp(type: Copy) {");
@@ -21,7 +20,6 @@ public class TaskTest
     assertEquals(task.getType(), "Copy");
   }
 
-  @Test
   public void testFindTaskTypeWithDepends()
   {
     Task task = new Task(new HashMap<String, Task>(), "task copyHelp(type: Copy, dependsOn: dibble) {");
@@ -29,7 +27,6 @@ public class TaskTest
     assertEquals(task.getType(), "Copy");
   }
 
-  @Test
   public void testFindTaskTypeWithQualifiedName()
   {
     Task task = new Task(new HashMap<String, Task>(), "task copyHelp(type: org.dibble.Copy, dependsOn: dibble) {");
@@ -37,7 +34,6 @@ public class TaskTest
     assertEquals(task.getType(), "Copy");
   }
 
-  @Test
   public void testFindTaskTypeNoTypeDeclared()
   {
     Task task = new Task(new HashMap<String, Task>(), "task copyHelp() {");
@@ -45,7 +41,6 @@ public class TaskTest
     assertEquals(task.getType(), "noType");
   }
 
-  @Test
   public void testFindDependsOn()
   {
     Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: 'installApp') << {");
@@ -55,7 +50,6 @@ public class TaskTest
     assertEquals(dependsOnTasks.get(0).getName(), "installApp");
   }
 
-  @Test
   public void testFindDependsOnDoubleQuotes()
   {
     Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: \"installApp\") << {");
@@ -65,7 +59,6 @@ public class TaskTest
     assertEquals(dependsOnTasks.get(0).getName(), "installApp");
   }
 
-  @Test
   public void testFindDependsOnNoQuotes()
   {
     Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: installApp) << {");
@@ -75,7 +68,6 @@ public class TaskTest
     assertEquals(dependsOnTasks.get(0).getName(), "installApp");
   }
 
-  @Test
   public void testFindDependsOnWithComma()
   {
     Task       task           = new Task(new HashMap<String, Task>(), "task jettyRunMock(dependsOn: war, description:");
@@ -85,7 +77,6 @@ public class TaskTest
     assertEquals(dependsOnTasks.get(0).getName(), "war");
   }
 
-  @Test
   public void testFindMultipleDependsOn()
   {
     Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: [installApp,dibble, dabble]) << {");
@@ -97,7 +88,6 @@ public class TaskTest
     assertEquals(dependsOnTasks.get(2).getName(), "dabble");
   }
 
-  @Test
   public void testDotDeclaration()
   {
     Task task = new Task("simpleTask");
@@ -105,7 +95,6 @@ public class TaskTest
     assertEquals(task.getDotDeclaration(), "simpleTask [label=\"simpleTask\" shape=box color=black ];");
   }
 
-  @Test
   public void testDotDependencies()
   {
     Task         task  = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: [installApp,dibble, dabble]) << {");
@@ -116,7 +105,6 @@ public class TaskTest
     assertEquals(lines.get(2), "signJars -> dabble;");
   }
 
-  @Test
   public void testImplicitTask1()
   {
     // check.dependsOn integrationTest
@@ -125,7 +113,6 @@ public class TaskTest
     assertTrue(task.get(0).getName().equals("check"));
   }
 
-  @Test
   public void testImplicitTaskDepends()
   {
     // check.dependsOn integrationTest
@@ -136,7 +123,6 @@ public class TaskTest
     assertTrue(dependsOn.get(0).getName().equals("integrationTest"));
   }
 
-  @Test
   public void testImplicitTaskDepends2()
   {
     // check.dependsOn integrationTest
@@ -148,7 +134,6 @@ public class TaskTest
     assertTrue(dependsOn.get(1).getName().equals("dibble"));
   }
 
-  @Test
   public void testImplicitTask2()
   {
     // check.dependsOn integrationTest
@@ -159,7 +144,6 @@ public class TaskTest
   }
 
   // find things like tomcatRun.execute()
-  @Test
   public void testFindExecutes()
   {
     HashMap<String, Task> map           = new HashMap<String, Task>();
@@ -178,7 +162,6 @@ public class TaskTest
     assertEquals(taskInContext.getDependsOn().get(0), task);
   }
 
-  @Test
   public void testFindExecutesDisplaysRight()
   {
     Map<String, Task> map         = new HashMap<String, Task>();
@@ -189,7 +172,6 @@ public class TaskTest
   }
 
   // show the task that depends on an execute displays right
-  @Test
   public void testTaskDependsOnExecute()
   {
     String[] taskLines =
@@ -225,7 +207,6 @@ public class TaskTest
   // after task declaration, keep parsing lines keeping track of { and } - anything within
   // the matching {} pair can be claimed as a dependency.  So, take all those lines and put them into the task for
   // future reference as well.
-  @Test
   public void testFindAllTaskLines()
   {
     String[] lines = {
@@ -259,7 +240,6 @@ public class TaskTest
     assertEquals(scopeLines, taskLines, "Should have all the lines for the task in the task");
   }
 
-  @Test
   public void testFindExecutesTask()
   {
     String text = "        tomcatRun.execute()";
@@ -268,7 +248,6 @@ public class TaskTest
     assertEquals(name, "tomcatRun");
   }
 
-  @Test
   public void testFindExecutesTaskWithOtherWords()
   {
     String text = "  dibble      tomcatRun.execute()";
@@ -277,7 +256,6 @@ public class TaskTest
     assertEquals(name, "tomcatRun");
   }
 
-  @Test
   public void testFindExecutesTaskNoExecutes()
   {
     String text = "  dibble      tomcatRun.dibble()";
@@ -286,7 +264,6 @@ public class TaskTest
     assertNull(name);
   }
 
-  @Test
   public void testFindForEachTasks()
   {
     String     line  = "[tRun1, tRun2].each {";
@@ -297,7 +274,6 @@ public class TaskTest
     assertTrue(tasks.contains(new Task("tRun2")));
   }
 
-  @Test
   public void testSimpleBuildFile()
   {
     Task task = new Task("taskName");
@@ -306,7 +282,6 @@ public class TaskTest
     assertEquals(task.getBuildScript(), "dibble.gradle");
   }
 
-  @Test
   public void testGetTextBeforeIfExists()
   {
     String baseText = "dibble@dabble";
@@ -315,5 +290,11 @@ public class TaskTest
     assertEquals(text, "dibble");
     text = getTextBeforeIfExists(baseText, "{");
     assertEquals(text, baseText);
+  }
+
+  public void testSafeNames()
+  {
+    assertEquals(makeSafeName("${mongo.exe}"), "__mongo_exe_");
+    assertEquals(makeSafeName("-:.mongo"), "___mongo");
   }
 }

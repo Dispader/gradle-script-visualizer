@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.*;
 import static com.nurflugel.util.test.TestResources.getFilePath;
 import static com.nurflugel.util.test.TestResources.getLinesFromArray;
 import static org.apache.commons.lang3.ArrayUtils.contains;
@@ -537,9 +538,20 @@ public class GradleFileParserTest
 
   public void testFilterLine()
   {
-    assertEquals(GradleFileParser.filterText("dibble${projectDir}/"), "dibble");
-    assertEquals(GradleFileParser.filterText("dibble${project.projectDir}/"), "dibble");
-    assertEquals(GradleFileParser.filterText("${project.projectDir}/dibble"), "dibble");
+    assertEquals(filterText("dibble${projectDir}/"), "dibble");
+    assertEquals(filterText("dibble${project.projectDir}/"), "dibble");
+    assertEquals(filterText("${project.projectDir}/dibble"), "dibble");
+  }
+
+  public void testFilterTripleQuotes()
+  {
+    assertEquals(filterTripleQuotes("\"\"\"${mongoCmd}\"\"\""), "${mongoCmd}");
+  }
+
+  public void testFilterEqualsDeclaration()
+  {
+    assertEquals(filterEqualsDeclaration("mongoExec = \"\"\"${mongoCmd}\"\"\".execute()"), "${mongoCmd}.execute()");
+    assertEquals(filterEqualsDeclaration("def mongoExec = \"\"\"${mongoCmd}\"\"\".execute()"), "${mongoCmd}.execute()");
   }
 
   // test imported scripts recursively

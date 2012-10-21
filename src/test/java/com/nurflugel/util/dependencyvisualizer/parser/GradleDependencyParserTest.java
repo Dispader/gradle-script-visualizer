@@ -154,7 +154,7 @@ public class GradleDependencyParserTest
     };                                                          //
     List<Configuration> configurations = readConfigurations(0, lines);
 
-    assertEquals(configurations.size(), 4);
+    assertEquals(configurations.size(), 3);
   }
 
   public void testReadFile() throws IOException
@@ -166,7 +166,7 @@ public class GradleDependencyParserTest
 
     List<Configuration> configurations = parser.getConfigurations();
 
-    assertEquals(configurations.size(), 13);
+    assertEquals(configurations.size(), 8);
   }
 
   @Test(groups = "long")

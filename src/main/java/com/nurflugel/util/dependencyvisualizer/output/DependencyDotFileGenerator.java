@@ -226,6 +226,7 @@ public class DependencyDotFileGenerator
   {
     if (!selectedFile.equals(previousFile))
     {
+      // todo show busy spinner here in dialog
       preferences.setLastDir(selectedFile.getParent());
       gradleLines = parser.runGradleExec(selectedFile);
     }

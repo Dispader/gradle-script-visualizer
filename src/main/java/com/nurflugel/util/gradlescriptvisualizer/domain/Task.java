@@ -349,7 +349,7 @@ public class Task
   /** simple constructor to just set the name. */
   public Task(String name)
   {
-    this.name = name;
+    this.name = makeSafeName(name);
   }
 
   /**
@@ -360,9 +360,30 @@ public class Task
    */
   Task(Map<String, Task> taskMap, String line)
   {
-    name = findTaskName(line);
+    String taskName = findTaskName(line);
+
+    name = makeSafeName(taskName);
     type = findTaskType(line);
     findTaskDependsOn(taskMap, line);
+  }
+
+  /** Strip any unsafe chars out: -:_.${} */
+  public static String makeSafeName(String oldValue)
+  {
+    String newValue = replace(oldValue, "-", "_");
+
+    newValue = replace(newValue, ".xml", "");
+    newValue = replace(newValue, " ", "_");
+    newValue = replace(newValue, "'", "_");
+    newValue = replace(newValue, ":", "_");
+    newValue = replace(newValue, ".", "_");
+    newValue = replace(newValue, "/", "_");
+    newValue = replace(newValue, "$", "_");
+    newValue = replace(newValue, "{", "_");
+    newValue = replace(newValue, "}", "_");
+    newValue = replace(newValue, "\\", "_");
+
+    return newValue;
   }
 
   /** Determine the task type, if possible. If not, returns NO_TYPE. */
