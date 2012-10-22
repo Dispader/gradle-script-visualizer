@@ -27,7 +27,10 @@ import static javafx.stage.Modality.APPLICATION_MODAL;
 import static javafx.stage.StageStyle.UTILITY;
 
 @SuppressWarnings({ "AccessingNonPublicFieldOfAnotherObject", "ReturnOfThis" })
-/** Dialog builder. */
+/** Dialog builder.
+ * todo - this is nice for dynamic dialogs, but move it to SceneBuilder for heavy lifting, it's a pain to get the UI right this way
+ *
+ */
 public class ConfigurationsDialogBuilder
 {
   private static final int           BUTTON_WIDTH               = 60;
@@ -45,7 +48,7 @@ public class ConfigurationsDialogBuilder
     this.dependencyDotFileGenerator = dependencyDotFileGenerator;
     this.preferences                = preferences;
     this.os                         = os;
-    dialog                          = new ConfigurationChoiceDialog();
+    dialog                          = new ConfigurationChoiceDialog(this);
     dialog.setResizable(true);
     dialog.initStyle(UTILITY);
     dialog.initModality(APPLICATION_MODAL);
@@ -53,36 +56,48 @@ public class ConfigurationsDialogBuilder
     dialog.centerOnScreen();
     dialog.borderPanel = BorderPaneBuilder.create().styleClass("dialog").build();
 
+    BorderPane borderPanel = dialog.borderPanel;
+
     // message
-    VBox configurationsBox = new VBox();
+    dialog.configurationsBox = new VBox();
+
+    VBox configurationsBox = dialog.configurationsBox;
 
     dialog.configurationsBox = configurationsBox;
+    dialog.progressIndicator = new ProgressIndicator();
+
+    ProgressIndicator progressIndicator = dialog.progressIndicator;
+
+    progressIndicator.setPrefSize(50, 50);
+    progressIndicator.setMaxSize(50, 50);
     configurationsBox.setSpacing(15);
     configurationsBox.setAlignment(CENTER_LEFT);
     dialog.scrollPane = new ScrollPane();
-    dialog.scrollPane.setContent(dialog.configurationsBox);
 
-    ObservableList<Node> children = configurationsBox.getChildren();
+    ScrollPane scrollPane = dialog.scrollPane;
 
-    children.add(dialog.scrollPane);
-    dialog.borderPanel.setCenter(dialog.scrollPane);
-    BorderPane.setAlignment(configurationsBox, CENTER);
+    scrollPane.setContent(configurationsBox);
+    dialog.borderPanel.setCenter(dialog.progressIndicator);
+    BorderPane.setAlignment(configurationsBox, CENTER_LEFT);
     BorderPane.setMargin(configurationsBox, new Insets(MARGIN, MARGIN, MARGIN, 2 * MARGIN));
 
     // buttons
     dialog.buttonsPanel = new HBox();
-    dialog.buttonsPanel.setSpacing(MARGIN);
-    dialog.buttonsPanel.setAlignment(BOTTOM_CENTER);
-    BorderPane.setMargin(dialog.buttonsPanel, new Insets(0, 0, 1.5 * MARGIN, 0));
-    dialog.borderPanel.setBottom(dialog.buttonsPanel);
-    dialog.borderPanel.widthProperty().addListener(new ChangeListener<Number>()
+
+    final HBox buttonsPanel = dialog.buttonsPanel;
+
+    buttonsPanel.setSpacing(MARGIN);
+    buttonsPanel.setAlignment(BOTTOM_CENTER);
+    BorderPane.setMargin(buttonsPanel, new Insets(0, 0, 1.5 * MARGIN, 0));
+    borderPanel.setBottom(buttonsPanel);
+    borderPanel.widthProperty().addListener(new ChangeListener<Number>()
       {
         public void changed(ObservableValue<? extends Number> ov, Number t, Number t1)
         {
-          dialog.buttonsPanel.layout();
+          buttonsPanel.layout();
         }
       });
-    dialog.scene = new Scene(dialog.borderPanel);
+    dialog.scene = new Scene(borderPanel);
     dialog.setScene(dialog.scene);
 
     URL    resource     = ConfigurationsDialogBuilder.class.getResource("/com/nurflugel/gradle/ui/dialogservice/dialog.css");
@@ -116,19 +131,6 @@ public class ConfigurationsDialogBuilder
     dialog.setTitle(title);
 
     return this;
-  }
-
-  private void alignScrollPane()
-  {
-    // dialog.setWidth(dialog.icon.getImage().getWidth()
-    // + Math.max(dialog.messageLabel.getWidth(),
-    // dialog.stacktraceVisible ? Math.max(dialog.stacktraceButtonsPanel.getWidth(), dialog.stackTraceLabel.getWidth())
-    // : dialog.stacktraceButtonsPanel.getWidth()) + (5 * MARGIN));
-    // dialog.setHeight(Math.max(dialog.icon.getImage().getHeight(),
-    // dialog.messageLabel.getHeight() + dialog.stacktraceButtonsPanel.getHeight()
-    // + (dialog.stacktraceVisible ? Math.min(dialog.stackTraceLabel.getHeight(), STACKTRACE_LABEL_MAXHEIGHT)
-    // : 0)) + dialog.buttonsPanel.getHeight() + (3 * MARGIN));
-    dialog.centerOnScreen();
   }
 
   public ConfigurationsDialogBuilder addOkButton()
@@ -216,7 +218,7 @@ public class ConfigurationsDialogBuilder
       }
     };
 
-    return addConfirmationButton("Cancel", eventHandler);
+    return addConfirmationButton("Close/Cancel", eventHandler);
   }
 
   /**
@@ -233,16 +235,26 @@ public class ConfigurationsDialogBuilder
 
   public ConfigurationsDialogBuilder addConfigurations(List<Configuration> configurations)
   {
+    dialog.setTitle("Choose a configuration to graph");
     dialog.configurations = configurations;
+    dialog.borderPanel.setCenter(dialog.scrollPane);
 
-    ToggleGroup toggleGroup = new ToggleGroup();
+    ObservableList<Node> children    = dialog.configurationsBox.getChildren();
+    ToggleGroup          toggleGroup = new ToggleGroup();
 
     for (Configuration configuration : configurations)
     {
-      RadioButton configurationRadioButton = new RadioButton(configuration.getName());
+      String      name                     = configuration.getName();
+      RadioButton configurationRadioButton = new RadioButton(name);
 
       configurationRadioButton.setToggleGroup(toggleGroup);
-      dialog.configurationsBox.getChildren().add(configurationRadioButton);  // todo select default
+
+      if (name.equals("compile"))
+      {
+        configurationRadioButton.setSelected(true);  // todo select default from prefs
+      }
+
+      children.add(configurationRadioButton);
     }
 
     return this;

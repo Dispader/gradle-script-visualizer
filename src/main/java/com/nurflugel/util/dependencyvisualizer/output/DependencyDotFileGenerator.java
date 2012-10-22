@@ -9,7 +9,8 @@ import com.nurflugel.util.dependencyvisualizer.domain.ObjectWithArtifacts;
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
-import org.apache.commons.io.FileUtils;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -34,17 +35,20 @@ public class DependencyDotFileGenerator
    * @param   preferences     preferences read in from disk or modified by user
    * @param   outputFileName
    * @param   os
+   * @param   dialog
    *
    * @return  list of text lines to be written to disk
    */
-  public void createOutput(List<Configuration> configurations, GradleScriptPreferences preferences, String outputFileName,
-                           Os os) throws NoConfigurationsFoundException
+  public void createOutput(List<Configuration> configurations, GradleScriptPreferences preferences, String outputFileName, Os os,
+                           ConfigurationChoiceDialog dialog) throws NoConfigurationsFoundException
   {
     // build up a map of build files and their tasks - if a task has null, add it to "no build file"
     // for now, just allow one config to be graphed
     if (configurations.size() > 1)
     {
-      getConfigurationFromDialog(configurations, this, preferences, os, outputFileName);
+      dialog.getConfigurationsDialogBuilder().addConfigurations(configurations);
+
+      // getConfigurationFromDialog(configurations, this, preferences, os, outputFileName);
     }
     else if (configurations.isEmpty())
     {
@@ -102,17 +106,16 @@ public class DependencyDotFileGenerator
     }
   }
 
-  // todo show this right away, with a busy spinner as it populates
-  protected void getConfigurationFromDialog(List<Configuration> configurations, DependencyDotFileGenerator dependencyDotFileGenerator,
-                                            GradleScriptPreferences preferences, Os os, String outputFileName)
-  {
-    ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(dependencyDotFileGenerator, preferences, os, outputFileName)
-                                                                        .setOwner(null).setTitle("Select a configuration to graph").addOkButton()
-                                                                        .addCancelButton(null).addConfigurations(configurations).build();
-
-    dialog.show();
-  }
-
+  // // todo show this right away, with a busy spinner as it populates
+  // protected void getConfigurationFromDialog(List<Configuration> configurations, DependencyDotFileGenerator dependencyDotFileGenerator,
+  // GradleScriptPreferences preferences, Os os, String outputFileName)
+  // {
+  // ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(dependencyDotFileGenerator, preferences, os, outputFileName)
+  // .setOwner(null).setTitle("Select a configuration to graph").addOkButton()
+  // .addCancelButton(null).addConfigurations(configurations).build();
+  //
+  // dialog.show();
+  // }
   private void buildMapOfUsedArtifacts(List<Configuration> configurations, Set<Artifact> usedArtifacts)
   {
     for (ObjectWithArtifacts configuration : configurations)
@@ -227,21 +230,29 @@ public class DependencyDotFileGenerator
     if (!selectedFile.equals(previousFile))
     {
       // todo show busy spinner here in dialog
-      preferences.setLastDir(selectedFile.getParent());
-      gradleLines = parser.runGradleExec(selectedFile);
-    }
+      ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(this, preferences, os, outputFileName).setOwner(null)
+                                                                          .setTitle("Processing build file").addOkButton().addCancelButton(null)
+                                                                          .build();
 
-    createDotFileFromLines(parser, preferences, outputFileName, gradleLines, os);
+      dialog.show();
+      preferences.setLastDir(selectedFile.getParent());
+
+      GradleExecTask    gradleExecTask = new GradleExecTask(dialog, selectedFile, this, parser, preferences, outputFileName, os);
+      ProgressIndicator progressBar    = dialog.getProgressIndicator();
+
+      progressBar.progressProperty().bind(gradleExecTask.progressProperty());
+      new Thread(gradleExecTask).start();
+    }
   }
 
-  void createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines,
-                              Os os) throws IOException, NoConfigurationsFoundException
+  void createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines, Os os,
+                              ConfigurationChoiceDialog dialog) throws IOException, NoConfigurationsFoundException
   {
     parser.parseText(lines);
 
     List<Configuration> configurations = parser.getConfigurations();
 
-    createOutput(configurations, preferences, outputFileName, os);
+    createOutput(configurations, preferences, outputFileName, os, dialog);
   }
 
   protected void createAndOpenFile(List<String> output, String outputFileName, DependencyDotFileGenerator dotFileGenerator, Os os)

@@ -209,6 +209,10 @@ public class GradleVisualizerUiController implements Initializable
       fileChooser.setInitialDirectory(lastDir);
     }
 
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Gradle files (*.gradle)", "*.gradle");
+
+    fileChooser.getExtensionFilters().add(extFilter);
+
     File file = fileChooser.showOpenDialog(null);
 
     if (file != null)

@@ -12,7 +12,6 @@ import java.util.List;
 public class MockDependencyDotFileGenerator extends DependencyDotFileGenerator
 {
   /** for tests we want the "compile" dependency. */
-  @Override
   protected void getConfigurationFromDialog(List<Configuration> configurations, DependencyDotFileGenerator dependencyDotFileGenerator,
                                             GradleScriptPreferences preferences, Os os, String outputFileName)
   {

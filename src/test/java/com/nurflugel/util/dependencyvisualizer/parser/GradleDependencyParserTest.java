@@ -2,6 +2,7 @@ package com.nurflugel.util.dependencyvisualizer.parser;
 
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 import com.nurflugel.util.test.TestResources;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
@@ -173,11 +174,12 @@ public class GradleDependencyParserTest
   public void testRunGradlew() throws IOException, InterruptedException
   {
     GradleDependencyParser parser = new GradleDependencyParser();
-    String[]               lines  = parser.runGradleExec(new File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build.gradle"));
+    // String[]               lines  = parser.runGradleExec(new
+    // File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build.gradle"));
 
-    parser.parseText(lines);
+    // parser.parseText(lines);
+    fail("Uncomment and fix");
 
-    // assertEquals(strings.length, 214, "Should have been able to run Gradle and read lines");
     List<Configuration> configurations = parser.getConfigurations();
 
     assertEquals(configurations.size(), 13);

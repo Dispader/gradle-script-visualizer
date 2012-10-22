@@ -1,2 +1,2 @@
 # Tests in a certain package:
-#com\.nurflugel\.util\.gradlescriptvisualizer\.domain\..*
+#com\.nurflugel\.util\.gradlescriptvisualizer\.parser\..*
