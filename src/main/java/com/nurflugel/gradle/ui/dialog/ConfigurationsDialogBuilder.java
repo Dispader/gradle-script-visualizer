@@ -13,15 +13,11 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderPaneBuilder;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Window;
 import java.net.URL;
 import java.util.List;
 import static javafx.geometry.Pos.BOTTOM_CENTER;
-import static javafx.geometry.Pos.CENTER;
 import static javafx.geometry.Pos.CENTER_LEFT;
 import static javafx.stage.Modality.APPLICATION_MODAL;
 import static javafx.stage.StageStyle.UTILITY;
@@ -55,7 +51,13 @@ public class ConfigurationsDialogBuilder
     dialog.setIconified(false);
     dialog.centerOnScreen();
     dialog.borderPanel = BorderPaneBuilder.create().styleClass("dialog").build();
+    dialog.stackPane   = new StackPane();
 
+    StackPane stackPane = dialog.stackPane;
+
+    dialog.log = new TextArea();
+
+    TextArea   log         = dialog.log;
     BorderPane borderPanel = dialog.borderPanel;
 
     // message
@@ -68,6 +70,8 @@ public class ConfigurationsDialogBuilder
 
     ProgressIndicator progressIndicator = dialog.progressIndicator;
 
+    stackPane.getChildren().add(log);
+    stackPane.getChildren().add(progressIndicator);
     progressIndicator.setPrefSize(50, 50);
     progressIndicator.setMaxSize(50, 50);
     configurationsBox.setSpacing(15);
@@ -77,7 +81,7 @@ public class ConfigurationsDialogBuilder
     ScrollPane scrollPane = dialog.scrollPane;
 
     scrollPane.setContent(configurationsBox);
-    dialog.borderPanel.setCenter(dialog.progressIndicator);
+    dialog.borderPanel.setCenter(stackPane);
     BorderPane.setAlignment(configurationsBox, CENTER_LEFT);
     BorderPane.setMargin(configurationsBox, new Insets(MARGIN, MARGIN, MARGIN, 2 * MARGIN));
 

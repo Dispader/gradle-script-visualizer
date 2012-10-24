@@ -229,7 +229,6 @@ public class DependencyDotFileGenerator
   {
     if (!selectedFile.equals(previousFile))
     {
-      // todo show busy spinner here in dialog
       ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(this, preferences, os, outputFileName).setOwner(null)
                                                                           .setTitle("Processing build file").addOkButton().addCancelButton(null)
                                                                           .build();

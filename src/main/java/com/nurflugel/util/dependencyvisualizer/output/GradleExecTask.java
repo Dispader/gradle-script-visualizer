@@ -6,6 +6,7 @@ import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.control.TextArea;
 import org.apache.commons.lang3.ArrayUtils;
 import java.io.*;
 import java.util.ArrayList;
@@ -84,9 +85,9 @@ public class GradleExecTask extends Task
           }
 
           System.out.println(resultLine);
-          dialog.addLineToDisplay(resultLine);
-          resultLine = in.readLine();
+          log(resultLine);
           outputLines.add(resultLine);
+          resultLine = in.readLine();
         }
       }
     }
@@ -111,5 +112,19 @@ public class GradleExecTask extends Task
       });
 
     return lines;
+  }
+
+  private void log(final String text)
+  {
+    // we can access fx objects only from fx thread
+    // so we need to wrap log access into Platform#runLater
+    Platform.runLater(new Runnable()
+      {
+        @Override
+        public void run()
+        {
+          dialog.addLineToDisplay(text);
+        }
+      });
   }
 }
