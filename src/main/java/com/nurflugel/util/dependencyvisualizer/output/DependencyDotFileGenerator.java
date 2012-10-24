@@ -27,7 +27,6 @@ public class DependencyDotFileGenerator
 {
   public static final String SPACE        = " ";
   private static final File  previousFile = null;
-  private String[]           gradleLines  = new String[0];
 
   /**
    * For the list of tasks, create the lines for output based on the given preferences.
@@ -87,7 +86,11 @@ public class DependencyDotFileGenerator
     }
 
     output.add("\n\n");
-    configuration.outputDependencies(output);
+
+    Set<String> dependencyLines = new TreeSet<>();  // cheesy way to avoid dups and also sort
+
+    configuration.outputDependencies(dependencyLines);
+    output.addAll(dependencyLines);
 
     // if desired, group the tasks
     // if (scriptPreferences.shouldGroupByBuildfiles())
@@ -106,16 +109,6 @@ public class DependencyDotFileGenerator
     }
   }
 
-  // // todo show this right away, with a busy spinner as it populates
-  // protected void getConfigurationFromDialog(List<Configuration> configurations, DependencyDotFileGenerator dependencyDotFileGenerator,
-  // GradleScriptPreferences preferences, Os os, String outputFileName)
-  // {
-  // ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(dependencyDotFileGenerator, preferences, os, outputFileName)
-  // .setOwner(null).setTitle("Select a configuration to graph").addOkButton()
-  // .addCancelButton(null).addConfigurations(configurations).build();
-  //
-  // dialog.show();
-  // }
   private void buildMapOfUsedArtifacts(List<Configuration> configurations, Set<Artifact> usedArtifacts)
   {
     for (ObjectWithArtifacts configuration : configurations)

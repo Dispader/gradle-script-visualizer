@@ -50,15 +50,21 @@ public abstract class ObjectWithArtifacts implements Comparable
 
   public abstract String getDotDeclaration();
 
-  public void outputDependencies(List<String> output)
+  public void outputDependencies(Set<String> output)
   {
     for (String artifactKey : artifactKeys)
     {
       Artifact artifact = getArtifact(artifactKey);
 
-      if (artifact != null)                   // todo fix null artifacts
+      if (artifact != null)  // todo fix null artifacts
       {
-        String line = getNiceDotName() + " -> " + artifact.getNiceDotName();
+        // todo need a map of the dependsOn tasks, and the revision THIS object asked for
+        boolean isSameRevision = artifact.getRequestedRevision().equals(artifact.getRevision());
+        String  color          = isSameRevision ? "black"
+                                                : "red";
+        String edgeLabel = isSameRevision ? ""
+                                          : (" label=\"" + artifact.getRequestedRevision() + "\" , ");
+        String line = getNiceDotName() + " -> " + artifact.getNiceDotName() + "  [" + edgeLabel + "color=\"" + color + "\"];";
 
         output.add(line);
         artifact.outputDependencies(output);  // todo will this do duplicates?  Need to do a set to reduce dups?

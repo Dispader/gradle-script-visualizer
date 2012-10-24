@@ -1,15 +1,13 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
-import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Map;
 import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.parseKey;
 import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.parseRequestedRevision;
 
-/** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 13:08 To change this template use File | Settings | File Templates. */
+/** Representation of a dependency artifact. */
 public class Artifact extends ObjectWithArtifacts
 {
   public static final String COLON             = ":";
@@ -57,7 +55,8 @@ public class Artifact extends ObjectWithArtifacts
   public String getDotDeclaration()
   {
     String shape = "ellipse";
-    String color = "black";
+    String color = revision.equals(requestedRevision) ? "black"
+                                                      : "red";
 
     return getNiceDotName() + " [label=\"" + org + "\\n" + name + "\\n" + revision + "\" shape=" + shape + " color=" + color + " ]; ";
   }
