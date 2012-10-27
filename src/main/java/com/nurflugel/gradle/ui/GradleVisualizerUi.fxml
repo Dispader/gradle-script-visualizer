@@ -14,7 +14,7 @@
   <children>
     <TabPane fx:id="tabPane" prefHeight="281.0" prefWidth="497.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="110.0">
       <tabs>
-        <Tab onSelectionChanged="#saveSettings" text="Script Visualizer">
+        <Tab onSelectionChanged="#saveAndInitializeUi" text="Script Visualizer">
           <content>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="theme">
               <children>
@@ -26,6 +26,7 @@
                         <CheckBox fx:id="watchFilesCheckbox" mnemonicParsing="false" onAction="#saveSettings" selected="true" text="Watch files for changes" />
                         <CheckBox fx:id="deleteDotFilesCheckbox" mnemonicParsing="false" onAction="#saveSettings" selected="true" text="Delete DOT files on exit" />
                         <CheckBox id="groupByFilesButton" fx:id="groupByFilesCheckbox" mnemonicParsing="false" onAction="#groupByBuildFileClicked" text="Group by build file" />
+                        <CheckBox id="concentrateScriptLines" fx:id="concentrateScriptLinesCheckbox" mnemonicParsing="false" onAction="#saveSettings" text="Concentrate lines" />
                       </children>
                     </VBox>
                   </children>
@@ -74,43 +75,34 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab onSelectionChanged="#saveSettings" text="Dependency Visualizer">
+        <Tab onSelectionChanged="#saveAndInitializeUi" text="Dependency Visualizer">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="theme">
               <children>
-                <VBox id="VBox" alignment="CENTER" layoutX="103.0" layoutY="47.0" spacing="5.0">
+                <VBox id="VBox" alignment="CENTER" layoutX="103.0" layoutY="47.0" spacing="5.0" />
+                <Button fx:id="generateDependencyGraphButton" disable="false" layoutX="74.0" layoutY="207.0" mnemonicParsing="false" onAction="#generateDependencyGraphButtonClicked" text="Select Script and Visualize Dependencies" />
+                <Button id="quitButton" fx:id="quitButton2" cancelButton="true" layoutX="371.0" layoutY="207.0" mnemonicParsing="false" onAction="#quitClickedAction" text="Quit" />
+                <VBox id="VBox" alignment="TOP_LEFT" layoutX="14.0" layoutY="45.0" spacing="5.0">
                   <children>
+                    <Label styleClass="smallLabel" text="Output options" />
                     <VBox id="VBox" alignment="TOP_LEFT" spacing="5.0">
                       <children>
-                        <Label styleClass="smallLabel" text="Output options" />
-                        <GridPane id="GridPane" styleClass="borderedBox" vgap="10.0">
+                        <CheckBox mnemonicParsing="false" onAction="#saveSettings" text="Delete DOT files on exit" />
+                        <CheckBox id="concentrateDependencyLines" fx:id="concentrateDependencyLinesCheckbox" mnemonicParsing="false" onAction="#saveSettings" text="Concentrate lines" />
+                        <Group id="Group">
                           <children>
-                            <CheckBox mnemonicParsing="false" onAction="#saveSettings" text="Delete DOT files on exit" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <Group id="Group" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                              <children>
-                                <RadioButton layoutX="0.0" layoutY="-9.0" mnemonicParsing="false" onAction="#saveSettings" text="Show multiple configurations per graph">
-                                  <toggleGroup>
-                                    <ToggleGroup fx:id="configurationsGroup" />
-                                  </toggleGroup>
-                                </RadioButton>
-                                <RadioButton layoutX="0.0" layoutY="18.0" mnemonicParsing="false" onAction="#saveSettings" selected="true" text="One configuration per graph" toggleGroup="$configurationsGroup" />
-                              </children>
-                            </Group>
+                            <RadioButton layoutX="0.0" layoutY="-9.0" mnemonicParsing="false" onAction="#saveSettings" text="Show multiple configurations per graph">
+                              <toggleGroup>
+                                <ToggleGroup fx:id="configurationsGroup" />
+                              </toggleGroup>
+                            </RadioButton>
+                            <RadioButton layoutX="0.0" layoutY="18.0" mnemonicParsing="false" onAction="#saveSettings" selected="true" text="One configuration per graph" toggleGroup="$configurationsGroup" />
                           </children>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
+                        </Group>
                       </children>
                     </VBox>
                   </children>
                 </VBox>
-                <Button fx:id="generateDependencyGraphButton" disable="false" layoutX="74.0" layoutY="207.0" mnemonicParsing="false" onAction="#generateDependencyGraphButtonClicked" text="Select Script and Visualize Dependencies" />
-                <Button id="quitButton" fx:id="quitButton2" cancelButton="true" layoutX="371.0" layoutY="207.0" mnemonicParsing="false" onAction="#quitClickedAction" text="Quit" />
               </children>
             </AnchorPane>
           </content>

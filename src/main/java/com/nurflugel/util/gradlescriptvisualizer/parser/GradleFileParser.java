@@ -3,11 +3,10 @@ package com.nurflugel.util.gradlescriptvisualizer.parser;
 import com.nurflugel.util.GraphicFileCreator;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
-import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
+import com.nurflugel.util.gradlescriptvisualizer.output.ScriptDotFileGenerator;
 import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -100,7 +99,11 @@ public class GradleFileParser
     for (String textLine : textLines)
     {
       textLine = filterText(textLine);
-      lines.add(textLine);
+
+      if (!textLine.startsWith("//"))
+      {
+        lines.add(textLine);
+      }
     }
 
     return lines;
@@ -313,33 +316,36 @@ public class GradleFileParser
   {
     for (String line : lines)
     {
-      if (line.contains(EACH))
+      if (!line.startsWith("//"))
       {
-        List<Task> tasks = findOrCreateTaskInForEach(line, taskMap);
-
-        if (!tasks.isEmpty())
+        if (line.contains(EACH))
         {
-          String[] linesInScope = findLinesInScope(line, lines);
+          List<Task> tasks = findOrCreateTaskInForEach(line, taskMap);
 
-          for (String lineInScope : linesInScope)
+          if (!tasks.isEmpty())
           {
-            if (lineInScope.contains(DEPENDS_ON))
-            {
-              for (Task task : tasks)
-              {
-                task.findTaskDependsOn(taskMap, lineInScope, DEPENDS_ON);
-              }
-            }
+            String[] linesInScope = findLinesInScope(line, lines);
 
-            if (lineInScope.contains("execute("))
+            for (String lineInScope : linesInScope)
             {
-              for (Task task : tasks)
+              if (lineInScope.contains(DEPENDS_ON))
               {
-                task.analyzeScopeLinesForExecuteDependencies(taskMap, linesInScope);
+                for (Task task : tasks)
+                {
+                  task.findTaskDependsOn(taskMap, lineInScope, DEPENDS_ON);
+                }
+              }
+
+              if (lineInScope.contains("execute("))
+              {
+                for (Task task : tasks)
+                {
+                  task.analyzeScopeLinesForExecuteDependencies(taskMap, linesInScope);
+                }
               }
             }
+            // todo work with iteration variable other than it
           }
-          // todo work with iteration variable other than it
         }
       }
     }
@@ -392,11 +398,11 @@ public class GradleFileParser
       parseFile(file);
       System.out.println("selectedFile = " + file);
 
-      List<Task>         tasks            = getTasks();
-      DotFileGenerator   dotFileGenerator = new DotFileGenerator();
-      List<String>       lines            = dotFileGenerator.createOutput(tasks, preferences);
-      File               dotFile          = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
-      GraphicFileCreator fileCreator      = new GraphicFileCreator();
+      List<Task>             tasks            = getTasks();
+      ScriptDotFileGenerator dotFileGenerator = new ScriptDotFileGenerator();
+      List<String>           lines            = dotFileGenerator.createOutput(tasks, preferences);
+      File                   dotFile          = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
+      GraphicFileCreator     fileCreator      = new GraphicFileCreator();
 
       fileCreator.processDotFile(dotFile, preferences, os);
     }

@@ -1,7 +1,7 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
 import java.util.Map;
-import static com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator.replaceBadChars;
+import static com.nurflugel.util.gradlescriptvisualizer.output.ScriptDotFileGenerator.replaceBadChars;
 import static org.apache.commons.lang3.StringUtils.split;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 13:08 To change this template use File | Settings | File Templates. */

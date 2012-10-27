@@ -123,8 +123,8 @@ public class ConfigurationsDialogBuilder
     }
     else
     {
-      dialog.setWidth(400);
-      dialog.setHeight(500);
+      dialog.setWidth(1000);
+      dialog.setHeight(700);
     }
 
     return this;

@@ -11,7 +11,7 @@ import static org.testng.Assert.assertEquals;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 6/2/12 Time: 19:18 To change this template use File | Settings | File Templates. */
 @Test(groups = "unit")
-public class DotFileGeneratorTest
+public class ScriptDotFileGeneratorTest
 {
   @Test
   public void testGenerateSimpleDotFile() throws IOException
@@ -21,9 +21,9 @@ public class DotFileGeneratorTest
 
     parser.parseFile(gradleFileName);
 
-    List<Task>       tasks            = parser.getTasks();
-    DotFileGenerator dotFileGenerator = new DotFileGenerator();
-    List<String>     lines            = dotFileGenerator.createOutput(tasks, new GradleScriptPreferences());
+    List<Task>             tasks            = parser.getTasks();
+    ScriptDotFileGenerator dotFileGenerator = new ScriptDotFileGenerator();
+    List<String>           lines            = dotFileGenerator.createOutput(tasks, new GradleScriptPreferences());
 
     dotFileGenerator.writeOutput(lines, gradleFileName);
 
@@ -39,7 +39,7 @@ public class DotFileGeneratorTest
   public void testBadCharacterReplacement()
   {
     String badPath  = "/svn/trunk/build/master:gradle/master-build.gradle";
-    String goodPath = DotFileGenerator.replaceBadChars(badPath);
+    String goodPath = ScriptDotFileGenerator.replaceBadChars(badPath);
 
     assertEquals(goodPath, "_svn_trunk_build_master_gradle_master_build_gradle");
   }

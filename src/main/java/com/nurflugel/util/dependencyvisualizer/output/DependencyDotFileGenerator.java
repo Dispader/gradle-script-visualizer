@@ -68,8 +68,8 @@ public class DependencyDotFileGenerator
     output.add("edge [fontname=\"Arial\",fontsize=\"8\"];");
     output.add("rankdir=BT;");
     output.add("");
-    output.add("concentrate=" + (preferences.shouldConcentrate() ? "true"
-                                                                 : "false") + ';');
+    output.add("concentrate=" + (preferences.shouldConcentrateDependencyLines() ? "true"
+                                                                                : "false") + ';');
 
     List<Configuration> selectedConfigurations = new ArrayList<>();
 

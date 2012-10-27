@@ -1,6 +1,6 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
-import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
+import com.nurflugel.util.gradlescriptvisualizer.output.ScriptDotFileGenerator;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class Artifact extends ObjectWithArtifacts
   @Override
   public String getNiceDotName()
   {
-    return DotFileGenerator.replaceBadChars(getKey());
+    return ScriptDotFileGenerator.replaceBadChars(getKey());
   }
 
   /** Something like "org.apache:commons-lang:2.2.1". */

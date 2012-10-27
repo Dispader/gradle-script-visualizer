@@ -64,6 +64,10 @@ public class GradleVisualizerUiController implements Initializable
   private VBox                    userBox;
   @FXML
   private TabPane                 tabPane;
+  @FXML
+  private CheckBox                concentrateScriptLinesCheckbox;
+  @FXML
+  private CheckBox                concentrateDependencyLinesCheckbox;
 
   // --------------------------- main() method ---------------------------
   public static void main(String[] args)
@@ -80,7 +84,15 @@ public class GradleVisualizerUiController implements Initializable
     os               = findOs();
     scriptParser     = new GradleFileParser(preferences, os);
     dependencyParser = new GradleDependencyParser();
-    instantiateUiFromSettings();  // todo figure out why this isn't being done after the UI is created - NPEs are being thrown
+    initializeUiFromSettings();
+
+    boolean                   selectSecondTab = preferences.getSelectSecondTab();
+    SingleSelectionModel<Tab> selectionModel  = tabPane.getSelectionModel();
+    int                       tabToSelect     = selectSecondTab ? 1
+                                                                : 0;
+
+    selectionModel.select(tabToSelect);
+    setDefaultButton();
   }
 
   // -------------------------- OTHER METHODS --------------------------
@@ -140,6 +152,8 @@ public class GradleVisualizerUiController implements Initializable
       preferences.setUseHttpProxy(useHttpProxyCheckbox.isSelected());
       preferences.setUseProxyAuthentication(useHttpProxyAuthenticationCheckbox.isSelected());
       preferences.setProxyServerName(proxyServerNameField.getText());
+      preferences.setShouldConcentrateScriptLines(concentrateScriptLinesCheckbox.isSelected());
+      preferences.setShouldConcentrateDependencyLines(concentrateDependencyLinesCheckbox.isSelected());
 
       String text = proxyServerPortField.getText();
 
@@ -172,25 +186,39 @@ public class GradleVisualizerUiController implements Initializable
     return true;
   }
 
-  private void instantiateUiFromSettings()
+  public void saveAndInitializeUi()
   {
-    watchFilesCheckbox.setSelected(preferences.watchFilesForChanges());
-    deleteDotFilesCheckbox.setSelected(preferences.shouldDeleteDotFilesOnExit());
-    groupByFilesCheckbox.setSelected(preferences.shouldGroupByBuildfiles());
-    shouldIncludeImportedFilesCheckbox.setSelected(preferences.shouldIncludeImportedFiles());
-    useHttpProxyCheckbox.setSelected(preferences.shouldUseHttpProxy());
-    useHttpProxyAuthenticationCheckbox.setSelected(preferences.shouldUseProxyAuthentication());
-    proxyServerNameField.setText(preferences.getProxyServerName());  // these override the helpful text if not empty or null
-    proxyServerPortField.setText(preferences.getProxyServerPort() + "");
-    proxyUserNameField.setText(preferences.getProxyUserName());
+    saveSettings();
+    initializeUiFromSettings();
+  }
 
-    boolean                   selectSecondTab = preferences.getSelectSecondTab();
-    SingleSelectionModel<Tab> selectionModel  = tabPane.getSelectionModel();
-    int                       tabToSelect     = selectSecondTab ? 1
-                                                                : 0;
+  private void initializeUiFromSettings()
+  {
+    if (preferences != null)
+    {
+      CheckBox checkbox = watchFilesCheckbox;
+      boolean  value    = preferences.watchFilesForChanges();
 
-    selectionModel.select(tabToSelect);
-    setDefaultButton();
+      setCheckboxFromSettings(checkbox, value);
+      setCheckboxFromSettings(deleteDotFilesCheckbox, preferences.shouldDeleteDotFilesOnExit());
+      setCheckboxFromSettings(groupByFilesCheckbox, preferences.shouldGroupByBuildfiles());
+      setCheckboxFromSettings(shouldIncludeImportedFilesCheckbox, preferences.shouldIncludeImportedFiles());
+      setCheckboxFromSettings(useHttpProxyCheckbox, preferences.shouldUseHttpProxy());
+      setCheckboxFromSettings(useHttpProxyAuthenticationCheckbox, preferences.shouldUseProxyAuthentication());
+      setCheckboxFromSettings(concentrateDependencyLinesCheckbox, preferences.shouldConcentrateDependencyLines());
+      setCheckboxFromSettings(concentrateScriptLinesCheckbox, preferences.shouldConcentrateScriptLines());
+      proxyServerNameField.setText(preferences.getProxyServerName());  // these override the helpful text if not empty or null
+      proxyServerPortField.setText(preferences.getProxyServerPort() + "");
+      proxyUserNameField.setText(preferences.getProxyUserName());
+    }
+  }
+
+  private void setCheckboxFromSettings(CheckBox checkbox, boolean value)
+  {
+    if (checkbox != null)
+    {
+      checkbox.setSelected(value);
+    }
   }
 
   public void quitClickedAction()
@@ -259,7 +287,7 @@ public class GradleVisualizerUiController implements Initializable
 
     if (!selected)
     {
-      useHttpProxyAuthenticationCheckbox.setSelected(false);
+      setCheckboxFromSettings(useHttpProxyAuthenticationCheckbox, false);
       userBox.setVisible(false);
     }
 

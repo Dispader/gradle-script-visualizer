@@ -5,14 +5,16 @@ import com.nurflugel.util.ScriptPreferences;
 /** Preferences controlling class - saves user's output between sessions, reads it back in at startup. */
 public class GradleScriptPreferences extends ScriptPreferences
 {
-  public static final int     DEFAULT_PROXY_PORT       = 8080;
-  public static final String  SELECT_SECOND_TAB        = "select second tab";
-  private static final String WATCH_FILES_FOR_CHANGES  = "watch files for changes";
-  private static final String USE_HTTP_PROXY           = "useHttpProxy";
-  private static final String PROXY_SERVER_NAME        = "proxyServerName";
-  private static final String PROXY_SERVER_PORT        = "proxyServerPort";
-  private static final String USE_PROXY_AUTHENTICATION = "useProxyAuthentication";
-  private static final String PROXY_USER_NAME          = "proxyUserName";
+  public static final int     DEFAULT_PROXY_PORT           = 8080;
+  public static final String  SELECT_SECOND_TAB            = "select second tab";
+  private static final String WATCH_FILES_FOR_CHANGES      = "watch files for changes";
+  private static final String USE_HTTP_PROXY               = "useHttpProxy";
+  private static final String PROXY_SERVER_NAME            = "proxyServerName";
+  private static final String PROXY_SERVER_PORT            = "proxyServerPort";
+  private static final String USE_PROXY_AUTHENTICATION     = "useProxyAuthentication";
+  private static final String PROXY_USER_NAME              = "proxyUserName";
+  public static final String  CONCENTRATE_DEPENDENCY_LINES = "concentrateDependencyLines";
+  public static final String  CONCENTRATE_SCRIPT_LINES     = "concentrateScriptLines";
   private boolean             watchFilesForChanges;
   private boolean             useHttpProxy;
   private String              proxyServerName;
@@ -21,6 +23,8 @@ public class GradleScriptPreferences extends ScriptPreferences
   private String              proxyUserName;
   private String              proxyPassword;
   private boolean             selectSecondTab;
+  private boolean             concentrateScriptLines;
+  private boolean             concentrateDependencyLines;
 
   public GradleScriptPreferences()
   {
@@ -33,13 +37,15 @@ public class GradleScriptPreferences extends ScriptPreferences
   /** Get the preferences from disk at app startup. */
   private void get()
   {
-    watchFilesForChanges   = preferencesStore.getBoolean(WATCH_FILES_FOR_CHANGES, false);
-    selectSecondTab        = preferencesStore.getBoolean(SELECT_SECOND_TAB, false);
-    useHttpProxy           = preferencesStore.getBoolean(USE_HTTP_PROXY, false);
-    proxyServerName        = preferencesStore.get(PROXY_SERVER_NAME, "");
-    proxyServerPort        = preferencesStore.getInt(PROXY_SERVER_PORT, DEFAULT_PROXY_PORT);
-    useProxyAuthentication = preferencesStore.getBoolean(USE_PROXY_AUTHENTICATION, false);
-    proxyUserName          = preferencesStore.get(PROXY_USER_NAME, "");
+    watchFilesForChanges       = preferencesStore.getBoolean(WATCH_FILES_FOR_CHANGES, false);
+    selectSecondTab            = preferencesStore.getBoolean(SELECT_SECOND_TAB, false);
+    useHttpProxy               = preferencesStore.getBoolean(USE_HTTP_PROXY, false);
+    concentrateDependencyLines = preferencesStore.getBoolean(CONCENTRATE_DEPENDENCY_LINES, false);
+    concentrateScriptLines     = preferencesStore.getBoolean(CONCENTRATE_SCRIPT_LINES, false);
+    proxyServerName            = preferencesStore.get(PROXY_SERVER_NAME, "");
+    proxyServerPort            = preferencesStore.getInt(PROXY_SERVER_PORT, DEFAULT_PROXY_PORT);
+    useProxyAuthentication     = preferencesStore.getBoolean(USE_PROXY_AUTHENTICATION, false);
+    proxyUserName              = preferencesStore.get(PROXY_USER_NAME, "");
   }
 
   GradleScriptPreferences(Class theTestClass)
@@ -109,6 +115,8 @@ public class GradleScriptPreferences extends ScriptPreferences
     preferencesStore.putBoolean(USE_PROXY_AUTHENTICATION, useProxyAuthentication);
     preferencesStore.put(PROXY_USER_NAME, proxyUserName);
     preferencesStore.putBoolean(SELECT_SECOND_TAB, selectSecondTab);
+    preferencesStore.putBoolean(CONCENTRATE_DEPENDENCY_LINES, concentrateDependencyLines);
+    preferencesStore.putBoolean(CONCENTRATE_SCRIPT_LINES, concentrateScriptLines);
   }
 
   public boolean shouldUseHttpProxy()
@@ -150,5 +158,25 @@ public class GradleScriptPreferences extends ScriptPreferences
   public boolean getSelectSecondTab()
   {
     return selectSecondTab;
+  }
+
+  public boolean shouldConcentrateScriptLines()
+  {
+    return concentrateScriptLines;
+  }
+
+  public void setShouldConcentrateScriptLines(boolean concentrateScriptLines)
+  {
+    this.concentrateScriptLines = concentrateScriptLines;
+  }
+
+  public boolean shouldConcentrateDependencyLines()
+  {
+    return concentrateDependencyLines;
+  }
+
+  public void setShouldConcentrateDependencyLines(boolean concentrateDependencyLines)
+  {
+    this.concentrateDependencyLines = concentrateDependencyLines;
   }
 }

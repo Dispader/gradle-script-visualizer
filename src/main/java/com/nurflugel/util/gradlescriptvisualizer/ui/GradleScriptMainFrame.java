@@ -3,7 +3,7 @@ package com.nurflugel.util.gradlescriptvisualizer.ui;
 import com.nurflugel.util.GraphicFileCreator;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
-import com.nurflugel.util.gradlescriptvisualizer.output.DotFileGenerator;
+import com.nurflugel.util.gradlescriptvisualizer.output.ScriptDotFileGenerator;
 import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import javax.swing.*;
@@ -292,11 +292,11 @@ public class GradleScriptMainFrame
       parser.parseFile(file);
       System.out.println("selectedFile = " + file);
 
-      List<Task>         tasks            = parser.getTasks();
-      DotFileGenerator   dotFileGenerator = new DotFileGenerator();
-      List<String>       lines            = dotFileGenerator.createOutput(tasks, preferences);
-      File               dotFile          = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
-      GraphicFileCreator fileCreator      = new GraphicFileCreator();
+      List<Task>             tasks            = parser.getTasks();
+      ScriptDotFileGenerator dotFileGenerator = new ScriptDotFileGenerator();
+      List<String>           lines            = dotFileGenerator.createOutput(tasks, preferences);
+      File                   dotFile          = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
+      GraphicFileCreator     fileCreator      = new GraphicFileCreator();
 
       fileCreator.processDotFile(dotFile, preferences, os);
     }

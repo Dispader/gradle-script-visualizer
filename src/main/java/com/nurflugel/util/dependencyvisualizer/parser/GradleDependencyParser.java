@@ -121,6 +121,11 @@ public class GradleDependencyParser
         continue;
       }
 
+      if (lines[i].startsWith("Download"))
+      {
+        continue;
+      }
+
       if (!pastHeaders)
       {
         pastHeaders = isAtLastLineOfHeaders(i, lines);

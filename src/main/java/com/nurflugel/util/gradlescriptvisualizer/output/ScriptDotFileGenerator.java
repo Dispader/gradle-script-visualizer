@@ -18,7 +18,7 @@ import static org.apache.commons.lang3.StringUtils.replace;
  * class responsible for generating the DOT output. Since Dot monitors the files it's showing in realtime, this can be called multiple times for the
  * same file during a session.
  */
-public class DotFileGenerator
+public class ScriptDotFileGenerator
 {
   public static final String SPACE       = " ";
   private ScriptPreferences  preferences;
@@ -43,8 +43,8 @@ public class DotFileGenerator
     output.add("edge [fontname=\"Arial\",fontsize=\"8\"];");
     output.add("rankdir=BT;");
     output.add("");
-    output.add("concentrate=" + (scriptPreferences.shouldConcentrate() ? "true"
-                                                                       : "false") + ';');
+    output.add("concentrate=" + (scriptPreferences.shouldConcentrateScriptLines() ? "true"
+                                                                                  : "false") + ';');
 
     // build up a map of build files and their tasks - if a task has null, add it to "no build file"
     for (Task task : tasks)
