@@ -21,16 +21,18 @@
         <all-permissions/>
     </security>
     <resources>
-      <j2se version="1.7+" initial-heap-size="64m" max-heap-size="512m"/>
-        <jar href="lib/GradleScriptVisualizer.jar"/>
+      <j2se version="1.7+" href="http://java.sun.com/products/autodl/j2se" java-vm-args="-Xss1M -Xmx512M"/>
+        <jar href="lib/GradleScriptVisualizer.jar"  main="true"/>
         <!--<jar href="lib/forms_rt-@forms_rt@.jar"/>-->
-        <jar href="lib/jfxrt.jar"/>
-        <jar href="lib/commons-io-@commons_io@.jar"/>
-        <jar href="lib/commons-collections-@commons_collections@.jar"/>
-        <jar href="lib/asm-@asm@.jar"/>
-        <jar href="lib/commons-lang3-@commons_lang@.jar"/>
-        <jar href="lib/log4j-@log4j@.jar"/>
-        <jar href="lib/jhall-@jhall@.jar"/>
+        <jar href="lib/jfxrt.jar"                                     version="2.2"/>
+        <jar href="lib/commons-io-@commons_io@.jar"                   version="@commons_io@"/>
+        <jar href="lib/commons-collections-@commons_collections@.jar" version="@commons_collections@"/>
+        <jar href="lib/asm-@asm@.jar"                                 version="@asm@"/>
+        <jar href="lib/commons-lang3-@commons_lang@.jar"              version="@commons_lang@"/>
+        <jar href="lib/log4j-@log4j@.jar"                             version="@log4j@"/>
+        <jar href="lib/jhall-@jhall@.jar"                             version="@jhall@"/>
+      
+        <property name="jnlp.versionEnabled" value="true"/>
     </resources>
     <application-desc main-class="com.nurflugel.gradle.ui.Main"/>
 </jnlp>
