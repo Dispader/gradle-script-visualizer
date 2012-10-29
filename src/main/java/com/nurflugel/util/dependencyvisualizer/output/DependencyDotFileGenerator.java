@@ -72,8 +72,13 @@ public class DependencyDotFileGenerator
                                                                                 : "false") + ';');
 
     List<Configuration> selectedConfigurations = new ArrayList<>();
+    boolean             showConfigurationLabel = false;
 
-    output.add(configuration.getDotDeclaration());
+    if (showConfigurationLabel)
+    {
+      output.add(configuration.getDotDeclaration());
+    }
+
     selectedConfigurations.add(configuration);
 
     Set<Artifact> usedArtifacts = new TreeSet<>();
