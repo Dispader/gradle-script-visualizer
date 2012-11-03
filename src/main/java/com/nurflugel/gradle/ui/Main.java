@@ -2,17 +2,25 @@ package com.nurflugel.gradle.ui;
 
 import com.nurflugel.gradle.ui.dialog.ConfigurationChoiceDialog;
 import com.nurflugel.gradle.ui.dialog.ConfigurationsDialogBuilder;
-import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import java.net.URL;
-import java.util.ArrayList;
+
 import static com.nurflugel.util.Util.VERSION;
+import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
+
+import javafx.application.Application;
+
+import static javafx.fxml.FXMLLoader.load;
+
+import javafx.scene.Scene;
+
+import javafx.scene.layout.AnchorPane;
+
+import javafx.stage.Stage;
+
+import java.net.URL;
+
+import java.util.ArrayList;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
-import static javafx.fxml.FXMLLoader.load;
 
 public class Main extends Application
 {
@@ -22,7 +30,15 @@ public class Main extends Application
   public static void main(String... args)
   {
     System.out.println("Main.main");
-    launch(Main.class, (String[]) null);
+
+    try
+    {
+      launch(Main.class, (String[]) null);
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -31,8 +47,8 @@ public class Main extends Application
     System.out.println("Main.start");
 
     try
-    {
-      // UI related stuff
+    {  // UI related stuff
+
       URL resource = Main.class.getResource("GradleVisualizerUi.fxml");
 
       System.out.println("Main.start2");

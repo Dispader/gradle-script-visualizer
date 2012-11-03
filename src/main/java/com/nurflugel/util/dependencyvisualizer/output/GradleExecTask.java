@@ -1,17 +1,24 @@
 package com.nurflugel.util.dependencyvisualizer.output;
 
 import com.nurflugel.gradle.ui.dialog.ConfigurationChoiceDialog;
+
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
+
 import javafx.application.Platform;
+
 import javafx.concurrent.Task;
+
 import javafx.scene.control.TextArea;
+
 import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.*;
+import static java.io.File.separator;
+
 import java.util.ArrayList;
 import java.util.List;
-import static java.io.File.separator;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 10/21/12 Time: 13:25 To change this template use File | Settings | File Templates. */
 @SuppressWarnings({ "UseOfProcessBuilder", "UseOfSystemOutOrSystemErr" })
@@ -53,42 +60,34 @@ public class GradleExecTask extends Task
     List<String> outputLines = new ArrayList<>();
     Process      proc        = pb.start();
 
-    try(
+    try(PrintWriter out = new PrintWriter(new OutputStreamWriter(proc.getOutputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream())))
+    {  // feed in the program
+      out.println("Some line here");
+      out.flush();
 
-        // todo put these together when Jalopy supports it
-        PrintWriter out = new PrintWriter(new OutputStreamWriter(proc.getOutputStream())))
-    {
-      try(
+      String resultLine = in.readLine();
 
-          BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream())))
+      while (resultLine != null)
       {
-        // feed in the program
-        out.println("Some line here");
-        out.flush();
-
-        String resultLine = in.readLine();
-
-        while (resultLine != null)
+        try
         {
-          try
-          {
-            Thread.sleep(1);
-          }
-          catch (InterruptedException interrupted)
-          {
-            if (isCancelled())
-            {
-              updateMessage("Cancelled");
-
-              break;
-            }
-          }
-
-          System.out.println(resultLine);
-          log(resultLine);
-          outputLines.add(resultLine);
-          resultLine = in.readLine();
+          Thread.sleep(1);
         }
+        catch (InterruptedException interrupted)
+        {
+          if (isCancelled())
+          {
+            updateMessage("Cancelled");
+
+            break;
+          }
+        }
+
+        System.out.println(resultLine);
+        log(resultLine);
+        outputLines.add(resultLine);
+        resultLine = in.readLine();
       }
     }
 
