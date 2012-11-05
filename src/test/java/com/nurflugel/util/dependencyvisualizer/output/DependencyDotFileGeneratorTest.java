@@ -43,7 +43,7 @@ public class DependencyDotFileGeneratorTest
     String                     outputFileName = "das_dibble.dot";
     DependencyDotFileGenerator generator      = new MockDependencyDotFileGenerator();
 
-    generator.createDotFileFromLines(parser, preferences, outputFileName, lines.toArray(new String[lines.size()]), Os.findOs(), null);
+    // generator.createDotFileFromLines(parser, preferences, outputFileName, lines.toArray(new String[lines.size()]), Os.findOs(), null);
   }
 
   @Test(groups = "long")
