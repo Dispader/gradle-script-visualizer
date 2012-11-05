@@ -1,0 +1,21 @@
+digraph G {
+node [shape=box,fontname="Arial",fontsize="10"];
+edge [fontname="Arial",fontsize="8"];
+rankdir=BT;
+
+concentrate=false;
+com_beust_jcommander_1_12 [label="com.beust\njcommander\n1.12" shape=ellipse color=black ]; 
+junit_junit_4_1 [label="junit\njunit\n4.1" shape=ellipse color=black ]; 
+org_beanshell_bsh_2_0b4 [label="org.beanshell\nbsh\n2.0b4" shape=ellipse color=black ]; 
+org_testng_testng_6_4 [label="org.testng\ntestng\n6.4" shape=ellipse color=black ]; 
+org_yaml_snakeyaml_1_6 [label="org.yaml\nsnakeyaml\n1.6" shape=ellipse color=black ]; 
+
+
+
+compile -> junit_junit_4_1  [ label="4.1" ];
+compile -> org_testng_testng_6_4  [color="black"];
+org_testng_testng_6_4 -> com_beust_jcommander_1_12  [color="black"];
+org_testng_testng_6_4 -> junit_junit_4_1  [ label="3.8.1" , color="black"];
+org_testng_testng_6_4 -> org_beanshell_bsh_2_0b4  [color="black"];
+org_testng_testng_6_4 -> org_yaml_snakeyaml_1_6  [color="black"];
+}

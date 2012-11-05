@@ -1,0 +1,33 @@
+apply plugin: 'java'
+
+configurations {
+  compile
+}
+
+println """\
+
+========================================================================================================
+Welcome to Gradle!  This is version: $gradle.gradleVersion
+              Gradle home is set to: $gradle.gradleHomeDir
+    Gradle user directory is set to: $gradle.gradleUserHomeDir
+
+                     Base directory: $projectDir
+
+
+Running build script ${relativePath(buildFile)}
+========================================================================================================
+
+"""
+
+
+repositories {
+  mavenCentral()
+  ivy {
+            artifactPattern "http://www.nurflugel.com/Home/repository/[organisation]/[module]/[revision]/[artifact]-[revision].[type]"
+            ivyPattern      "http://www.nurflugel.com/Home/repository/[organisation]/[module]/[revision]/[artifact]-[revision].ivy.xml"
+  }
+}
+dependencies {
+    compile 'org.testng:testng:6.4',
+        'junit:junit:3.0'
+}

@@ -89,16 +89,7 @@
                       <children>
                         <CheckBox mnemonicParsing="false" onAction="#saveSettings" text="Delete DOT files on exit" />
                         <CheckBox id="concentrateDependencyLines" fx:id="concentrateDependencyLinesCheckbox" mnemonicParsing="false" onAction="#saveSettings" text="Concentrate lines" />
-                        <Group id="Group">
-                          <children>
-                            <RadioButton layoutX="0.0" layoutY="-9.0" mnemonicParsing="false" onAction="#saveSettings" text="Show multiple configurations per graph">
-                              <toggleGroup>
-                                <ToggleGroup fx:id="configurationsGroup" />
-                              </toggleGroup>
-                            </RadioButton>
-                            <RadioButton layoutX="0.0" layoutY="18.0" mnemonicParsing="false" onAction="#saveSettings" selected="true" text="One configuration per graph" toggleGroup="$configurationsGroup" />
-                          </children>
-                        </Group>
+                        <CheckBox fx:id="justUseCompileConfigCheckbox" mnemonicParsing="false" onAction="#saveSettings" text="Just use &quot;Compile&quot; configuration" />
                       </children>
                     </VBox>
                   </children>

@@ -25,6 +25,8 @@ public class GradleScriptPreferences extends ScriptPreferences
   private boolean             selectSecondTab;
   private boolean             concentrateScriptLines;
   private boolean             concentrateDependencyLines;
+  private boolean             shouldJustUseCompileConfig;
+  public static final String  JUST_USE_COMPILE_CONFIG      = "justUseCompileConfig";
 
   public GradleScriptPreferences()
   {
@@ -46,6 +48,7 @@ public class GradleScriptPreferences extends ScriptPreferences
     proxyServerPort            = preferencesStore.getInt(PROXY_SERVER_PORT, DEFAULT_PROXY_PORT);
     useProxyAuthentication     = preferencesStore.getBoolean(USE_PROXY_AUTHENTICATION, false);
     proxyUserName              = preferencesStore.get(PROXY_USER_NAME, "");
+    shouldJustUseCompileConfig = preferencesStore.getBoolean(JUST_USE_COMPILE_CONFIG, false);
   }
 
   GradleScriptPreferences(Class theTestClass)
@@ -117,6 +120,7 @@ public class GradleScriptPreferences extends ScriptPreferences
     preferencesStore.putBoolean(SELECT_SECOND_TAB, selectSecondTab);
     preferencesStore.putBoolean(CONCENTRATE_DEPENDENCY_LINES, concentrateDependencyLines);
     preferencesStore.putBoolean(CONCENTRATE_SCRIPT_LINES, concentrateScriptLines);
+    preferencesStore.putBoolean(JUST_USE_COMPILE_CONFIG, shouldJustUseCompileConfig);
   }
 
   public boolean shouldUseHttpProxy()
@@ -178,5 +182,15 @@ public class GradleScriptPreferences extends ScriptPreferences
   public void setShouldConcentrateDependencyLines(boolean concentrateDependencyLines)
   {
     this.concentrateDependencyLines = concentrateDependencyLines;
+  }
+
+  public void setShouldJustUseCompileConfig(boolean shouldJustUseCompileConfig)
+  {
+    this.shouldJustUseCompileConfig = shouldJustUseCompileConfig;
+  }
+
+  public boolean shouldJustUseCompileConfig()
+  {
+    return shouldJustUseCompileConfig;
   }
 }

@@ -86,3 +86,8 @@
 .button:show-mnemonics .mnemonic-underline {
     -fx-stroke: -fx-text-fill;
 }
+.textArea {
+  -fx-fill: crimson;
+   -fx-font-style: oblique;
+   -fx-font-size: 12px;
+}

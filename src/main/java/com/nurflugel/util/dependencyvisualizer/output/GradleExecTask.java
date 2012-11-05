@@ -48,7 +48,7 @@ public class GradleExecTask extends Task
   protected Object call() throws Exception
   {
     String   command   = gradleFile.getParent() + separator + "gradlew";
-    String[] arguments = { command, "dependencies", "--no-daemon" };
+    String[] arguments = { command, "-b", gradleFile.getAbsolutePath(), "dependencies", "--no-daemon" };
 
     System.out.println("GradleDependencyParser.runGradleExec - calling ProcessBuilder command " + command + ' ' + ArrayUtils.toString(arguments));
 

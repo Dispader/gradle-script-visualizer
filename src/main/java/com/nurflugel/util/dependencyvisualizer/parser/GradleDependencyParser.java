@@ -1,25 +1,32 @@
 package com.nurflugel.util.dependencyvisualizer.parser;
 
 import com.nurflugel.gradle.ui.dialog.Dialog;
+
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
+import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.isConfigurationLine;
+import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.readConfiguration;
 import com.nurflugel.util.dependencyvisualizer.domain.Pointer;
 import com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator;
 import com.nurflugel.util.dependencyvisualizer.output.NoConfigurationsFoundException;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
+
+import org.apache.commons.io.FileUtils;
+import static org.apache.commons.io.FileUtils.readLines;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import static org.apache.commons.lang3.StringUtils.*;
+
 import java.io.*;
+import static java.io.File.separator;
+
 import java.lang.reflect.InvocationTargetException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.isConfigurationLine;
-import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.readConfiguration;
-import static java.io.File.separator;
-import static org.apache.commons.io.FileUtils.readLines;
-import static org.apache.commons.lang3.StringUtils.*;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 18:36 To change this template use File | Settings | File Templates. */
 public class GradleDependencyParser
@@ -114,8 +121,8 @@ public class GradleDependencyParser
     boolean pastHeaders = false;
 
     for (int i = 0; i < lines.length; i++)
-    {
-      // skip any blank lines
+    {  // skip any blank lines
+
       if (isBlank(lines[i]))
       {
         continue;
@@ -201,9 +208,11 @@ public class GradleDependencyParser
   {
     try
     {
-      DependencyDotFileGenerator generator = new DependencyDotFileGenerator();
+      DependencyDotFileGenerator generator      = new DependencyDotFileGenerator();
+      String                     baseName       = gradleFile.getName();
+      String                     outputFileName = replace(baseName, ".gradle", ".dot");
 
-      generator.createOutputForFile(gradleFile, this, preferences, "dibble.dot", os);
+      generator.createOutputForFile(gradleFile, this, preferences, outputFileName, os);
     }
     catch (NoConfigurationsFoundException e)
     {

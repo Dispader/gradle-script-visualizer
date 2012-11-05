@@ -1,25 +1,35 @@
 package com.nurflugel.gradle.ui;
 
 import com.nurflugel.gradle.ui.dialog.Dialog;
+import static com.nurflugel.gradle.ui.dialog.Dialog.showError;
+
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
+import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
+
 import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import javafx.scene.control.*;
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 import javafx.stage.FileChooser;
+
 import java.io.File;
 import java.io.IOException;
+
 import java.lang.reflect.InvocationTargetException;
+
 import java.net.URL;
+
 import java.util.ResourceBundle;
-import static com.nurflugel.gradle.ui.dialog.Dialog.showError;
-import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 10/10/12 Time: 19:28 To change this template use File | Settings | File Templates. */
 public class GradleVisualizerUiController implements Initializable
@@ -68,6 +78,8 @@ public class GradleVisualizerUiController implements Initializable
   private CheckBox                concentrateScriptLinesCheckbox;
   @FXML
   private CheckBox                concentrateDependencyLinesCheckbox;
+  @FXML
+  private CheckBox                justUseCompileConfigCheckbox;
 
   // --------------------------- main() method ---------------------------
   public static void main(String[] args)
@@ -143,7 +155,7 @@ public class GradleVisualizerUiController implements Initializable
 
     if (areAllNotNull(preferences, watchFilesCheckbox, deleteDotFilesCheckbox, groupByFilesCheckbox, shouldIncludeImportedFilesCheckbox,
                         useHttpProxyAuthenticationCheckbox, useHttpProxyCheckbox, proxyServerNameField, proxyServerPortField, proxyUserNameField,
-                        proxyPasswordField, tabPane))
+                        proxyPasswordField, tabPane, justUseCompileConfigCheckbox))
     {
       preferences.setWatchFilesForChanges(watchFilesCheckbox.isSelected());
       preferences.setShouldDeleteDotFilesOnExit(deleteDotFilesCheckbox.isSelected());
@@ -154,6 +166,7 @@ public class GradleVisualizerUiController implements Initializable
       preferences.setProxyServerName(proxyServerNameField.getText());
       preferences.setShouldConcentrateScriptLines(concentrateScriptLinesCheckbox.isSelected());
       preferences.setShouldConcentrateDependencyLines(concentrateDependencyLinesCheckbox.isSelected());
+      preferences.setShouldJustUseCompileConfig(justUseCompileConfigCheckbox.isSelected());
 
       String text = proxyServerPortField.getText();
 
@@ -207,12 +220,14 @@ public class GradleVisualizerUiController implements Initializable
       setCheckboxFromSettings(useHttpProxyAuthenticationCheckbox, preferences.shouldUseProxyAuthentication());
       setCheckboxFromSettings(concentrateDependencyLinesCheckbox, preferences.shouldConcentrateDependencyLines());
       setCheckboxFromSettings(concentrateScriptLinesCheckbox, preferences.shouldConcentrateScriptLines());
+      setCheckboxFromSettings(justUseCompileConfigCheckbox, preferences.shouldJustUseCompileConfig());
       proxyServerNameField.setText(preferences.getProxyServerName());  // these override the helpful text if not empty or null
       proxyServerPortField.setText(preferences.getProxyServerPort() + "");
       proxyUserNameField.setText(preferences.getProxyUserName());
     }
   }
 
+  /** Helper method to deal with null values upon initialization. */
   private void setCheckboxFromSettings(CheckBox checkbox, boolean value)
   {
     if (checkbox != null)
@@ -244,8 +259,7 @@ public class GradleVisualizerUiController implements Initializable
     File file = fileChooser.showOpenDialog(null);
 
     if (file != null)
-    {
-      // gradleFile = file;
+    {  // gradleFile = file;
       preferences.setLastDir(file.getParent());
       generateDependencyGraphButton.setDisable(false);
       generateScriptGraphButton.setDisable(false);

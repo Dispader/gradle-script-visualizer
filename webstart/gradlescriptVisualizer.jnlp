@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- JNLP File for Ant ScriptDependency Visualizer client application -->
 <jnlp
-    spec="1.0"
+    spec="1.0+"
     codebase="http://gradle-script-visualizer.googlecode.com/svn/trunk/webstart/"
     href="gradlescriptVisualizer.jnlp">
     <information>
@@ -21,7 +21,7 @@
         <all-permissions/>
     </security>
     <resources>
-      <j2se version="1.7+"  java-vm-args="-Xss1M -Xmx256M"/>
+      <j2se version="1.7+" />
         <jar href="lib/GradleScriptVisualizer.jar"  main="true"/>
         <!--<jar href="lib/forms_rt-11.0.3.jar"/>-->
         <jar href="lib/jfxrt.jar"                                     />
@@ -40,7 +40,7 @@
         <!--<jar href="lib/log4j-1.2.15.jar"                             version="1.2.15"/>-->
         <!--<jar href="lib/jhall-2.0.6.jar"                             version="2.0.6"/>-->
       
-        <!--<property name="jnlp.versionEnabled" value="true"/>-->
+        <property name="jnlp.versionEnabled" value="true"/>
     </resources>
     <application-desc main-class="com.nurflugel.gradle.ui.Main"/>
 </jnlp>

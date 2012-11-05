@@ -1,0 +1,22 @@
+digraph G {
+node [shape=box,fontname="Arial",fontsize="10"];
+edge [fontname="Arial",fontsize="8"];
+rankdir=BT;
+
+concentrate=false;
+com_trilead_trilead_ssh2_1_0_0_build215 [label="com.trilead\ntrilead-ssh2\n1.0.0-build215" shape=ellipse color=black ]; 
+de_regnis_q_sequence_sequence_library_1_0_2 [label="de.regnis.q.sequence\nsequence-library\n1.0.2" shape=ellipse color=black ]; 
+net_java_dev_jna_jna_3_4_0 [label="net.java.dev.jna\njna\n3.4.0" shape=ellipse color=black ]; 
+org_antlr_antlr_runtime_3_4 [label="org.antlr\nantlr-runtime\n3.4" shape=ellipse color=black ]; 
+org_tmatesoft_sqljet_sqljet_1_1_1 [label="org.tmatesoft.sqljet\nsqljet\n1.1.1" shape=ellipse color=black ]; 
+org_tmatesoft_svnkit_svnkit_1_7_4_v1 [label="org.tmatesoft.svnkit\nsvnkit\n1.7.4-v1" shape=ellipse color=black ]; 
+
+
+
+org_tmatesoft_svnkit_svnkit_1_7_4_v1 -> com_trilead_trilead_ssh2_1_0_0_build215  [color="black"];
+org_tmatesoft_svnkit_svnkit_1_7_4_v1 -> de_regnis_q_sequence_sequence_library_1_0_2  [color="black"];
+org_tmatesoft_svnkit_svnkit_1_7_4_v1 -> net_java_dev_jna_jna_3_4_0  [color="black"];
+org_tmatesoft_svnkit_svnkit_1_7_4_v1 -> org_tmatesoft_sqljet_sqljet_1_1_1  [color="black"];
+compile -> org_tmatesoft_svnkit_svnkit_1_7_4_v1  [color="black"];
+org_tmatesoft_sqljet_sqljet_1_1_1 -> org_antlr_antlr_runtime_3_4  [color="black"];
+}

@@ -2,25 +2,31 @@ package com.nurflugel.util.dependencyvisualizer.output;
 
 import com.nurflugel.gradle.ui.dialog.ConfigurationChoiceDialog;
 import com.nurflugel.gradle.ui.dialog.ConfigurationsDialogBuilder;
-import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
+import static com.nurflugel.gradle.ui.dialog.Dialog.showThrowable;
+
+import static com.nurflugel.util.Util.*;
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 import com.nurflugel.util.dependencyvisualizer.domain.ObjectWithArtifacts;
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
+import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
+
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import static com.nurflugel.gradle.ui.dialog.Dialog.showThrowable;
-import static com.nurflugel.util.Util.*;
+
 import static org.apache.commons.io.FileUtils.writeLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.apache.commons.io.FilenameUtils.getFullPath;
 import static org.apache.commons.lang3.StringUtils.replace;
+
+import java.io.File;
+import java.io.IOException;
+
+import java.lang.reflect.InvocationTargetException;
+
+import java.util.*;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 10/3/12 Time: 11:27 To change this template use File | Settings | File Templates. */
 public class DependencyDotFileGenerator
@@ -45,7 +51,17 @@ public class DependencyDotFileGenerator
     // for now, just allow one config to be graphed
     if (configurations.size() > 1)
     {
-      dialog.getConfigurationsDialogBuilder().addConfigurations(configurations);
+      if (preferences.shouldJustUseCompileConfig())
+      {
+        int index = configurations.indexOf(Configuration.COMPILE);
+
+        dialog.hide();
+        generateOutputForConfigurations(preferences, configurations.get(index), outputFileName, os);
+      }
+      else
+      {
+        dialog.getConfigurationsDialogBuilder().addConfigurations(configurations);
+      }
 
       // getConfigurationFromDialog(configurations, this, preferences, os, outputFileName);
     }
@@ -106,7 +122,9 @@ public class DependencyDotFileGenerator
 
     try
     {
-      createAndOpenFile(output, outputFileName, this, os);
+      String absolutePath = new File(preferences.getLastDir(), outputFileName).getAbsolutePath();
+
+      createAndOpenFile(output, absolutePath, this, os);
     }
     catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e)
     {

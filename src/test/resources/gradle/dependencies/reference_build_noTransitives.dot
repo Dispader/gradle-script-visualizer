@@ -1,0 +1,16 @@
+digraph G {
+node [shape=box,fontname="Arial",fontsize="10"];
+edge [fontname="Arial",fontsize="8"];
+rankdir=BT;
+
+concentrate=false;
+net_java_dev_jna_jna_3_4_0 [label="net.java.dev.jna\njna\n3.4.0" shape=ellipse color=black ]; 
+org_apache_commons_logging_1_0_4 [label="org.apache\ncommons-logging\n1.0.4" shape=ellipse color=black ]; 
+org_apache_log4j_1_2_15 [label="org.apache\nlog4j\n1.2.15" shape=ellipse color=black ]; 
+
+
+
+compile -> net_java_dev_jna_jna_3_4_0  [color="black"];
+compile -> org_apache_commons_logging_1_0_4  [color="black"];
+compile -> org_apache_log4j_1_2_15  [color="black"];
+}
