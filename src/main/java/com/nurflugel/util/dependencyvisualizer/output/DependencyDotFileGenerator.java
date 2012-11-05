@@ -55,15 +55,17 @@ public class DependencyDotFileGenerator
       {
         int index = configurations.indexOf(Configuration.COMPILE);
 
-        dialog.hide();
+        if (dialog != null)  // null for unit tests
+        {
+          dialog.hide();
+        }
+
         generateOutputForConfigurations(preferences, configurations.get(index), outputFileName, os);
       }
       else
       {
         dialog.getConfigurationsDialogBuilder().addConfigurations(configurations);
       }
-
-      // getConfigurationFromDialog(configurations, this, preferences, os, outputFileName);
     }
     else if (configurations.isEmpty())
     {
