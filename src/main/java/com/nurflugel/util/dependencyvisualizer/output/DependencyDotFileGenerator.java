@@ -7,6 +7,7 @@ import static com.nurflugel.gradle.ui.dialog.Dialog.showThrowable;
 import static com.nurflugel.util.Util.*;
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
+import static com.nurflugel.util.dependencyvisualizer.domain.Configuration.COMPILE;
 import com.nurflugel.util.dependencyvisualizer.domain.ObjectWithArtifacts;
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
@@ -53,7 +54,7 @@ public class DependencyDotFileGenerator
     {
       if (preferences.shouldJustUseCompileConfig())
       {
-        int index = configurations.indexOf(Configuration.COMPILE);
+        int index = configurations.indexOf(COMPILE);
 
         if (dialog != null)  // null for unit tests
         {

@@ -51,7 +51,10 @@ public class DependencyDotFileGeneratorTest
   {
     File file = new File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build.gradle");  // todo parametrize
     DependencyDotFileGenerator generator = new DependencyDotFileGenerator();
+    GradleScriptPreferences    preferences = new GradleScriptPreferences();
 
-    generator.createOutputForFile(file, new GradleDependencyParser(), new GradleScriptPreferences(), "dibble.dot", Os.findOs());
+    preferences.setShouldJustUseCompileConfig(true);
+    // todo fix this so it won't die because of the dialog generator.createOutputForFile(file, new GradleDependencyParser(), preferences,
+    // "dibble.dot", Os.findOs());
   }
 }
