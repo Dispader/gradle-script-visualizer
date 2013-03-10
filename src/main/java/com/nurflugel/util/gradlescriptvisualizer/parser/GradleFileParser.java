@@ -1,25 +1,32 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
 import com.nurflugel.util.GraphicFileCreator;
+import static com.nurflugel.util.Util.*;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
-import com.nurflugel.util.gradlescriptvisualizer.output.ScriptDotFileGenerator;
-import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
-import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
-import org.apache.commons.io.IOUtils;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
+import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
+import com.nurflugel.util.gradlescriptvisualizer.output.ScriptDotFileGenerator;
+import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleTaskOutputParser.mergeGradleTasksIntoExistingTasks;
+import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleTaskOutputParser.parse;
+import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleTaskOutputParser.runGradleToGetTaskLines;
+import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
+
 import static org.apache.commons.io.FileUtils.checksumCRC32;
 import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.apache.commons.io.FilenameUtils.getFullPath;
+import org.apache.commons.io.IOUtils;
 import static org.apache.commons.lang3.StringUtils.*;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import java.net.URL;
+
+import java.util.*;
 
 /** Class with parses the Gradle scripts. */
 public class GradleFileParser
@@ -34,7 +41,8 @@ public class GradleFileParser
   private final Set<File>         filesToRender = new HashSet<>();
 
   /** The starting point - the entry script. */
-  private File baseFile;
+  private File    baseFile;
+  private boolean showInternalGradleDependencies;
 
   public GradleFileParser(GradleScriptPreferences preferences)
   {
@@ -215,8 +223,7 @@ public class GradleFileParser
             findUrlImport(text);
           }
           catch (IOException e)
-          {
-            // e.printStackTrace();//todo something where we tell the user we can't go through the firewall or the file doesn't exist
+          {  // e.printStackTrace();//todo something where we tell the user we can't go through the firewall or the file doesn't exist
           }
         }
         else
@@ -304,8 +311,7 @@ public class GradleFileParser
           findUrlImport(text);
         }
         else
-        {
-          // todo we can't parse a file import in a remote URL - throw some sort of exception
+        {  // todo we can't parse a file import in a remote URL - throw some sort of exception
         }
       }
     }
@@ -398,18 +404,34 @@ public class GradleFileParser
       parseFile(file);
       System.out.println("selectedFile = " + file);
 
-      List<Task>             tasks            = getTasks();
-      ScriptDotFileGenerator dotFileGenerator = new ScriptDotFileGenerator();
-      List<String>           lines            = dotFileGenerator.createOutput(tasks, preferences);
-      File                   dotFile          = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
-      GraphicFileCreator     fileCreator      = new GraphicFileCreator();
+      if (showInternalGradleDependencies)
+      {
+        String[]   lines       = runGradleToGetTaskLines(file);
+        List<Task> gradleTasks = parse(lines);
 
-      fileCreator.processDotFile(dotFile, preferences, os);
+        // take the list of tasks generated from parsing Gradle and see if they exist in the establish set of tasks. If so, augment the dependency
+        // information with what's give from the list.
+        mergeGradleTasksIntoExistingTasks(taskMap, gradleTasks);
+      }
+
+      createTasks(file);
     }
   }
 
-  public void beginOnFile(boolean watchFileForChanges, File... gradleFiles) throws IOException
+  private void createTasks(File file) throws IOException
   {
+    List<Task>             tasks            = getTasks();
+    ScriptDotFileGenerator dotFileGenerator = new ScriptDotFileGenerator();
+    List<String>           lines            = dotFileGenerator.createOutput(tasks, preferences);
+    File                   dotFile          = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
+    GraphicFileCreator     fileCreator      = new GraphicFileCreator();
+
+    fileCreator.processDotFile(dotFile, preferences, os);
+  }
+
+  public void beginOnFile(boolean watchFileForChanges, boolean showInternalGradleDependencies, File... gradleFiles) throws IOException
+  {
+    this.showInternalGradleDependencies = showInternalGradleDependencies;
     filesToRender.addAll(Arrays.asList(gradleFiles));
 
     // chooser.hide();
@@ -422,8 +444,8 @@ public class GradleFileParser
     }
 
     for (File selectedFile : gradleFiles)
-    {
-      // put the file checksum into a map so we can check it later if need be...
+    {  // put the file checksum into a map so we can check it later if need be...
+
       long checksum = checksumCRC32(selectedFile);
 
       fileChecksums.put(selectedFile, checksum);
@@ -433,8 +455,8 @@ public class GradleFileParser
     handleFileGeneration();
 
     if (watchFileForChanges)
-    {
-      // set a thread timer, pass it the maps, and have it call handleFileGeneration if any file in the map changes
+    {  // set a thread timer, pass it the maps, and have it call handleFileGeneration if any file in the map changes
+
       FileWatcher fileWatcher = new FileWatcher(fileChecksums, this);
 
       fileWatcher.execute();

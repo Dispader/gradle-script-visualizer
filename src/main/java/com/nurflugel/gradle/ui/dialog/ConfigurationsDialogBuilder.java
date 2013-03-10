@@ -4,23 +4,38 @@ import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 import com.nurflugel.util.dependencyvisualizer.output.DependencyDotFileGenerator;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+
 import javafx.collections.ObservableList;
+
+import javafx.concurrent.Task;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.Window;
-import java.net.URL;
-import java.util.List;
+
 import static javafx.geometry.Pos.BOTTOM_CENTER;
 import static javafx.geometry.Pos.CENTER_LEFT;
+
+import javafx.scene.Node;
+import javafx.scene.Scene;
+
+import javafx.scene.control.*;
+
+import javafx.scene.layout.*;
+
 import static javafx.stage.Modality.APPLICATION_MODAL;
+
 import static javafx.stage.StageStyle.UTILITY;
+
+import javafx.stage.Window;
+
+import java.net.URL;
+
+import java.util.List;
 
 @SuppressWarnings({ "AccessingNonPublicFieldOfAnotherObject", "ReturnOfThis" })
 /** Dialog builder.

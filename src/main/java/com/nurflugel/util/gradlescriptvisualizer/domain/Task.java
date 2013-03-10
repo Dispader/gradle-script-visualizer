@@ -1,20 +1,22 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import static com.nurflugel.util.Util.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.EXECUTE;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.GRADLE;
 import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.addToTaskMap;
 import static com.nurflugel.util.gradlescriptvisualizer.util.ParseUtil.findLinesInScope;
+
+import org.apache.commons.collections.CollectionUtils;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
+import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Representation of a Gradle task.
@@ -309,7 +311,7 @@ public class Task
   }
 
   /** Helper method to prevent .getDependsOn().add(xxxx) type of code. I hate those, plus it exposes the collection. */
-  private void addDependsOn(Task task)
+  public void addDependsOn(Task task)
   {
     dependsOnTasks.add(task);
   }

@@ -1,9 +1,10 @@
 package com.nurflugel.util.test;
 
 import org.apache.commons.lang3.BooleanUtils;
+import static org.apache.commons.lang3.BooleanUtils.toBooleanObject;
+
 import java.util.ArrayList;
 import java.util.List;
-import static org.apache.commons.lang3.BooleanUtils.toBooleanObject;
 
 /** Util class to help with test resources. */
 public class TestResources
@@ -16,6 +17,11 @@ public class TestResources
   /** We do this because when unit tests run in the IDE the base file path is different than when running under Gradle, so we have to adjust it. */
   public static String getFilePath(String fileName)
   {
+    if (fileName.startsWith("/"))
+    {
+      return fileName;
+    }
+
     String  property            = System.getProperty("running.in.gradle");
     boolean isGradleEnvironment = toBooleanObject(property, "yes", null, "dibble");
 

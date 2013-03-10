@@ -1,10 +1,6 @@
 package com.nurflugel.gradle.ui;
 
-import com.nurflugel.gradle.ui.dialog.ConfigurationChoiceDialog;
-import com.nurflugel.gradle.ui.dialog.ConfigurationsDialogBuilder;
-
 import static com.nurflugel.util.Util.VERSION;
-import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
 
 import javafx.application.Application;
 
@@ -18,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-import java.util.ArrayList;
 import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Logger.getLogger;
 

@@ -5,16 +5,17 @@ import com.nurflugel.util.ScriptPreferences;
 /** Preferences controlling class - saves user's output between sessions, reads it back in at startup. */
 public class GradleScriptPreferences extends ScriptPreferences
 {
-  public static final int     DEFAULT_PROXY_PORT           = 8080;
-  public static final String  SELECT_SECOND_TAB            = "select second tab";
-  private static final String WATCH_FILES_FOR_CHANGES      = "watch files for changes";
-  private static final String USE_HTTP_PROXY               = "useHttpProxy";
-  private static final String PROXY_SERVER_NAME            = "proxyServerName";
-  private static final String PROXY_SERVER_PORT            = "proxyServerPort";
-  private static final String USE_PROXY_AUTHENTICATION     = "useProxyAuthentication";
-  private static final String PROXY_USER_NAME              = "proxyUserName";
-  public static final String  CONCENTRATE_DEPENDENCY_LINES = "concentrateDependencyLines";
-  public static final String  CONCENTRATE_SCRIPT_LINES     = "concentrateScriptLines";
+  public static final int     DEFAULT_PROXY_PORT            = 8080;
+  public static final String  SELECT_SECOND_TAB             = "select second tab";
+  private static final String WATCH_FILES_FOR_CHANGES       = "watch files for changes";
+  private static final String USE_HTTP_PROXY                = "useHttpProxy";
+  private static final String PROXY_SERVER_NAME             = "proxyServerName";
+  private static final String PROXY_SERVER_PORT             = "proxyServerPort";
+  private static final String USE_PROXY_AUTHENTICATION      = "useProxyAuthentication";
+  private static final String PROXY_USER_NAME               = "proxyUserName";
+  public static final String  CONCENTRATE_DEPENDENCY_LINES  = "concentrateDependencyLines";
+  public static final String  CONCENTRATE_SCRIPT_LINES      = "concentrateScriptLines";
+  public static final String  SHOW_GRADLE_TASK_DEPENDENCIES = "showGradleTaskDependencies";
   private boolean             watchFilesForChanges;
   private boolean             useHttpProxy;
   private String              proxyServerName;
@@ -26,7 +27,8 @@ public class GradleScriptPreferences extends ScriptPreferences
   private boolean             concentrateScriptLines;
   private boolean             concentrateDependencyLines;
   private boolean             shouldJustUseCompileConfig;
-  public static final String  JUST_USE_COMPILE_CONFIG      = "justUseCompileConfig";
+  public static final String  JUST_USE_COMPILE_CONFIG       = "justUseCompileConfig";
+  private boolean             showGradleTaskDependencies;
 
   public GradleScriptPreferences()
   {
@@ -39,6 +41,7 @@ public class GradleScriptPreferences extends ScriptPreferences
   /** Get the preferences from disk at app startup. */
   private void get()
   {
+    showGradleTaskDependencies = preferencesStore.getBoolean(SHOW_GRADLE_TASK_DEPENDENCIES, false);
     watchFilesForChanges       = preferencesStore.getBoolean(WATCH_FILES_FOR_CHANGES, false);
     selectSecondTab            = preferencesStore.getBoolean(SELECT_SECOND_TAB, false);
     useHttpProxy               = preferencesStore.getBoolean(USE_HTTP_PROXY, false);
@@ -111,6 +114,7 @@ public class GradleScriptPreferences extends ScriptPreferences
   public void save()
   {
     super.save();
+    preferencesStore.putBoolean(SHOW_GRADLE_TASK_DEPENDENCIES, showGradleTaskDependencies);
     preferencesStore.putBoolean(WATCH_FILES_FOR_CHANGES, watchFilesForChanges);
     preferencesStore.putBoolean(USE_HTTP_PROXY, useHttpProxy);
     preferencesStore.put(PROXY_SERVER_NAME, proxyServerName);
@@ -192,5 +196,15 @@ public class GradleScriptPreferences extends ScriptPreferences
   public boolean shouldJustUseCompileConfig()
   {
     return shouldJustUseCompileConfig;
+  }
+
+  public void setShowGradleTaskDependencies(boolean showGradleTaskDependencies)
+  {
+    this.showGradleTaskDependencies = showGradleTaskDependencies;
+  }
+
+  public boolean showGradleTaskDependencies()
+  {
+    return showGradleTaskDependencies;
   }
 }

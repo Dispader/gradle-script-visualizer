@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="AntScriptVisualizer Suite">
 
-  <test verbose="1" name="Gradle parser tests" annotations="JDK">
+  <test verbose="100" name="Gradle parser tests" annotations="JDK">
     <groups>
       <run>
         <include name="gradle"/>

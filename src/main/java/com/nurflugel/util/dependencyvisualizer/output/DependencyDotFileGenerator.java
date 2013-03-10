@@ -56,11 +56,7 @@ public class DependencyDotFileGenerator
       {
         int index = configurations.indexOf(COMPILE);
 
-        if (dialog != null)  // null for unit tests
-        {
-          dialog.hide();
-        }
-
+        hideDialog(dialog);
         generateOutputForConfigurations(preferences, configurations.get(index), outputFileName, os);
       }
       else
@@ -75,6 +71,14 @@ public class DependencyDotFileGenerator
     else
     {
       generateOutputForConfigurations(preferences, configurations.get(0), outputFileName, os);
+    }
+  }
+
+  void hideDialog(ConfigurationChoiceDialog dialog)
+  {
+    if (dialog != null)  // null for unit tests
+    {
+      dialog.hide();
     }
   }
 
@@ -243,24 +247,45 @@ public class DependencyDotFileGenerator
     return newValue;
   }
 
-  public void createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName,
-                                  Os os) throws IOException, NoConfigurationsFoundException
+  public File createOutputForFile(File selectedFile, GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName,
+                                  Os os) throws Exception, NoConfigurationsFoundException
   {
     if (!selectedFile.equals(previousFile))
     {
-      ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(this, preferences, os, outputFileName).setOwner(null)
-                                                                          .setTitle("Processing build file").addOkButton().addCancelButton(null)
-                                                                          .build();
+      ConfigurationChoiceDialog dialog = createAndShowDialog(preferences, outputFileName, os);
 
-      dialog.show();
       preferences.setLastDir(selectedFile.getParent());
 
-      GradleExecTask    gradleExecTask = new GradleExecTask(dialog, selectedFile, this, parser, preferences, outputFileName, os);
-      ProgressIndicator progressBar    = dialog.getProgressIndicator();
+      GradleExecTask gradleExecTask = new GradleExecTask(dialog, selectedFile, this, parser, preferences, outputFileName, os);
 
-      progressBar.progressProperty().bind(gradleExecTask.progressProperty());
-      new Thread(gradleExecTask).start();
+      bindProgressBar(dialog, gradleExecTask);
+      runTask(gradleExecTask);
     }
+
+    return new File(outputFileName);
+  }
+
+  void runTask(GradleExecTask gradleExecTask) throws Exception
+  {
+    new Thread(gradleExecTask).start();
+  }
+
+  void bindProgressBar(ConfigurationChoiceDialog dialog, GradleExecTask gradleExecTask)
+  {
+    ProgressIndicator progressBar = dialog.getProgressIndicator();
+
+    progressBar.progressProperty().bind(gradleExecTask.progressProperty());
+  }
+
+  ConfigurationChoiceDialog createAndShowDialog(GradleScriptPreferences preferences, String outputFileName, Os os)
+  {
+    ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(null, preferences, os, outputFileName).setOwner(null)
+                                                                        .setTitle("Processing build file").addOkButton().addCancelButton(null)
+                                                                        .build();
+
+    dialog.show();
+
+    return dialog;
   }
 
   void createDotFileFromLines(GradleDependencyParser parser, GradleScriptPreferences preferences, String outputFileName, String[] lines, Os os,

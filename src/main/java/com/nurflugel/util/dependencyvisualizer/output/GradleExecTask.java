@@ -47,8 +47,10 @@ public class GradleExecTask extends Task
   @Override
   protected Object call() throws Exception
   {
-    String   command   = gradleFile.getParent() + separator + "gradlew";
-    String[] arguments = { command, "-b", gradleFile.getAbsolutePath(), "dependencies", "--no-daemon" };
+    String   parent    = gradleFile.getParent();
+    String   command   = parent + separator + "gradlew";
+    String   path      = gradleFile.getAbsolutePath();
+    String[] arguments = { command, "-b", path, "dependencies", "--no-daemon" };
 
     System.out.println("GradleDependencyParser.runGradleExec - calling ProcessBuilder command " + command + ' ' + ArrayUtils.toString(arguments));
 
@@ -115,8 +117,7 @@ public class GradleExecTask extends Task
 
   private void log(final String text)
   {
-    // we can access fx objects only from fx thread
-    // so we need to wrap log access into Platform#runLater
+    // we can access fx objects only from fx thread so we need to wrap log access into Platform#runLater
     Platform.runLater(new Runnable()
       {
         @Override

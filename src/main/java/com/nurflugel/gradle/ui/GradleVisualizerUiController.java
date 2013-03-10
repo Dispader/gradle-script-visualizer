@@ -10,6 +10,8 @@ import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -54,6 +56,8 @@ public class GradleVisualizerUiController implements Initializable
   private CheckBox                watchFilesCheckbox;
   @FXML
   private CheckBox                groupByFilesCheckbox;
+  @FXML
+  private CheckBox                showGradleTaskDependenciesCheckbox;
   @FXML
   private CheckBox                useHttpProxyCheckbox;
   @FXML
@@ -118,7 +122,7 @@ public class GradleVisualizerUiController implements Initializable
     {
       dependencyParser.parseDependencies(os, gradleFile, preferences);
     }
-    catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e)
+    catch (Exception e)
     {
       Dialog.showThrowable("Error parsing dependencies", "Something bad happened, here's the stack trace", e);
     }
@@ -133,7 +137,7 @@ public class GradleVisualizerUiController implements Initializable
     try
     {
       saveSettings();
-      scriptParser.beginOnFile(watchFilesCheckbox.isSelected(), gradleFile);
+      scriptParser.beginOnFile(watchFilesCheckbox.isSelected(), showGradleTaskDependenciesCheckbox.isSelected(), gradleFile);
     }
     catch (IOException e)
     {
@@ -155,8 +159,9 @@ public class GradleVisualizerUiController implements Initializable
 
     if (areAllNotNull(preferences, watchFilesCheckbox, deleteDotFilesCheckbox, groupByFilesCheckbox, shouldIncludeImportedFilesCheckbox,
                         useHttpProxyAuthenticationCheckbox, useHttpProxyCheckbox, proxyServerNameField, proxyServerPortField, proxyUserNameField,
-                        proxyPasswordField, tabPane, justUseCompileConfigCheckbox))
+                        proxyPasswordField, tabPane, justUseCompileConfigCheckbox, showGradleTaskDependenciesCheckbox))
     {
+      preferences.setShowGradleTaskDependencies(showGradleTaskDependenciesCheckbox.isSelected());
       preferences.setWatchFilesForChanges(watchFilesCheckbox.isSelected());
       preferences.setShouldDeleteDotFilesOnExit(deleteDotFilesCheckbox.isSelected());
       preferences.setShouldGroupByBuildFiles(groupByFilesCheckbox.isSelected());
@@ -186,7 +191,7 @@ public class GradleVisualizerUiController implements Initializable
   }
 
   /** check to see if everything's been instantiated yet, as it seems that events are being called before everything's instantiated. */
-  private static boolean areAllNotNull(Object... components)
+  static boolean areAllNotNull(Object... components)
   {
     for (Object component : components)
     {
@@ -221,6 +226,7 @@ public class GradleVisualizerUiController implements Initializable
       setCheckboxFromSettings(concentrateDependencyLinesCheckbox, preferences.shouldConcentrateDependencyLines());
       setCheckboxFromSettings(concentrateScriptLinesCheckbox, preferences.shouldConcentrateScriptLines());
       setCheckboxFromSettings(justUseCompileConfigCheckbox, preferences.shouldJustUseCompileConfig());
+      setCheckboxFromSettings(showGradleTaskDependenciesCheckbox, preferences.showGradleTaskDependencies());
       proxyServerNameField.setText(preferences.getProxyServerName());  // these override the helpful text if not empty or null
       proxyServerPortField.setText(preferences.getProxyServerPort() + "");
       proxyUserNameField.setText(preferences.getProxyUserName());
@@ -270,10 +276,11 @@ public class GradleVisualizerUiController implements Initializable
 
     showError("No file selected", "Nothing will happen until you select a file first");
 
-    // examples of dialogs - one with a handler, one without Dialog.showError("You're fucked", "Bend over and smile"); EventHandler actionHandler =
-    // new EventHandler() { @Override public void handle(Event event) { System.out.println("GradleVisualizerUiController.handle"); } };
-    // Dialog.buildConfirmation("you need to OK this", "Think about what you're
-    // doing").addYesButton(actionHandler).addNoButton(actionHandler).build().show();
+    // J- examples of dialogs - one with a handler, one without Dialog.showError("You're fucked", "Bend over and smile");
+    //
+    // EventHandler actionHandler = new EventHandler() { @Override public void handle(Event event) {
+    // System.out.println("GradleVisualizerUiController.handle"); } }; Dialog.buildConfirmation("you need to OK this", "Think about what you're
+    // doing").addYesButton(actionHandler).addNoButton(actionHandler).build() .show();  J+
     return null;
   }
 

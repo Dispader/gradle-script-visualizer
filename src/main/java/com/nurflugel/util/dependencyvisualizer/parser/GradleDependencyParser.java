@@ -202,9 +202,7 @@ public class GradleDependencyParser
     return configurations;
   }
 
-  public void parseDependencies(Os os, File gradleFile, GradleScriptPreferences preferences) throws IOException, ClassNotFoundException,
-                                                                                                    InvocationTargetException, NoSuchMethodException,
-                                                                                                    IllegalAccessException
+  public void parseDependencies(Os os, File gradleFile, GradleScriptPreferences preferences) throws Exception
   {
     try
     {

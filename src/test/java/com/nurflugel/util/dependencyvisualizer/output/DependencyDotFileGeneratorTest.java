@@ -8,10 +8,12 @@ import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import static com.nurflugel.util.test.TestResources.getFilePath;
 
+import org.apache.commons.io.FileUtils;
 import static org.apache.commons.io.FileUtils.readLines;
 
 import org.testng.Assert;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
 import org.testng.annotations.Test;
@@ -43,18 +45,38 @@ public class DependencyDotFileGeneratorTest
     String                     outputFileName = "das_dibble.dot";
     DependencyDotFileGenerator generator      = new MockDependencyDotFileGenerator();
 
-    // generator.createDotFileFromLines(parser, preferences, outputFileName, lines.toArray(new String[lines.size()]), Os.findOs(), null);
+    generator.createDotFileFromLines(parser, preferences, outputFileName, lines.toArray(new String[lines.size()]), Os.findOs(), null);
+  }
+
+  @Test(groups = "unit")
+  public void testNoTransitives() throws Exception, NoConfigurationsFoundException
+  {
+    File file = new File(getFilePath("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build/resources/test/gradle/dependencies/build_build_NoTransitives.gradle"));
+    DependencyDotFileGenerator generator = new MockDependencyDotFileGenerator();
+    GradleScriptPreferences    preferences = new GradleScriptPreferences();
+
+    preferences.setShouldJustUseCompileConfig(true);
+
+    File output = generator.createOutputForFile(file, new GradleDependencyParser(), preferences, "gradle/dependencies/build_NoTransitives.dot",
+                                                Os.findOs());
+
+    // compare files with reference
+    List<String> outputLines    = readLines(output);
+    List<String> referenceLines = readLines(new File("gradle/dependencies/reference_build_NoTransitives.dot"));
+
+    assertEquals(outputLines, referenceLines, "Should have teh same output");
   }
 
   @Test(groups = "long")
   public void testCreateOutputForFile() throws Exception, NoConfigurationsFoundException
   {
     File file = new File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build.gradle");  // todo parametrize
-    DependencyDotFileGenerator generator = new DependencyDotFileGenerator();
+    DependencyDotFileGenerator generator = new MockDependencyDotFileGenerator();
     GradleScriptPreferences    preferences = new GradleScriptPreferences();
 
     preferences.setShouldJustUseCompileConfig(true);
-    // todo fix this so it won't die because of the dialog generator.createOutputForFile(file, new GradleDependencyParser(), preferences,
-    // "dibble.dot", Os.findOs());
+
+    // todo fix this so it won't die because of the dialog
+    generator.createOutputForFile(file, new GradleDependencyParser(), preferences, "dibble.dot", Os.findOs());
   }
 }
