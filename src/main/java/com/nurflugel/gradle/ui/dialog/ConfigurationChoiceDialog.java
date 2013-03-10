@@ -1,14 +1,20 @@
 package com.nurflugel.gradle.ui.dialog;
 
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
+
 import javafx.scene.Scene;
+
 import javafx.scene.control.*;
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
 import javafx.stage.Stage;
+
 import org.apache.commons.collections.buffer.BoundedFifoBuffer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +48,7 @@ public class ConfigurationChoiceDialog extends Stage
     StringBuilder builder      = new StringBuilder();
     int           prefRowCount = (int) (log.getHeight() / PIXELS_PER_ROW);
 
-    if (logLines.size() == prefRowCount)
+    if ((logLines.size() == prefRowCount) && !logLines.isEmpty())
     {
       logLines.remove(0);
     }

@@ -354,21 +354,6 @@ public class Task
     this.name = makeSafeName(name);
   }
 
-  /**
-   * Constructor which takes a line of text and parses it for information.
-   *
-   * @param  taskMap  the map of existing tasks
-   * @param  line     the line of text to parse
-   */
-  Task(Map<String, Task> taskMap, String line)
-  {
-    String taskName = findTaskName(line);
-
-    name = makeSafeName(taskName);
-    type = findTaskType(line);
-    findTaskDependsOn(taskMap, line);
-  }
-
   /** Strip any unsafe chars out: -:_.${} */
   public static String makeSafeName(String oldValue)
   {
@@ -386,6 +371,21 @@ public class Task
     newValue = replace(newValue, "\\", "_");
 
     return newValue;
+  }
+
+  /**
+   * Constructor which takes a line of text and parses it for information.
+   *
+   * @param  taskMap  the map of existing tasks
+   * @param  line     the line of text to parse
+   */
+  Task(Map<String, Task> taskMap, String line)
+  {
+    String taskName = findTaskName(line);
+
+    name = makeSafeName(taskName);
+    type = findTaskType(line);
+    findTaskDependsOn(taskMap, line);
   }
 
   /** Determine the task type, if possible. If not, returns NO_TYPE. */
@@ -413,6 +413,12 @@ public class Task
     {
       return NO_TYPE;
     }
+  }
+
+  public Task(String name, TaskUsage taskUsage)
+  {
+    this.name = name;
+    usage     = taskUsage;
   }
   // -------------------------- OTHER METHODS --------------------------
 
