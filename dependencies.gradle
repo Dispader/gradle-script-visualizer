@@ -24,7 +24,8 @@ configurations {
 
 dependencies {
 
-    compile 'org.jdom:jdom:'+                       libraryVersions.jdom,
+    compile \
+            'org.jdom:jdom:'+                       libraryVersions.jdom,
             'org.tmatesoft.svnkit:svnkit:'+         libraryVersions.svnkit,
             'com.ryangrier.ant:version_tool:'+      libraryVersions.version_tool,
             'com.nurflugel:buildtasks:'+            libraryVersions.buildtasks,
@@ -34,43 +35,45 @@ dependencies {
             'org.apache:commons-io:'+               libraryVersions.commons_io,
             'com.intellij:forms_rt:'+               libraryVersions.forms_rt,
             'org.apache:log4j:'+                    libraryVersions.log4j,
-            'org.testng:testng:'+                   libraryVersions.testng,
             'org.objectweb.asm:asm:'+               libraryVersions.asm,
+           'org.testng:testng:'+                   libraryVersions.testng,
             'javax.help:jhall:'+                    libraryVersions.jhall
-//         'org.springframework:spring-aop:3.1.1.RELEASE',
     compile fileTree (dir: "$java_home/jre/lib", includes: ['jfxrt.jar']) 
 
-
-    runtime 'org.jdom:jdom:'+                    libraryVersions.jdom,
-            'org.tmatesoft.svnkit:svnkit:'+      libraryVersions.svnkit,
+//    compileTestClasses \
+  
+  
+    runtime \
             'org.apache:commons-logging:'+       libraryVersions.commons_logging,
             'org.apache.commons:commons-lang3:'+ libraryVersions.commons_lang,
             'org.apache:commons-collections:'+   libraryVersions.commons_collections,
             'org.apache:commons-io:'+            libraryVersions.commons_io,
-            'com.intellij:forms_rt:'+            libraryVersions.forms_rt,
-            'org.apache:log4j:'+                 libraryVersions.log4j,
-            'org.testng:testng:'+                libraryVersions.testng,
-            'org.objectweb.asm:asm:'+            libraryVersions.asm,
-            'javax.help:jhall:'+                 libraryVersions.jhall
+            'org.apache:log4j:'+                 libraryVersions.log4j
     runtime fileTree (dir: "$java_home/jre/lib", includes: ['jfxrt.jar']) 
-//  ,
-//            'org.springframework:spring-aop:3.1.1.RELEASE'
+
+//            'org.jdom:jdom:'+                    libraryVersions.jdom,
+//            'org.tmatesoft.svnkit:svnkit:'+      libraryVersions.svnkit,
+//  'com.intellij:forms_rt:'+            libraryVersions.forms_rt,
+//  'org.testng:testng:'+                libraryVersions.testng,
+//  'org.objectweb.asm:asm:'+            libraryVersions.asm,
+//  'javax.help:jhall:'+                 libraryVersions.jhall
 
 
-    source 'org.jdom:jdom:'+                     libraryVersions.jdom,
-           'org.tmatesoft.svnkit:svnkit:'+       libraryVersions.svnkit,
-           'com.ryangrier.ant:version_tool:'+    libraryVersions.version_tool,
-           'com.nurflugel:buildtasks:'+          libraryVersions.buildtasks,
+    source \
            'org.apache:commons-logging:'+        libraryVersions.commons_logging,
            'org.apache.commons:commons-lang3:'+  libraryVersions.commons_lang,
            'org.apache:commons-collections:'+    libraryVersions.commons_collections,
            'org.apache:commons-io:'+             libraryVersions.commons_io,
-           'com.intellij:forms_rt:'+             libraryVersions.forms_rt,
-           'org.apache:log4j:'+                  libraryVersions.log4j,
-           'org.testng:testng:'+                 libraryVersions.testng,
-           'org.objectweb.asm:asm:'+             libraryVersions.asm,
-           'javax.help:jhall:'+                  libraryVersions.jhall
-//  ,
-//            'org.springframework:spring-aop:3.1.1.RELEASE'
+           'org.apache:log4j:'+                  libraryVersions.log4j
 
+//  'org.jdom:jdom:'+                     libraryVersions.jdom,
+// 'org.tmatesoft.svnkit:svnkit:'+       libraryVersions.svnkit,
+// 'com.ryangrier.ant:version_tool:'+    libraryVersions.version_tool,
+// 'com.nurflugel:buildtasks:'+          libraryVersions.buildtasks,
+//  
+// 'com.intellij:forms_rt:'+             libraryVersions.forms_rt,
+// 'org.testng:testng:'+                 libraryVersions.testng,
+// 'org.objectweb.asm:asm:'+             libraryVersions.asm,
+// 'javax.help:jhall:'+                  libraryVersions.jhall
+  
 }
