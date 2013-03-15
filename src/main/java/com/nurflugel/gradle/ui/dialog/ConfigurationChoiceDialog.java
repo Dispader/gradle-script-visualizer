@@ -1,6 +1,7 @@
 package com.nurflugel.gradle.ui.dialog;
 
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
+import com.nurflugel.util.dependencyvisualizer.output.GradleExecAllTasksTask;
 
 import javafx.scene.Scene;
 
@@ -71,5 +72,12 @@ public class ConfigurationChoiceDialog extends Stage
   public ConfigurationsDialogBuilder getConfigurationsDialogBuilder()
   {
     return configurationsDialogBuilder;
+  }
+
+  public void showAndWait(GradleExecAllTasksTask task)
+  {
+    System.out.println("ConfigurationChoiceDialog.showAndWait");
+    new Thread(task).start();
+    showAndWait();
   }
 }
