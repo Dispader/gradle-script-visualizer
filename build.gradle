@@ -1,12 +1,36 @@
 apply plugin: 'application'
+//apply plugin: 'macAppBundle'
 
 apply from: 'dependencies.gradle'
 //apply from: 'http://ant-master-build-scripts.googlecode.com/svn/trunk/master-gradle/master-webstart-build.gradle'
+//apply from: 'master-gradle/master-javac2.gradle'
 apply from:  'master-gradle/master-webstart-build.gradle'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+
 mainClassName = "com.nurflugel.gradle.ui.Main"
 versionClassName = 'com.nurflugel.util.Util'
+
+
+//buildscript {
+//    repositories {
+//        ivy {
+//            url "http://gradle-macappbundle.googlecode.com"
+//            artifactPattern 'http://gradle-macappbundle.googlecode.com/files/[module]-[revision].[ext]'
+//        }
+//    }
+//
+//    dependencies {
+//        classpath 'edu.sc.seis:gradle-macappbundle:1.0.7'
+//    }
+//}
+//
+//macAppBundle {
+//    mainClassName = "com.nurflugel.gradle.ui.Main"
+//    icon = "myIcon.icns"
+//}
+
+
 
