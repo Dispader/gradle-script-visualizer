@@ -138,7 +138,14 @@ public class GradleFileParser
 
     String results = filterTripleQuotes(text);
 
-    results = substringAfterLast(results, "=").trim();
+    if (text.contains("="))
+    {
+      results = substringAfterLast(results, "=").trim();
+    }
+    else
+    {
+      return text.trim();
+    }
 
     return results;
   }

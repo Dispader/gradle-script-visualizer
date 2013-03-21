@@ -1,18 +1,23 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
+import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.*;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
+import static com.nurflugel.util.test.TestResources.getFilePath;
+import static com.nurflugel.util.test.TestResources.getLinesFromArray;
+
+import static org.apache.commons.lang3.ArrayUtils.contains;
+
+import static org.testng.Assert.*;
+
 import org.testng.annotations.Test;
+
 import java.io.File;
 import java.io.IOException;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.*;
-import static com.nurflugel.util.test.TestResources.getFilePath;
-import static com.nurflugel.util.test.TestResources.getLinesFromArray;
-import static org.apache.commons.lang3.ArrayUtils.contains;
-import static org.testng.Assert.*;
 
 @Test(groups = "gradle")
 public class GradleFileParserTest
@@ -550,6 +555,7 @@ public class GradleFileParserTest
 
   public void testFilterEqualsDeclaration()
   {
+    assertEquals(filterEqualsDeclaration("tomcatRun.execute()"), "tomcatRun.execute()");
     assertEquals(filterEqualsDeclaration("mongoExec = \"\"\"${mongoCmd}\"\"\".execute()"), "${mongoCmd}.execute()");
     assertEquals(filterEqualsDeclaration("def mongoExec = \"\"\"${mongoCmd}\"\"\".execute()"), "${mongoCmd}.execute()");
   }
