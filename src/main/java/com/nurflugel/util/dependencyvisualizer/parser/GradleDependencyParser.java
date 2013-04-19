@@ -1,6 +1,7 @@
 package com.nurflugel.util.dependencyvisualizer.parser;
 
 import com.nurflugel.gradle.ui.dialog.Dialog;
+import static com.nurflugel.gradle.ui.dialog.Dialog.showErrorDialog;
 
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
@@ -12,16 +13,10 @@ import com.nurflugel.util.dependencyvisualizer.output.NoConfigurationsFoundExcep
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 
-import org.apache.commons.io.FileUtils;
 import static org.apache.commons.io.FileUtils.readLines;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import java.io.*;
-import static java.io.File.separator;
-
-import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -214,7 +209,7 @@ public class GradleDependencyParser
     }
     catch (NoConfigurationsFoundException e)
     {
-      Dialog.showError("Unable to create graph", "No configurations were found in the build file");
+      showErrorDialog("Unable to create graph", "No configurations were found in the build file");
     }
   }
 }

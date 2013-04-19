@@ -1,6 +1,7 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
+import com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage;
 import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser.*;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import static com.nurflugel.util.test.TestResources.getFilePath;
@@ -195,15 +196,15 @@ public class GradleFileParserTest
 
     assertNotNull(task);
 
-    Task       dependsOnTask = tasks.get(dependsOnTaskName);
-    List<Task> taskList      = task.getDependsOn();
+    Task                 dependsOnTask = tasks.get(dependsOnTaskName);
+    Map<Task, TaskUsage> taskList      = task.getDependsOn();
 
-    assertEquals(taskList.size(), expectedSize, " got back task list: " + Arrays.toString(taskList.toArray()));
+    assertEquals(taskList.size(), expectedSize, " got back task list: " + Arrays.toString(taskList.keySet().toArray()));
 
-    Task foundTask = taskList.get(expectedSize - 1);
-
-    assertEquals(foundTask.getName(), dependsOnTask.getName());  // validate that the tasks are the same task name
-    assertEquals(foundTask, dependsOnTask);                      // validate that the tasks are the same task object
+    // Task foundTask = taskList.keySet().iterator(expectedSize - 1);
+    //
+    // assertEquals(foundTask.getName(), dependsOnTask.getName());  // validate that the tasks are the same task name
+    // assertEquals(foundTask, dependsOnTask);                      // validate that the tasks are the same task object
   }
 
   // just doing this to get a printout of the tasks...
@@ -263,7 +264,7 @@ public class GradleFileParserTest
     Map<String, Task> tasksMap = parser.getTasksMap();
     Task              task     = tasksMap.get("check");
 
-    assertEquals(task.getDependsOn().get(0).getName(), "integrationTest");
+    assertEquals(task.getDependsOn().keySet().iterator().next().getName(), "integrationTest");
   }
 
   // test cases like [funcTest, bddTest]*.dependsOn daemonModeTomcat
@@ -299,8 +300,8 @@ public class GradleFileParserTest
     String daemonModeTomcat = "daemonModeTomcat";
 
     assertTrue(tasksMap.containsKey(daemonModeTomcat));
-    assertEquals(tasksMap.get("funcTest").getDependsOn().get(0).getName(), daemonModeTomcat);
-    assertEquals(tasksMap.get("bddTest").getDependsOn().get(0).getName(), daemonModeTomcat);
+    assertEquals(tasksMap.get("funcTest").getDependsOn().keySet().iterator().next().getName(), daemonModeTomcat);
+    assertEquals(tasksMap.get("bddTest").getDependsOn().keySet().iterator().next().getName(), daemonModeTomcat);
   }
 
   // idea for doing this - after task declaration, keep parsing lines keeping track of { and } - anything within
@@ -403,10 +404,10 @@ public class GradleFileParserTest
 
   private void assertDependency(Map<String, Task> tasksMap, String firstTaskName, String secondTaskName)
   {
-    Task       task     = tasksMap.get(firstTaskName);
-    List<Task> taskList = task.getDependsOn();
+    Task                 task     = tasksMap.get(firstTaskName);
+    Map<Task, TaskUsage> taskList = task.getDependsOn();
 
-    assertTrue(taskList.contains(new Task(secondTaskName)));
+    assertTrue(taskList.containsKey(new Task(secondTaskName)));
   }
 
   @Test
@@ -433,12 +434,12 @@ public class GradleFileParserTest
 
     assertTrue(tasksMap.containsKey("tRun1"));
 
-    Task       task      = tasksMap.get("tRun1");
-    List<Task> dependsOn = task.getDependsOn();
+    Task                 task      = tasksMap.get("tRun1");
+    Map<Task, TaskUsage> dependsOn = task.getDependsOn();
 
     assertEquals(dependsOn.size(), 1);
 
-    Task task1 = dependsOn.get(0);
+    Task task1 = dependsOn.keySet().iterator().next();
 
     assertEquals(task1.getName(), "dibble");
   }
@@ -484,12 +485,12 @@ public class GradleFileParserTest
 
     assertTrue(tasksMap.containsKey("unitTest"));
 
-    Task       task      = tasksMap.get("check");
-    List<Task> dependsOn = task.getDependsOn();
+    Task                 task      = tasksMap.get("check");
+    Map<Task, TaskUsage> dependsOn = task.getDependsOn();
 
     assertEquals(dependsOn.size(), 1);
 
-    Task task1 = dependsOn.get(0);
+    Task task1 = dependsOn.keySet().iterator().next();
 
     assertEquals(task1.getName(), "tomcatStop");
   }
@@ -531,12 +532,12 @@ public class GradleFileParserTest
 
     assertTrue(tasksMap.containsKey("unitTest"));
 
-    Task       task      = tasksMap.get("check");
-    List<Task> dependsOn = task.getDependsOn();
+    Task                 task      = tasksMap.get("check");
+    Map<Task, TaskUsage> dependsOn = task.getDependsOn();
 
     assertEquals(dependsOn.size(), 1);
 
-    Task task1 = dependsOn.get(0);
+    Task task1 = dependsOn.keySet().iterator().next();
 
     assertEquals(task1.getName(), "tomcatStop");
   }

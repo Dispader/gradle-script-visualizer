@@ -1,14 +1,18 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import static com.nurflugel.util.dependencyvisualizer.domain.ObjectWithArtifacts.getArtifactLines;
+
+import org.testng.Assert;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
+
+import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 10/4/12 Time: 12:39 To change this template use File | Settings | File Templates. */
 public class ObjectWithArtifactsTest
@@ -41,7 +45,7 @@ public class ObjectWithArtifactsTest
     "",
   };
 
-  @Test
+  @Test(groups = "unit")
   public void testGetArtifactLines() throws Exception
   {
     Pointer  pointer = new Pointer(0);
@@ -61,7 +65,7 @@ public class ObjectWithArtifactsTest
     assertEquals(lines.length, 2);
   }
 
-  @Test
+  @Test(groups = "unit")
   public void testGetArtifacts() throws Exception
   {
     Map<String, Artifact> masterArtifactList = new HashMap<String, Artifact>();
@@ -85,7 +89,7 @@ public class ObjectWithArtifactsTest
     assertEquals(artifacts.size(), 13);
   }
 
-  @Test
+  @Test(groups = "unit")
   public void testGetSubArtifacts() throws Exception
   {
     Map<String, Artifact> masterArtifactList = new HashMap<String, Artifact>();
@@ -96,11 +100,11 @@ public class ObjectWithArtifactsTest
     assertNotNull(artifact.getArtifact("de.regnis.q.sequence:sequence-library:1.0.2"));
     assertNotNull(artifact.getArtifact("net.java.dev.jna:jna:3.4.0"));
 
-    Artifact subArtifact = artifact.getArtifact("corg.tmatesoft.sqljet:sqljet:1.1.1");
+    Artifact subArtifact = artifact.getArtifact("org.tmatesoft.sqljet:sqljet:1.1.1");
 
     assertTrue(artifacts.contains(subArtifact));
     assertNotNull(subArtifact.getArtifact("org.antlr:antlr-runtime:3.4"));
-    assertNotNull(artifact.getArtifact("om.trilead:trilead-ssh2:1.0.0-build215"));
+    assertNotNull(artifact.getArtifact("com.trilead:trilead-ssh2:1.0.0-build215"));
     assertEquals(artifacts.size(), 4);
   }
 }

@@ -35,7 +35,6 @@
                 <VBox id="VBox" alignment="TOP_LEFT" layoutX="14.0" layoutY="158.0" spacing="5.0">
                   <children>
                     <Label styleClass="smallLabel" text="Gradle options" />
-                    <CheckBox fx:id="showGradleTaskDependenciesCheckbox" mnemonicParsing="false" text="Show Gradle dependencies (slow)" />
                     <CheckBox fx:id="shouldIncludeImportedFilesCheckbox" mnemonicParsing="false" text="Include imported scripts">
                       <VBox.margin>
                         <Insets />

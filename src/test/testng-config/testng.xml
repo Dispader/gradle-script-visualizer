@@ -8,7 +8,7 @@
         <include name="dot"/>
         <include name="unit"/>
         <exclude name="failed"  />
-        <exclude name="long"  />
+        <include name="long"  />
       </run>
     </groups>
       <packages>

@@ -117,14 +117,19 @@ public class GradleExecTask extends Task
 
   private void log(final String text)
   {
-    // we can access fx objects only from fx thread so we need to wrap log access into Platform#runLater
-    Platform.runLater(new Runnable()
-      {
-        @Override
-        public void run()
+    try
+    {  // we can access fx objects only from fx thread so we need to wrap log access into Platform#runLater
+      Platform.runLater(new Runnable()
         {
-          dialog.addLineToDisplay(text);
-        }
-      });
+          @Override
+          public void run()
+          {
+            dialog.addLineToDisplay(text);
+          }
+        });
+    }
+    catch (IllegalStateException e)
+    {  // do nothing, used to catch exceptions when doing unit testing
+    }
   }
 }

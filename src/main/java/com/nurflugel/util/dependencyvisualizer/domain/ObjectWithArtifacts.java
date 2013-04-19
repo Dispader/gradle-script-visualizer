@@ -1,13 +1,15 @@
 package com.nurflugel.util.dependencyvisualizer.domain;
 
-import org.apache.commons.lang3.StringUtils;
-import java.util.*;
 import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.parseKey;
 import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.parseNestingLevel;
+
+import org.apache.commons.lang3.StringUtils;
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 
+import java.util.*;
+
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 13:16 To change this template use File | Settings | File Templates. */
-@SuppressWarnings("ClassReferencesSubclass")
+@SuppressWarnings({ "ClassReferencesSubclass", "ProtectedField" })
 public abstract class ObjectWithArtifacts implements Comparable
 {
   protected String                name;
@@ -56,9 +58,9 @@ public abstract class ObjectWithArtifacts implements Comparable
     {
       Artifact artifact = getArtifact(artifactKey);
 
-      if (artifact != null)  // todo fix null artifacts
-      {
-        // todo need a map of the dependsOn tasks, and the revision THIS object asked for
+      if (artifact != null)                   // todo fix null artifacts
+      {                                       // todo need a map of the dependsOn tasks, and the revision THIS object asked for
+
         boolean isSameRevision = artifact.getRequestedRevision().equals(artifact.getRevision());
         String  color          = isSameRevision ? "black"
                                                 : "red";

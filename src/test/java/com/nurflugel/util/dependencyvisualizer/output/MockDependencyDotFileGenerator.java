@@ -51,7 +51,7 @@ public class MockDependencyDotFileGenerator extends DependencyDotFileGenerator
   void bindProgressBar(ConfigurationChoiceDialog dialog, GradleExecTask gradleExecTask) {}
 
   @Override
-  ConfigurationChoiceDialog createAndShowDialog(GradleScriptPreferences preferences, String outputFileName, Os os)
+  ConfigurationChoiceDialog createAndShowConfigurationDialog(GradleScriptPreferences preferences, String outputFileName, Os os)
   {
     return null;
   }

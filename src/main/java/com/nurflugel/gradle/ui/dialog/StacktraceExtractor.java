@@ -12,9 +12,7 @@ public class StacktraceExtractor
   {
     StringWriter sw = new StringWriter();
 
-    try(
-
-        PrintWriter pw = new PrintWriter(sw))
+    try(PrintWriter pw = new PrintWriter(sw))
     {
       t.printStackTrace(pw);
     }

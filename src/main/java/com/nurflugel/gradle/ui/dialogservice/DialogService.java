@@ -1,20 +1,31 @@
 package com.nurflugel.gradle.ui.dialogservice;
 
 import javafx.application.Platform;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.scene.Scene;
-import javafx.scene.effect.ColorAdjustBuilder;
-import javafx.scene.effect.Effect;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+
 import static javafx.concurrent.Worker.State.CANCELLED;
 import static javafx.concurrent.Worker.State.FAILED;
 import static javafx.concurrent.Worker.State.SUCCEEDED;
 
-/** A {@linkplain Service} for showing and hiding a {@linkplain Stage}. */
+import javafx.scene.Scene;
+
+import javafx.scene.effect.ColorAdjustBuilder;
+import javafx.scene.effect.Effect;
+
+import javafx.scene.text.Text;
+
+import javafx.stage.Stage;
+
+/**
+ * A {@linkplain Service} for showing and hiding a {@linkplain Stage}.
+ *
+ * <p>Not used in the app, here for reference and future use</p>
+ */
 public class DialogService extends Service<Void>
 {
   private final Stage         window;
@@ -45,8 +56,7 @@ public class DialogService extends Service<Void>
         public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue)
         {
           if (submitService.getException() != null)
-          {
-            // service indicated that an error occurred
+          {  // service indicated that an error occurred
             messageHeader.setText(submitService.getException().getMessage());
           }
           else if (newValue == SUCCEEDED)

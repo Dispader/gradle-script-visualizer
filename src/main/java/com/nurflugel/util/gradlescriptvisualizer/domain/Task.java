@@ -13,10 +13,8 @@ import static org.apache.commons.lang3.StringUtils.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * Representation of a Gradle task.
@@ -27,18 +25,15 @@ import java.util.Map;
 @SuppressWarnings("UseOfSystemOutOrSystemErr")
 public class Task
 {
-  private static boolean showFullyQualifiedTaskType = false;
+  private static boolean showFullyQualifiedTaskType;
   private String         name;
   private String         type;
-  private List<Task>     dependsOnTasks             = new ArrayList<>();
-
-  /** Default is GRADLE, can be switched to EXECUTE if that method is used. */
-  private TaskUsage usage = GRADLE;
 
   /** lines included in the scope of the task declaration. */
-  private String[] scopeLines;
-  private boolean  showType    = true;
-  private String   buildScript;
+  private String[]             scopeLines;
+  private boolean              showType       = true;
+  private String               buildScript;
+  private Map<Task, TaskUsage> dependsOnTasks = new HashMap<>();
 
   /**
    * Given the line of text, find the task in the map of tasks by name, or else create a new task and add it to the map.
@@ -97,7 +92,7 @@ public class Task
    *
    * @return  the result text, or else the original
    *
-   *          <p>todo - isn't this in StringUtils somewhere???</p>
+   *          <p>- isn't this in StringUtils somewhere???</p>
    */
   static String getTextBeforeIfExists(String text, String delimiter)
   {
@@ -262,9 +257,9 @@ public class Task
 
     Task task = findOrCreateTaskByName(taskMap, text);
 
-    if (!dependsOnTasks.contains(task))
+    if (!dependsOnTasks.containsKey(task))
     {
-      dependsOnTasks.add(task);
+      dependsOnTasks.put(task, GRADLE);
     }
   }
 
@@ -287,7 +282,7 @@ public class Task
 
       if (taskInContext != null)
       {
-        taskInContext.addDependsOn(executeTask);
+        taskInContext.addDependsOn(executeTask, EXECUTE);
       }
       else
       {
@@ -298,11 +293,10 @@ public class Task
       {
         Task previousExecuteTask = executeTasks.get(executeTasks.size() - 1);
 
-        executeTask.addDependsOn(previousExecuteTask);
+        executeTask.addDependsOn(previousExecuteTask, EXECUTE);
       }
 
       executeTasks.add(executeTask);
-      executeTask.setUsage(EXECUTE);
 
       return executeTask;
     }
@@ -311,9 +305,9 @@ public class Task
   }
 
   /** Helper method to prevent .getDependsOn().add(xxxx) type of code. I hate those, plus it exposes the collection. */
-  public void addDependsOn(Task task)
+  public void addDependsOn(Task task, TaskUsage usage)
   {
-    dependsOnTasks.add(task);
+    dependsOnTasks.put(task, usage);
   }
 
   /**
@@ -414,12 +408,6 @@ public class Task
       return NO_TYPE;
     }
   }
-
-  public Task(String name, TaskUsage taskUsage)
-  {
-    this.name = name;
-    usage     = taskUsage;
-  }
   // -------------------------- OTHER METHODS --------------------------
 
   /**
@@ -438,8 +426,7 @@ public class Task
       {
         Task newTask = findOrCreateTaskByName(taskMap, executeDependency);
 
-        newTask.setUsage(EXECUTE);
-        dependsOnTasks.add(newTask);
+        dependsOnTasks.put(newTask, EXECUTE);
       }
     }
   }
@@ -461,15 +448,15 @@ public class Task
     }
   }
 
-  public List<Task> getDependsOn()
+  public Map<Task, TaskUsage> getDependsOn()
   {
-    return Collections.unmodifiableList(dependsOnTasks);
+    return unmodifiableMap(dependsOnTasks);
   }
 
   /** Get the declaration for the DOT language. */
   public String getDotDeclaration()
   {
-    return name + " [label=\"" + getDeclarationLabel() + "\" shape=" + usage.getShape() + " color=" + usage.getColor() + " ];";
+    return name + " [label=\"" + getDeclarationLabel() + "\" ];";
   }
 
   /** Get the label used to display the task in DOT. */
@@ -494,9 +481,17 @@ public class Task
   {
     List<String> lines = new ArrayList<>();
 
-    for (Task dependsOnTask : dependsOnTasks)
+    for (Task dependsOnTask : dependsOnTasks.keySet())
     {
-      lines.add(name + " -> " + dependsOnTask.name + ';');
+      TaskUsage taskUsage = dependsOnTasks.get(dependsOnTask);
+      String    color     = "  [color=black] ";
+
+      if (taskUsage == EXECUTE)
+      {
+        color = "  [color=red] ";
+      }
+
+      lines.add(name + " -> " + dependsOnTask.name + color + ';');
     }
 
     return lines;
@@ -511,7 +506,7 @@ public class Task
   {
     System.out.println(leftPad("", nestingLevel * 4) + "task = " + this);
 
-    for (Task dependancy : dependsOnTasks)
+    for (Task dependancy : dependsOnTasks.keySet())
     {
       dependancy.printTask(nestingLevel + 1);
     }
@@ -576,15 +571,5 @@ public class Task
   public String getType()
   {
     return type;
-  }
-
-  public TaskUsage getUsage()
-  {
-    return usage;
-  }
-
-  public void setUsage(TaskUsage usage)
-  {
-    this.usage = usage;
   }
 }

@@ -9,8 +9,8 @@ import java.util.Map;
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/28/12 Time: 13:08 To change this template use File | Settings | File Templates. */
 public class Configuration extends ObjectWithArtifacts
 {
-  public static Configuration COMPILE     = new Configuration("compile", null);
-  private String              description;
+  public static final Configuration COMPILE     = new Configuration("compile", null);
+  private String                    description;
 
   // is this a configuration line?
   public static boolean isConfigurationLine(Pointer pointer, String... lines)
@@ -18,8 +18,7 @@ public class Configuration extends ObjectWithArtifacts
     int index = pointer.getIndex();
 
     if (index < (lines.length - 1))
-    {  // todo nice to use Java 7 switch with strings here...
-
+    {
       String line = lines[index + 1];
 
       if (line != null)

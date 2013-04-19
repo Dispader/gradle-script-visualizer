@@ -1,35 +1,55 @@
 package com.nurflugel.gradle.ui.dialog;
 
+import static com.nurflugel.gradle.ui.dialog.StacktraceExtractor.extract;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+
+import static javafx.geometry.Pos.BOTTOM_CENTER;
+import static javafx.geometry.Pos.CENTER;
+
 import javafx.scene.Scene;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.DataFormat;
+
 import javafx.scene.layout.BorderPane;
+import static javafx.scene.layout.BorderPane.setAlignment;
+import static javafx.scene.layout.BorderPane.setMargin;
 import javafx.scene.layout.BorderPaneBuilder;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import static javafx.stage.Modality.APPLICATION_MODAL;
+
+import static javafx.stage.StageStyle.UTILITY;
+
 import javafx.stage.Window;
+
 import java.io.IOException;
 import java.io.InputStream;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import java.net.URL;
+
 import java.util.HashMap;
 import java.util.Map;
-import static com.nurflugel.gradle.ui.dialog.StacktraceExtractor.extract;
-import static javafx.geometry.Pos.BOTTOM_CENTER;
-import static javafx.geometry.Pos.CENTER;
-import static javafx.stage.Modality.APPLICATION_MODAL;
-import static javafx.stage.StageStyle.UTILITY;
 
 @SuppressWarnings({ "AccessingNonPublicFieldOfAnotherObject", "ReturnOfThis" })
 /** Dialog builder. */
@@ -56,7 +76,7 @@ public class DialogBuilder
     // icon
     dialog.icon = new ImageView();
     dialog.borderPanel.setLeft(dialog.icon);
-    BorderPane.setMargin(dialog.icon, new Insets(MARGIN));
+    setMargin(dialog.icon, new Insets(MARGIN));
 
     // message
     dialog.messageBox = new VBox();
@@ -67,14 +87,14 @@ public class DialogBuilder
     dialog.messageLabel.setMaxWidth(MESSAGE_MAX_WIDTH);
     dialog.messageBox.getChildren().add(dialog.messageLabel);
     dialog.borderPanel.setCenter(dialog.messageBox);
-    BorderPane.setAlignment(dialog.messageBox, CENTER);
-    BorderPane.setMargin(dialog.messageBox, new Insets(MARGIN, MARGIN, MARGIN, 2 * MARGIN));
+    setAlignment(dialog.messageBox, CENTER);
+    setMargin(dialog.messageBox, new Insets(MARGIN, MARGIN, MARGIN, 2 * MARGIN));
 
     // buttons
     dialog.buttonsPanel = new HBox();
     dialog.buttonsPanel.setSpacing(MARGIN);
     dialog.buttonsPanel.setAlignment(BOTTOM_CENTER);
-    BorderPane.setMargin(dialog.buttonsPanel, new Insets(0, 0, 1.5 * MARGIN, 0));
+    setMargin(dialog.buttonsPanel, new Insets(0, 0, 1.5 * MARGIN, 0));
     dialog.borderPanel.setBottom(dialog.buttonsPanel);
     dialog.borderPanel.widthProperty().addListener(new ChangeListener<Number>()
       {
@@ -124,13 +144,13 @@ public class DialogBuilder
   private void alignScrollPane()
   {
     dialog.setWidth(dialog.icon.getImage().getWidth()
-                      + Math.max(dialog.messageLabel.getWidth(),
-                                   dialog.stacktraceVisible ? Math.max(dialog.stacktraceButtonsPanel.getWidth(), dialog.stackTraceLabel.getWidth())
-                                                            : dialog.stacktraceButtonsPanel.getWidth()) + (5 * MARGIN));
-    dialog.setHeight(Math.max(dialog.icon.getImage().getHeight(),
-                              dialog.messageLabel.getHeight() + dialog.stacktraceButtonsPanel.getHeight()
-                                + (dialog.stacktraceVisible ? Math.min(dialog.stackTraceLabel.getHeight(), STACKTRACE_LABEL_MAXHEIGHT)
-                                                            : 0)) + dialog.buttonsPanel.getHeight() + (3 * MARGIN));
+                      + max(dialog.messageLabel.getWidth(),
+                              dialog.stacktraceVisible ? max(dialog.stacktraceButtonsPanel.getWidth(), dialog.stackTraceLabel.getWidth())
+                                                       : dialog.stacktraceButtonsPanel.getWidth()) + (5 * MARGIN));
+    dialog.setHeight(max(dialog.icon.getImage().getHeight(),
+                         dialog.messageLabel.getHeight() + dialog.stacktraceButtonsPanel.getHeight()
+                           + (dialog.stacktraceVisible ? min(dialog.stackTraceLabel.getHeight(), STACKTRACE_LABEL_MAXHEIGHT)
+                                                       : 0)) + dialog.buttonsPanel.getHeight() + (3 * MARGIN));
 
     if (dialog.stacktraceVisible)
     {
@@ -228,9 +248,7 @@ public class DialogBuilder
 
   protected void setIconFromResource(String resourceName)
   {
-    try(
-
-        InputStream resourceAsStream = getClass().getResourceAsStream(resourceName))
+    try(InputStream resourceAsStream = getClass().getResourceAsStream(resourceName))
     {
       Image image = new Image(resourceAsStream);
 

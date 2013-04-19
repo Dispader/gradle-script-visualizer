@@ -1,11 +1,14 @@
 package com.nurflugel.util.gradlescriptvisualizer.output;
 
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
-import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptMainFrame;
+
 import org.apache.commons.io.FileUtils;
-import javax.swing.*;
+
 import java.io.File;
+
 import java.util.Map;
+
+import javax.swing.*;
 
 /** Watches the files in the map every second, and puts the current checkums into the map. */
 public class FileWatcher extends SwingWorker<Object, Object>
@@ -24,8 +27,7 @@ public class FileWatcher extends SwingWorker<Object, Object>
   {
     // noinspection InfiniteLoopStatement
     while (true)
-    {
-      // wake up every second to check the files
+    {      // wake up every second to check the files
       Thread.sleep(1000);
 
       for (Map.Entry<File, Long> fileLongEntry : fileChecksums.entrySet())
@@ -35,8 +37,7 @@ public class FileWatcher extends SwingWorker<Object, Object>
         Long oldChecksum     = fileLongEntry.getValue();
 
         if (oldChecksum == currentChecksum)
-        {
-          // System.out.println("File " + file + " didn't change");
+        {  // System.out.println("File " + file + " didn't change");
         }
         else
         {

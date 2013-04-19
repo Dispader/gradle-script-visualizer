@@ -1,14 +1,19 @@
 package com.nurflugel.util.dependencyvisualizer.parser;
 
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
+import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.*;
 import com.nurflugel.util.test.TestResources;
+
 import org.testng.Assert;
+
+import static org.testng.Assert.*;
+
 import org.testng.annotations.Test;
+
 import java.io.File;
 import java.io.IOException;
+
 import java.util.List;
-import static com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser.*;
-import static org.testng.Assert.*;
 
 /** Created with IntelliJ IDEA. User: douglas_bullard Date: 9/29/12 Time: 10:36 To change this template use File | Settings | File Templates. */
 @Test(groups = "unit")
@@ -170,7 +175,8 @@ public class GradleDependencyParserTest
     assertEquals(configurations.size(), 8);
   }
 
-  @Test(groups = "long")
+  @Test(groups  = "long",
+        enabled = false)
   public void testRunGradlew() throws IOException, InterruptedException
   {
     GradleDependencyParser parser = new GradleDependencyParser();

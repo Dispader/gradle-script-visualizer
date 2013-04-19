@@ -1,16 +1,21 @@
 package com.nurflugel.gradle.ui.dialog;
 
 import javafx.scene.Scene;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
+
 import javafx.scene.image.ImageView;
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 import javafx.stage.Stage;
 import javafx.stage.Window;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -99,7 +104,7 @@ public class Dialog extends Stage
    * @param  title    dialog title
    * @param  message  dialog message
    */
-  public static void showError(String title, String message)
+  public static void showErrorDialog(String title, String message)
   {
     showError(title, message, null);
   }
@@ -124,7 +129,7 @@ public class Dialog extends Stage
    * @param  message  dialog message
    * @param  t        throwable
    */
-  public static void showThrowable(String title, String message, Throwable t)
+  public static void showThrowableDialog(String title, String message, Throwable t)
   {
     showThrowable(title, message, t, null);
   }

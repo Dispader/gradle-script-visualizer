@@ -1,18 +1,18 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
-import org.testng.annotations.Test;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.EXECUTE;
 import static com.nurflugel.util.test.TestResources.getLinesFromArray;
+
 import static org.testng.Assert.*;
 
-@Test(groups = "gradle")
+import org.testng.annotations.Test;
+
+import java.util.*;
+
 public class TaskTest
 {
+  @Test(groups = "gradle")
   public void testFindTaskType()
   {
     Task task = new Task(new HashMap<String, Task>(), "task copyHelp(type: Copy) {");
@@ -20,6 +20,7 @@ public class TaskTest
     assertEquals(task.getType(), "Copy");
   }
 
+  @Test(groups = "gradle")
   public void testFindTaskTypeWithDepends()
   {
     Task task = new Task(new HashMap<String, Task>(), "task copyHelp(type: Copy, dependsOn: dibble) {");
@@ -27,6 +28,7 @@ public class TaskTest
     assertEquals(task.getType(), "Copy");
   }
 
+  @Test(groups = "gradle")
   public void testFindTaskTypeWithQualifiedName()
   {
     Task task = new Task(new HashMap<String, Task>(), "task copyHelp(type: org.dibble.Copy, dependsOn: dibble) {");
@@ -34,6 +36,7 @@ public class TaskTest
     assertEquals(task.getType(), "Copy");
   }
 
+  @Test(groups = "gradle")
   public void testFindTaskTypeNoTypeDeclared()
   {
     Task task = new Task(new HashMap<String, Task>(), "task copyHelp() {");
@@ -41,70 +44,81 @@ public class TaskTest
     assertEquals(task.getType(), "noType");
   }
 
+  @Test(groups = "gradle")
   public void testFindDependsOn()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: 'installApp') << {");
-    List<Task> dependsOnTasks = task.getDependsOn();
+    Task                 task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: 'installApp') << {");
+    Map<Task, TaskUsage> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 1);
-    assertEquals(dependsOnTasks.get(0).getName(), "installApp");
+    assertEquals(dependsOnTasks.keySet().iterator().next().getName(), "installApp");
   }
 
+  @Test(groups = "gradle")
   public void testFindDependsOnDoubleQuotes()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: \"installApp\") << {");
-    List<Task> dependsOnTasks = task.getDependsOn();
+    Task                 task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: \"installApp\") << {");
+    Map<Task, TaskUsage> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 1);
-    assertEquals(dependsOnTasks.get(0).getName(), "installApp");
+    assertEquals(dependsOnTasks.keySet().iterator().next().getName(), "installApp");
   }
 
+  @Test(groups = "gradle")
   public void testFindDependsOnNoQuotes()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: installApp) << {");
-    List<Task> dependsOnTasks = task.getDependsOn();
+    Task                 task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: installApp) << {");
+    Map<Task, TaskUsage> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 1);
-    assertEquals(dependsOnTasks.get(0).getName(), "installApp");
+    assertEquals(dependsOnTasks.keySet().iterator().next().getName(), "installApp");
   }
 
+  @Test(groups = "gradle")
   public void testFindDependsOnWithComma()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), "task jettyRunMock(dependsOn: war, description:");
-    List<Task> dependsOnTasks = task.getDependsOn();
+    Task                 task           = new Task(new HashMap<String, Task>(), "task jettyRunMock(dependsOn: war, description:");
+    Map<Task, TaskUsage> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 1);
-    assertEquals(dependsOnTasks.get(0).getName(), "war");
+    assertEquals(dependsOnTasks.keySet().iterator().next().getName(), "war");
   }
 
+  @Test(groups = "gradle")
   public void testFindMultipleDependsOn()
   {
-    Task       task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: [installApp,dibble, dabble]) << {");
-    List<Task> dependsOnTasks = task.getDependsOn();
+    Task                 task           = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: [installApp,dibble, dabble]) << {");
+    Map<Task, TaskUsage> dependsOnTasks = task.getDependsOn();
 
     assertEquals(dependsOnTasks.size(), 3);
-    assertEquals(dependsOnTasks.get(0).getName(), "installApp");
-    assertEquals(dependsOnTasks.get(1).getName(), "dibble");
-    assertEquals(dependsOnTasks.get(2).getName(), "dabble");
+
+    Set<Task> tasks = dependsOnTasks.keySet();
+
+    assertTrue(tasks.contains(new Task("installApp")));
+    assertTrue(tasks.contains(new Task("dibble")));
+    assertTrue(tasks.contains(new Task("dabble")));
   }
 
+  @Test(groups = "gradle")
   public void testDotDeclaration()
   {
     Task task = new Task("simpleTask");
 
-    assertEquals(task.getDotDeclaration(), "simpleTask [label=\"simpleTask\" shape=box color=black ];");
+    assertEquals(task.getDotDeclaration(), "simpleTask [label=\"simpleTask\" ];");
   }
 
+  @Test(groups = "gradle")
   public void testDotDependencies()
   {
     Task         task  = new Task(new HashMap<String, Task>(), "task signJars(dependsOn: [installApp,dibble, dabble]) << {");
     List<String> lines = task.getDotDependencies();
 
-    assertEquals(lines.get(0), "signJars -> installApp;");
-    assertEquals(lines.get(1), "signJars -> dibble;");
-    assertEquals(lines.get(2), "signJars -> dabble;");
+    assertTrue(lines.contains("signJars -> installApp  [color=black] ;"));
+    assertTrue(lines.contains("signJars -> dibble  [color=black] ;"));
+    assertTrue(lines.contains("signJars -> dabble  [color=black] ;"));
   }
 
+  @Test(groups = "gradle")
   public void testImplicitTask1()
   {
     // check.dependsOn integrationTest
@@ -113,40 +127,45 @@ public class TaskTest
     assertTrue(task.get(0).getName().equals("check"));
   }
 
+  @Test(groups = "gradle")
   public void testImplicitTaskDepends()
   {
     // check.dependsOn integrationTest
-    List<Task> task      = findOrCreateImplicitTasksByLine(new HashMap<String, Task>(), "check.dependsOn integrationTest");
-    List<Task> dependsOn = task.get(0).getDependsOn();
+    List<Task>           task      = findOrCreateImplicitTasksByLine(new HashMap<String, Task>(), "check.dependsOn integrationTest");
+    Map<Task, TaskUsage> dependsOn = task.get(0).getDependsOn();
 
     assertFalse(dependsOn.isEmpty());
-    assertTrue(dependsOn.get(0).getName().equals("integrationTest"));
+    assertTrue(dependsOn.keySet().iterator().next().getName().equals("integrationTest"));
   }
 
+  @Test(groups = "gradle")
   public void testImplicitTaskDepends2()
   {
     // check.dependsOn integrationTest
-    List<Task> task      = findOrCreateImplicitTasksByLine(new HashMap<String, Task>(), "check.dependsOn [integrationTest,'dibble']");
-    List<Task> dependsOn = task.get(0).getDependsOn();
+    List<Task>           task      = findOrCreateImplicitTasksByLine(new HashMap<String, Task>(), "check.dependsOn [integrationTest,'dibble']");
+    Map<Task, TaskUsage> dependsOn = task.get(0).getDependsOn();
+    Iterator<Task>       iterator  = dependsOn.keySet().iterator();
 
     assertFalse(dependsOn.isEmpty());
-    assertTrue(dependsOn.get(0).getName().equals("integrationTest"));
-    assertTrue(dependsOn.get(1).getName().equals("dibble"));
+    assertTrue(iterator.next().getName().equals("integrationTest"));
+    assertTrue(iterator.next().getName().equals("dibble"));
   }
 
+  @Test(groups = "gradle")
   public void testImplicitTask2()
   {
     // check.dependsOn integrationTest
-    Map<String, Task> taskMap = new HashMap<String, Task>();
+    Map<String, Task> taskMap = new HashMap<>();
 
     findOrCreateImplicitTasksByLine(taskMap, "check.dependsOn integrationTest");
     assertTrue(taskMap.containsKey("integrationTest"));
   }
 
+  @Test(groups = "gradle")
   // find things like tomcatRun.execute()
   public void testFindExecutes()
   {
-    HashMap<String, Task> map           = new HashMap<String, Task>();
+    HashMap<String, Task> map           = new HashMap<>();
     Task                  taskInContext = new Task("dibble");
 
     findOrCreateImplicitTasksByExecute(map, "tomcatRun.execute()", taskInContext, new ArrayList<Task>());
@@ -158,19 +177,20 @@ public class TaskTest
     Task task = map.get(tomcatRun);
 
     assertEquals(task.getName(), tomcatRun);
-    assertEquals(task.getUsage(), EXECUTE);
-    assertEquals(taskInContext.getDependsOn().get(0), task);
+    assertEquals(taskInContext.getDependsOn().get(0), task);  //
   }
 
+  @Test(groups = "gradle")
   public void testFindExecutesDisplaysRight()
   {
-    Map<String, Task> map         = new HashMap<String, Task>();
+    Map<String, Task> map         = new HashMap<>();
     Task              task        = findOrCreateImplicitTasksByExecute(map, "tomcatRun.execute()", new Task("dibble"), new ArrayList<Task>());
     String            declaration = task.getDotDeclaration();
 
-    assertEquals(declaration, "tomcatRun [label=\"tomcatRun\" shape=ellipse color=red ];");
+    assertEquals(declaration, "tomcatRun [label=\"tomcatRun\" ];");
   }
 
+  @Test(groups = "gradle")
   // show the task that depends on an execute displays right
   public void testTaskDependsOnExecute()
   {
@@ -191,22 +211,23 @@ public class TaskTest
     // build up a list of what we want surrounded by junk - we should get just what we want back
     List<String> list            = getLinesFromArray(taskLines);
     String       declarationLine = "task tomcatRunMock(dependsOn: war, description: 'Runs Webapp using Mock resources (DB, LDAP)') {";
-    Map<String, Task> taskMap    = new HashMap<String, Task>();
+    Map<String, Task> taskMap    = new HashMap<>();
     Task         task            = findOrCreateTaskByLine(taskMap, declarationLine, list, null);
 
     assertTrue(taskMap.containsKey("tomcatRun"));
     assertTrue(taskMap.containsKey("tomcatStop"));
 
-    List<Task> dependsOn = task.getDependsOn();
+    Map<Task, TaskUsage> dependsOn = task.getDependsOn();
 
-    assertTrue(dependsOn.contains(new Task("war")));
-    assertTrue(dependsOn.contains(new Task("tomcatRun")));
-    assertTrue(dependsOn.contains(new Task("tomcatStop")));
+    assertTrue(dependsOn.containsKey(new Task("war")));
+    assertTrue(dependsOn.containsKey(new Task("tomcatRun")));
+    assertTrue(dependsOn.containsKey(new Task("tomcatStop")));
   }
 
   // after task declaration, keep parsing lines keeping track of { and } - anything within
   // the matching {} pair can be claimed as a dependency.  So, take all those lines and put them into the task for
   // future reference as well.
+  @Test(groups = "gradle")
   public void testFindAllTaskLines()
   {
     String[] lines = {
@@ -240,6 +261,7 @@ public class TaskTest
     assertEquals(scopeLines, taskLines, "Should have all the lines for the task in the task");
   }
 
+  @Test(groups = "gradle")
   public void testFindExecutesTask()
   {
     String text = "        tomcatRun.execute()";
@@ -248,6 +270,7 @@ public class TaskTest
     assertEquals(name, "tomcatRun");
   }
 
+  @Test(groups = "gradle")
   public void testFindExecutesTaskWithOtherWords()
   {
     String text = "  dibble      tomcatRun.execute()";
@@ -256,6 +279,7 @@ public class TaskTest
     assertEquals(name, "tomcatRun");
   }
 
+  @Test(groups = "gradle")
   public void testFindExecutesTaskNoExecutes()
   {
     String text = "  dibble      tomcatRun.dibble()";
@@ -264,6 +288,7 @@ public class TaskTest
     assertNull(name);
   }
 
+  @Test(groups = "gradle")
   public void testFindForEachTasks()
   {
     String     line  = "[tRun1, tRun2].each {";
@@ -274,6 +299,7 @@ public class TaskTest
     assertTrue(tasks.contains(new Task("tRun2")));
   }
 
+  @Test(groups = "gradle")
   public void testSimpleBuildFile()
   {
     Task task = new Task("taskName");
@@ -282,6 +308,7 @@ public class TaskTest
     assertEquals(task.getBuildScript(), "dibble.gradle");
   }
 
+  @Test(groups = "gradle")
   public void testGetTextBeforeIfExists()
   {
     String baseText = "dibble@dabble";
@@ -292,6 +319,7 @@ public class TaskTest
     assertEquals(text, baseText);
   }
 
+  @Test(groups = "gradle")
   public void testSafeNames()
   {
     assertEquals(makeSafeName("${mongo.exe}"), "__mongo_exe_");

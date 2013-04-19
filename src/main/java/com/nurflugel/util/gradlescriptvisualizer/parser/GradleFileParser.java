@@ -1,11 +1,12 @@
 package com.nurflugel.util.gradlescriptvisualizer.parser;
 
+import com.nurflugel.gradle.ui.dialog.ConfigurationChoiceDialog;
+
 import com.nurflugel.util.GraphicFileCreator;
 import static com.nurflugel.util.Util.*;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
-import com.nurflugel.util.gradlescriptvisualizer.output.FileWatcher;
 import com.nurflugel.util.gradlescriptvisualizer.output.ScriptDotFileGenerator;
 import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleTaskOutputParser.mergeGradleTasksIntoExistingTasks;
 import static com.nurflugel.util.gradlescriptvisualizer.parser.GradleTaskOutputParser.parse;
@@ -35,14 +36,13 @@ public class GradleFileParser
   private Map<String, Task> taskMap = new HashMap<>();
 
   /** map of checksums for all the build files. If any of these change, the graph is regenerated. Presto! */
-  private Map<File, Long>         fileChecksums = new HashMap<>();
+  // private Map<File, Long>         fileChecksums = new HashMap<>();
   private GradleScriptPreferences preferences;
   private Os                      os;
-  private final Set<File>         filesToRender = new HashSet<>();
 
   /** The starting point - the entry script. */
-  private File    baseFile;
-  private boolean showInternalGradleDependencies;
+  private File baseFile;
+  private File fileToRender;
 
   public GradleFileParser(GradleScriptPreferences preferences)
   {
@@ -244,7 +244,8 @@ public class GradleFileParser
             String parent = getFullPath(baseFile.getAbsolutePath());
 
             newFile = new File(parent, fileName);
-            fileChecksums.put(newFile, checksumCRC32(newFile));
+
+            // fileChecksums.put(newFile, checksumCRC32(newFile));
           }
 
           parseFile(newFile);
@@ -375,7 +376,6 @@ public class GradleFileParser
 
       try
       {
-        fileChecksums.put(file, checksumCRC32(file));
         parseFile(file);
       }
       catch (IOException e)
@@ -405,24 +405,25 @@ public class GradleFileParser
   /** Generate the output. */
   public void handleFileGeneration() throws IOException
   {
-    for (File file : filesToRender)
+    purgeAll();
+    parseFile(fileToRender);
+    System.out.println("selectedFile = " + fileToRender);
+    runGradleToGetTaskLines(fileToRender, preferences);
+  }
+
+  public void processTaskLines(String[] lines, ConfigurationChoiceDialog dialog, File gradleFile) throws IOException
+  {
+    if (dialog != null)  // null for unit tests
     {
-      purgeAll();
-      parseFile(file);
-      System.out.println("selectedFile = " + file);
-
-      if (showInternalGradleDependencies)
-      {
-        String[]   lines       = runGradleToGetTaskLines(file);
-        List<Task> gradleTasks = parse(lines);
-
-        // take the list of tasks generated from parsing Gradle and see if they exist in the establish set of tasks. If so, augment the dependency
-        // information with what's give from the list.
-        mergeGradleTasksIntoExistingTasks(taskMap, gradleTasks);
-      }
-
-      createTasks(file);
+      System.out.println("Closing dialog!!!!!!!!!!!!!!!");
+      dialog.hide();
+      dialog.close();
     }
+
+    List<Task> gradleTasks = parse(lines);
+
+    mergeGradleTasksIntoExistingTasks(taskMap, gradleTasks);
+    createTasks(gradleFile);
   }
 
   private void createTasks(File file) throws IOException
@@ -433,40 +434,19 @@ public class GradleFileParser
     File                   dotFile          = dotFileGenerator.writeOutput(lines, file.getAbsolutePath());
     GraphicFileCreator     fileCreator      = new GraphicFileCreator();
 
-    fileCreator.processDotFile(dotFile, preferences, os);
+    fileCreator.processDotFile(dotFile, os);
   }
 
-  public void beginOnFile(boolean watchFileForChanges, boolean showInternalGradleDependencies, File... gradleFiles) throws IOException
+  public void beginOnFile(File selectedFile) throws IOException
   {
-    this.showInternalGradleDependencies = showInternalGradleDependencies;
-    filesToRender.addAll(Arrays.asList(gradleFiles));
+    fileToRender = selectedFile;
+    baseFile     = selectedFile;
+    preferences.setLastDir(selectedFile.getParent());
 
-    // chooser.hide();
-    if (gradleFiles.length > 0)
-    {
-      File selectedFile = gradleFiles[0];
+    // put the file checksum into a map so we can check it later if need be...
+    long checksum = checksumCRC32(selectedFile);
 
-      baseFile = selectedFile;
-      preferences.setLastDir(selectedFile.getParent());
-    }
-
-    for (File selectedFile : gradleFiles)
-    {  // put the file checksum into a map so we can check it later if need be...
-
-      long checksum = checksumCRC32(selectedFile);
-
-      fileChecksums.put(selectedFile, checksum);
-      System.out.println("adding selectedFile = " + selectedFile + " to list with checksum = " + checksum);
-    }
-
+    System.out.println("adding selectedFile = " + selectedFile + " to list with checksum = " + checksum);
     handleFileGeneration();
-
-    if (watchFileForChanges)
-    {  // set a thread timer, pass it the maps, and have it call handleFileGeneration if any file in the map changes
-
-      FileWatcher fileWatcher = new FileWatcher(fileChecksums, this);
-
-      fileWatcher.execute();
-    }
   }
 }

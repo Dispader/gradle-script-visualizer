@@ -1,7 +1,9 @@
 package com.nurflugel.gradle.ui;
 
 import com.nurflugel.gradle.ui.dialog.Dialog;
-import static com.nurflugel.gradle.ui.dialog.Dialog.showError;
+import static com.nurflugel.gradle.ui.dialog.Dialog.showErrorDialog;
+import static com.nurflugel.gradle.ui.dialog.Dialog.showThrowableDialog;
+import com.nurflugel.gradle.ui.dialogTest.DialogTester;
 
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
@@ -10,8 +12,6 @@ import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,8 +26,6 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-
-import java.lang.reflect.InvocationTargetException;
 
 import java.net.URL;
 
@@ -56,34 +54,35 @@ public class GradleVisualizerUiController implements Initializable
   private CheckBox                watchFilesCheckbox;
   @FXML
   private CheckBox                groupByFilesCheckbox;
+
+  // @FXML
+  // private CheckBox                showGradleTaskDependenciesCheckbox;
   @FXML
-  private CheckBox                showGradleTaskDependenciesCheckbox;
+  private CheckBox            useHttpProxyCheckbox;
   @FXML
-  private CheckBox                useHttpProxyCheckbox;
+  private CheckBox            useHttpProxyAuthenticationCheckbox;
   @FXML
-  private CheckBox                useHttpProxyAuthenticationCheckbox;
+  private TextField           proxyServerNameField;
   @FXML
-  private TextField               proxyServerNameField;
+  private TextField           proxyServerPortField;
   @FXML
-  private TextField               proxyServerPortField;
+  private TextField           proxyUserNameField;
   @FXML
-  private TextField               proxyUserNameField;
+  private PasswordField       proxyPasswordField;
   @FXML
-  private PasswordField           proxyPasswordField;
+  private GridPane            proxyServerPane;
   @FXML
-  private GridPane                proxyServerPane;
+  private HBox                proxyBox;
   @FXML
-  private HBox                    proxyBox;
+  private VBox                userBox;
   @FXML
-  private VBox                    userBox;
+  private TabPane             tabPane;
   @FXML
-  private TabPane                 tabPane;
+  private CheckBox            concentrateScriptLinesCheckbox;
   @FXML
-  private CheckBox                concentrateScriptLinesCheckbox;
+  private CheckBox            concentrateDependencyLinesCheckbox;
   @FXML
-  private CheckBox                concentrateDependencyLinesCheckbox;
-  @FXML
-  private CheckBox                justUseCompileConfigCheckbox;
+  private CheckBox            justUseCompileConfigCheckbox;
 
   // --------------------------- main() method ---------------------------
   public static void main(String[] args)
@@ -96,7 +95,7 @@ public class GradleVisualizerUiController implements Initializable
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle)
   {
-    preferences      = new GradleScriptPreferences();
+    preferences      = new GradleScriptPreferences(getClass());
     os               = findOs();
     scriptParser     = new GradleFileParser(preferences, os);
     dependencyParser = new GradleDependencyParser();
@@ -124,7 +123,7 @@ public class GradleVisualizerUiController implements Initializable
     }
     catch (Exception e)
     {
-      Dialog.showThrowable("Error parsing dependencies", "Something bad happened, here's the stack trace", e);
+      showThrowableDialog("Error parsing dependencies", "Something bad happened, here's the stack trace", e);
     }
   }
 
@@ -137,15 +136,14 @@ public class GradleVisualizerUiController implements Initializable
     try
     {
       saveSettings();
-      scriptParser.beginOnFile(watchFilesCheckbox.isSelected(), showGradleTaskDependenciesCheckbox.isSelected(), gradleFile);
+      scriptParser.beginOnFile(gradleFile);
     }
     catch (IOException e)
     {
-      Dialog.showThrowable("Error parsing files", "Something bad happened, here's the stack trace", e);
+      showThrowableDialog("Error parsing files", "Something bad happened, here's the stack trace", e);
     }
   }
 
-  // todo as tab selection changes, let the file chooser select multiple or single Gradle files
   public void groupByBuildFileClicked(ActionEvent event)
   {
     System.out.println("GradleVisualizerUiController.groupByBuildFileClicked");
@@ -157,12 +155,12 @@ public class GradleVisualizerUiController implements Initializable
   {
     System.out.println("GradleVisualizerUiController.saveSettings");
 
-    if (areAllNotNull(preferences, watchFilesCheckbox, deleteDotFilesCheckbox, groupByFilesCheckbox, shouldIncludeImportedFilesCheckbox,
+    if (areAllNotNull(preferences, deleteDotFilesCheckbox, groupByFilesCheckbox, shouldIncludeImportedFilesCheckbox,
                         useHttpProxyAuthenticationCheckbox, useHttpProxyCheckbox, proxyServerNameField, proxyServerPortField, proxyUserNameField,
-                        proxyPasswordField, tabPane, justUseCompileConfigCheckbox, showGradleTaskDependenciesCheckbox))
+                        proxyPasswordField, tabPane, justUseCompileConfigCheckbox))
     {
-      preferences.setShowGradleTaskDependencies(showGradleTaskDependenciesCheckbox.isSelected());
-      preferences.setWatchFilesForChanges(watchFilesCheckbox.isSelected());
+      // preferences.setShowGradleTaskDependencies(showGradleTaskDependenciesCheckbox.isSelected());
+      // preferences.setWatchFilesForChanges(watchFilesCheckbox.isSelected());
       preferences.setShouldDeleteDotFilesOnExit(deleteDotFilesCheckbox.isSelected());
       preferences.setShouldGroupByBuildFiles(groupByFilesCheckbox.isSelected());
       preferences.setShouldIncludeImportedFiles(shouldIncludeImportedFilesCheckbox.isSelected());
@@ -226,7 +224,8 @@ public class GradleVisualizerUiController implements Initializable
       setCheckboxFromSettings(concentrateDependencyLinesCheckbox, preferences.shouldConcentrateDependencyLines());
       setCheckboxFromSettings(concentrateScriptLinesCheckbox, preferences.shouldConcentrateScriptLines());
       setCheckboxFromSettings(justUseCompileConfigCheckbox, preferences.shouldJustUseCompileConfig());
-      setCheckboxFromSettings(showGradleTaskDependenciesCheckbox, preferences.showGradleTaskDependencies());
+
+      // setCheckboxFromSettings(showGradleTaskDependenciesCheckbox, preferences.showGradleTaskDependencies());
       proxyServerNameField.setText(preferences.getProxyServerName());  // these override the helpful text if not empty or null
       proxyServerPortField.setText(preferences.getProxyServerPort() + "");
       proxyUserNameField.setText(preferences.getProxyUserName());
@@ -274,7 +273,7 @@ public class GradleVisualizerUiController implements Initializable
       return file;
     }
 
-    showError("No file selected", "Nothing will happen until you select a file first");
+    showErrorDialog("No file selected", "Nothing will happen until you select a file first");
 
     // J- examples of dialogs - one with a handler, one without Dialog.showError("You're fucked", "Bend over and smile");
     //

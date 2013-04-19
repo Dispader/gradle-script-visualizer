@@ -1,14 +1,15 @@
 package com.nurflugel.util;
 
-import javax.swing.*;
 import java.awt.*;
+
+import javax.swing.*;
 
 /** Util class. */
 public class Util
 {
   public static final Cursor busyCursor           = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
   public static final Cursor normalCursor         = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-  public static final String VERSION              = "2.0.4";
+  public static final String VERSION              = "2.1.0";
   public static final String DEPENDS_ON           = "dependsOn";
   public static final String APPLY_FROM           = "apply from: ";
   public static final String DEPENDS_ON_TEXT      = "dependsOn:";

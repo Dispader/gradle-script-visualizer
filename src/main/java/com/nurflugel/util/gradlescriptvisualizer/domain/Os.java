@@ -1,42 +1,43 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
 // import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.SystemUtils;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PDF;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.OutputFormat.PNG;
-import static java.io.File.separator;
+
+import org.apache.commons.lang3.SystemUtils;
 import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
+
+import static java.io.File.separator;
+import java.io.IOException;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** Enum of operating systems, and methods to deal with differences between them. */
 @SuppressWarnings({ "EnumeratedClassNamingConvention", "EnumeratedConstantNamingConvention" })
 public enum Os
 {
   // todo remove command args for dot
-  OS_X   ("Mac OS X", "build.sh", new String[] {}, "javax.swing.plaf.mac.MacLookAndFeel", "/usr/local/bin/dot", PDF),
-  WINDOWS("Windows", "build.cmd", new String[] { "cmd.exe", "/C" }, "com.sun.java.swing.plaf.windows.WindowsLookAndFeel",
-          "\"C:\\Program Files\\Graphviz2.24\\bin\\dot.exe\"", PNG);
+  OS_X   ("Mac OS X", "build.sh", new String[] {}, "javax.swing.plaf.mac.MacLookAndFeel", PDF),
+  WINDOWS("Windows", "build.cmd", new String[] { "cmd.exe", "/C" }, "com.sun.java.swing.plaf.windows.WindowsLookAndFeel", PNG);
 
-  private String       name;
-  private String       buildCommand;
-  private String[]     baseCommandArgs;
-  private String       lookAndFeel;
-  private String       defaultDotPath;
-  private OutputFormat outputFormat;
+  private String name;
+  // private String       buildCommand;
+  // private String[]     baseCommandArgs;
+  // private String       lookAndFeel;
+  // private OutputFormat outputFormat;
 
   // --------------------------- CONSTRUCTORS ---------------------------
-  Os(String name, String buildCommand, String[] baseCommandArgs, String lookAndFeel, String defaultDotPath, OutputFormat outputFormat)
+  Os(String name, String buildCommand, String[] baseCommandArgs, String lookAndFeel, OutputFormat outputFormat)
   {
-    this.name            = name;
-    this.buildCommand    = buildCommand;
-    this.baseCommandArgs = baseCommandArgs;
-    this.lookAndFeel     = lookAndFeel;
-    this.defaultDotPath  = defaultDotPath;
-    this.outputFormat    = outputFormat;
+    this.name = name;
+    // this.buildCommand    = buildCommand;
+    // this.baseCommandArgs = baseCommandArgs;
+    // this.lookAndFeel     = lookAndFeel;
+    // this.outputFormat    = outputFormat;
   }
 
   // ------------------------ STATIC METHODS ------------------------
@@ -44,12 +45,6 @@ public enum Os
   {
     return IS_OS_WINDOWS ? WINDOWS
                          : OS_X;
-  }
-
-  // -------------------------- OTHER METHODS --------------------------
-  public String getBuildCommandPath(String basePath)
-  {
-    return basePath + separator + buildCommand;
   }
 
   /** Open the file in the OS's default application. */
@@ -74,8 +69,8 @@ public enum Os
       runtime.exec(command);
     }
     else
-    {
-      // calling FileManager to open the URL works, if we replace spaces with %20
+    {  // calling FileManager to open the URL works, if we replace spaces with %20
+
       String   outputFilePath = filePath.replace(" ", "%20");
       String   fileUrl        = "file://" + outputFilePath;
       Class<?> aClass         = Class.forName("com.apple.eio.FileManager");
@@ -86,18 +81,8 @@ public enum Os
   }
 
   // --------------------- GETTER / SETTER METHODS ---------------------
-  public String getDefaultDotPath()
-  {
-    return defaultDotPath;
-  }
-
   public String getName()
   {
     return name;
-  }
-
-  public OutputFormat getOutputFormat()
-  {
-    return outputFormat;
   }
 }

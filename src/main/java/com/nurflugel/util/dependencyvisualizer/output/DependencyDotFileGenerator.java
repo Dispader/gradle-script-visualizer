@@ -2,7 +2,7 @@ package com.nurflugel.util.dependencyvisualizer.output;
 
 import com.nurflugel.gradle.ui.dialog.ConfigurationChoiceDialog;
 import com.nurflugel.gradle.ui.dialog.ConfigurationsDialogBuilder;
-import static com.nurflugel.gradle.ui.dialog.Dialog.showThrowable;
+import com.nurflugel.gradle.ui.dialog.Dialog;
 
 import static com.nurflugel.util.Util.*;
 import com.nurflugel.util.dependencyvisualizer.domain.Artifact;
@@ -14,7 +14,6 @@ import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Task;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 
 import static org.apache.commons.io.FileUtils.writeLines;
@@ -33,7 +32,7 @@ import java.util.*;
 public class DependencyDotFileGenerator
 {
   public static final String SPACE        = " ";
-  private static final File  previousFile = null;
+  private static File        previousFile;
 
   /**
    * For the list of tasks, create the lines for output based on the given preferences.
@@ -135,7 +134,7 @@ public class DependencyDotFileGenerator
     }
     catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e)
     {
-      showThrowable("Something bad happened", "Unexpected error", e);
+      Dialog.showThrowableDialog("Something bad happened", "Unexpected error", e);
     }
   }
 
@@ -252,7 +251,7 @@ public class DependencyDotFileGenerator
   {
     if (!selectedFile.equals(previousFile))
     {
-      ConfigurationChoiceDialog dialog = createAndShowDialog(preferences, outputFileName, os);
+      ConfigurationChoiceDialog dialog = createAndShowConfigurationDialog(preferences, outputFileName, os);
 
       preferences.setLastDir(selectedFile.getParent());
 
@@ -277,7 +276,7 @@ public class DependencyDotFileGenerator
     progressBar.progressProperty().bind(gradleExecTask.progressProperty());
   }
 
-  ConfigurationChoiceDialog createAndShowDialog(GradleScriptPreferences preferences, String outputFileName, Os os)
+  ConfigurationChoiceDialog createAndShowConfigurationDialog(GradleScriptPreferences preferences, String outputFileName, Os os)
   {
     ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(null, preferences, os, outputFileName).setOwner(null)
                                                                         .setTitle("Processing build file").addOkButton().addCancelButton(null)

@@ -22,8 +22,6 @@ import java.util.List;
 @SuppressWarnings("ProtectedField")
 public class ConfigurationChoiceDialog extends Stage
 {
-  protected double                    originalWidth               = 400;
-  protected double                    originalHeight              = 600;
   protected Scene                     scene;
   protected VBox                      configurationsBox;
   protected ScrollPane                scrollPane;
@@ -36,8 +34,8 @@ public class ConfigurationChoiceDialog extends Stage
   private ConfigurationsDialogBuilder configurationsDialogBuilder;
   protected TextArea                  log;
   protected StackPane                 stackPane;
-  private List<String>                logLines                    = new ArrayList<>();
-  public static final int             PIXELS_PER_ROW              = 15;
+  private List<String>                logLines       = new ArrayList<>();
+  public static final int             PIXELS_PER_ROW = 15;
 
   public ConfigurationChoiceDialog(ConfigurationsDialogBuilder configurationsDialogBuilder)
   {

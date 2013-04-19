@@ -10,9 +10,8 @@ import javafx.beans.value.ObservableValue;
 
 import javafx.collections.ObservableList;
 
-import javafx.concurrent.Task;
-
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 
 import javafx.geometry.Insets;
@@ -200,7 +199,7 @@ public class ConfigurationsDialogBuilder
     return null;
   }
 
-  protected ConfigurationsDialogBuilder addConfirmationButton(String buttonCaption, final EventHandler actionHandler)
+  protected ConfigurationsDialogBuilder addConfirmationButton(String buttonCaption, final EventHandler<ActionEvent> actionHandler)
   {
     Button confirmationButton = new Button(buttonCaption);
 
@@ -227,7 +226,7 @@ public class ConfigurationsDialogBuilder
    *
    * @param  actionHandler  action handler
    */
-  public ConfigurationsDialogBuilder addCancelButton(EventHandler actionHandler)
+  public ConfigurationsDialogBuilder addCancelButton(EventHandler<Event> actionHandler)
   {
     EventHandler<ActionEvent> eventHandler = new EventHandler<ActionEvent>()
     {

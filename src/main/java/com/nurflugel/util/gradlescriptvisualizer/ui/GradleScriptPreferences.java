@@ -30,9 +30,17 @@ public class GradleScriptPreferences extends ScriptPreferences
   public static final String  JUST_USE_COMPILE_CONFIG       = "justUseCompileConfig";
   private boolean             showGradleTaskDependencies;
 
+  public GradleScriptPreferences(Class theClass)
+  {
+    super(theClass);
+    get();
+
+    // proxyPassword=preferencesStore.get(PROXY_PASSWORD,"");
+  }
+
   public GradleScriptPreferences()
   {
-    super(GradleScriptMainFrame.class);
+    super(GradleScriptPreferences.class);
     get();
 
     // proxyPassword=preferencesStore.get(PROXY_PASSWORD,"");
@@ -52,12 +60,6 @@ public class GradleScriptPreferences extends ScriptPreferences
     useProxyAuthentication     = preferencesStore.getBoolean(USE_PROXY_AUTHENTICATION, false);
     proxyUserName              = preferencesStore.get(PROXY_USER_NAME, "");
     shouldJustUseCompileConfig = preferencesStore.getBoolean(JUST_USE_COMPILE_CONFIG, false);
-  }
-
-  GradleScriptPreferences(Class theTestClass)
-  {
-    super(theTestClass);
-    get();
   }
 
   // -------------------------- OTHER METHODS --------------------------

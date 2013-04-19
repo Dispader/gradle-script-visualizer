@@ -48,7 +48,7 @@ public class Main extends Application
 
       System.out.println("Main.start2");
 
-      AnchorPane page = (AnchorPane) load(resource);
+      AnchorPane page = load(resource);
 
       System.out.println("Main.start3");
 
