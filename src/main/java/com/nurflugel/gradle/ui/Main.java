@@ -24,8 +24,6 @@ public class Main extends Application
   /** @param  args  the command line arguments */
   public static void main(String... args)
   {
-    System.out.println("Main.main");
-
     try
     {
       launch(Main.class, (String[]) null);
@@ -39,27 +37,16 @@ public class Main extends Application
   @Override
   public void start(Stage primaryStage)
   {
-    System.out.println("Main.start");
-
     try
     {  // UI related stuff
 
-      URL resource = Main.class.getResource("GradleVisualizerUi.fxml");
+      URL        resource = Main.class.getResource("GradleVisualizerUi.fxml");
+      AnchorPane page     = load(resource);
+      Scene      scene    = new Scene(page);
 
-      System.out.println("Main.start2");
-
-      AnchorPane page = load(resource);
-
-      System.out.println("Main.start3");
-
-      Scene scene = new Scene(page);
-
-      System.out.println("Main.start4");
       primaryStage.setScene(scene);
       primaryStage.setTitle(TITLE_TEXT + VERSION);
-      System.out.println("Main.start5");
       primaryStage.show();
-      System.out.println("Main.start6");
     }
     catch (Exception ex)
     {

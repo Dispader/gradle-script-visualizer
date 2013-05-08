@@ -141,8 +141,6 @@ public class GradleVisualizerUiController implements Initializable
 
   public void saveSettings()
   {
-    System.out.println("GradleVisualizerUiController.saveSettings");
-
     if (areAllNotNull(preferences, watchFilesCheckbox, deleteDotFilesCheckbox, groupByFilesCheckbox, shouldIncludeImportedFilesCheckbox,
                         useHttpProxyAuthenticationCheckbox, useHttpProxyCheckbox, proxyServerNameField, proxyServerPortField, proxyUserNameField,
                         proxyPasswordField, tabPane, justUseCompileConfigCheckbox, showGradleTaskDependenciesCheckbox))
