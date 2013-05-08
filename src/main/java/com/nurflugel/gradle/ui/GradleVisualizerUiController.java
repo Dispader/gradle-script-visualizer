@@ -1,17 +1,13 @@
 package com.nurflugel.gradle.ui;
 
-import com.nurflugel.gradle.ui.dialog.Dialog;
 import static com.nurflugel.gradle.ui.dialog.Dialog.showErrorDialog;
 import static com.nurflugel.gradle.ui.dialog.Dialog.showThrowableDialog;
-import com.nurflugel.gradle.ui.dialogTest.DialogTester;
 
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Os.findOs;
 import com.nurflugel.util.gradlescriptvisualizer.parser.GradleFileParser;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
-
-import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -54,35 +50,34 @@ public class GradleVisualizerUiController implements Initializable
   private CheckBox                watchFilesCheckbox;
   @FXML
   private CheckBox                groupByFilesCheckbox;
-
-  // @FXML
-  // private CheckBox                showGradleTaskDependenciesCheckbox;
   @FXML
-  private CheckBox            useHttpProxyCheckbox;
+  private CheckBox                showGradleTaskDependenciesCheckbox;
   @FXML
-  private CheckBox            useHttpProxyAuthenticationCheckbox;
+  private CheckBox                useHttpProxyCheckbox;
   @FXML
-  private TextField           proxyServerNameField;
+  private CheckBox                useHttpProxyAuthenticationCheckbox;
   @FXML
-  private TextField           proxyServerPortField;
+  private TextField               proxyServerNameField;
   @FXML
-  private TextField           proxyUserNameField;
+  private TextField               proxyServerPortField;
   @FXML
-  private PasswordField       proxyPasswordField;
+  private TextField               proxyUserNameField;
   @FXML
-  private GridPane            proxyServerPane;
+  private PasswordField           proxyPasswordField;
   @FXML
-  private HBox                proxyBox;
+  private GridPane                proxyServerPane;
   @FXML
-  private VBox                userBox;
+  private HBox                    proxyBox;
   @FXML
-  private TabPane             tabPane;
+  private VBox                    userBox;
   @FXML
-  private CheckBox            concentrateScriptLinesCheckbox;
+  private TabPane                 tabPane;
   @FXML
-  private CheckBox            concentrateDependencyLinesCheckbox;
+  private CheckBox                concentrateScriptLinesCheckbox;
   @FXML
-  private CheckBox            justUseCompileConfigCheckbox;
+  private CheckBox                concentrateDependencyLinesCheckbox;
+  @FXML
+  private CheckBox                justUseCompileConfigCheckbox;
 
   // --------------------------- main() method ---------------------------
   public static void main(String[] args)
@@ -136,7 +131,7 @@ public class GradleVisualizerUiController implements Initializable
     try
     {
       saveSettings();
-      scriptParser.beginOnFile(gradleFile);
+      scriptParser.beginOnFile(watchFilesCheckbox.isSelected(), showGradleTaskDependenciesCheckbox.isSelected(), gradleFile);
     }
     catch (IOException e)
     {
@@ -144,23 +139,18 @@ public class GradleVisualizerUiController implements Initializable
     }
   }
 
-  public void groupByBuildFileClicked(ActionEvent event)
-  {
-    System.out.println("GradleVisualizerUiController.groupByBuildFileClicked");
-    saveSettings();
-    // reparse scripts
-  }
-
   public void saveSettings()
   {
     System.out.println("GradleVisualizerUiController.saveSettings");
 
-    if (areAllNotNull(preferences, deleteDotFilesCheckbox, groupByFilesCheckbox, shouldIncludeImportedFilesCheckbox,
+    if (areAllNotNull(preferences, watchFilesCheckbox, deleteDotFilesCheckbox, groupByFilesCheckbox, shouldIncludeImportedFilesCheckbox,
                         useHttpProxyAuthenticationCheckbox, useHttpProxyCheckbox, proxyServerNameField, proxyServerPortField, proxyUserNameField,
-                        proxyPasswordField, tabPane, justUseCompileConfigCheckbox))
+                        proxyPasswordField, tabPane, justUseCompileConfigCheckbox, showGradleTaskDependenciesCheckbox))
     {
-      // preferences.setShowGradleTaskDependencies(showGradleTaskDependenciesCheckbox.isSelected());
-      // preferences.setWatchFilesForChanges(watchFilesCheckbox.isSelected());
+      boolean selected = showGradleTaskDependenciesCheckbox.isSelected();
+
+      preferences.setShowGradleTaskDependencies(selected);
+      preferences.setWatchFilesForChanges(watchFilesCheckbox.isSelected());
       preferences.setShouldDeleteDotFilesOnExit(deleteDotFilesCheckbox.isSelected());
       preferences.setShouldGroupByBuildFiles(groupByFilesCheckbox.isSelected());
       preferences.setShouldIncludeImportedFiles(shouldIncludeImportedFilesCheckbox.isSelected());
@@ -224,8 +214,7 @@ public class GradleVisualizerUiController implements Initializable
       setCheckboxFromSettings(concentrateDependencyLinesCheckbox, preferences.shouldConcentrateDependencyLines());
       setCheckboxFromSettings(concentrateScriptLinesCheckbox, preferences.shouldConcentrateScriptLines());
       setCheckboxFromSettings(justUseCompileConfigCheckbox, preferences.shouldJustUseCompileConfig());
-
-      // setCheckboxFromSettings(showGradleTaskDependenciesCheckbox, preferences.showGradleTaskDependencies());
+      setCheckboxFromSettings(showGradleTaskDependenciesCheckbox, preferences.showGradleTaskDependencies());
       proxyServerNameField.setText(preferences.getProxyServerName());  // these override the helpful text if not empty or null
       proxyServerPortField.setText(preferences.getProxyServerPort() + "");
       proxyUserNameField.setText(preferences.getProxyUserName());

@@ -1,11 +1,14 @@
 package com.nurflugel.gradle.ui.dialog;
 
 import com.nurflugel.util.dependencyvisualizer.domain.Configuration;
-import com.nurflugel.util.dependencyvisualizer.output.GradleExecAllTasksTask;
+import com.nurflugel.util.gradlescriptvisualizer.output.GradleExecAllTasksTask;
 
 import javafx.scene.Scene;
 
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -13,8 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import javafx.stage.Stage;
-
-import org.apache.commons.collections.buffer.BoundedFifoBuffer;
 
 import java.util.ArrayList;
 import java.util.List;

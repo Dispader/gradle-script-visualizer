@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="539.0" styleClass="theme" xmlns:fx="http://javafx.com/fxml" fx:controller="com.nurflugel.gradle.ui.GradleVisualizerUiController">
+<?import javafx.geometry.Insets?><?import javafx.scene.control.*?><?import javafx.scene.effect.DropShadow?><?import javafx.scene.effect.Shadow?><?import javafx.scene.image.Image?><?import javafx.scene.image.ImageView?><?import javafx.scene.layout.*?><?import java.net.URL?><AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="539.0" styleClass="theme" xmlns:fx="http://javafx.com/fxml" fx:controller="com.nurflugel.gradle.ui.GradleVisualizerUiController">
   <children>
     <TabPane fx:id="tabPane" prefHeight="281.0" prefWidth="497.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="110.0">
       <tabs>
@@ -26,7 +15,7 @@
                       <children>
                         <CheckBox fx:id="watchFilesCheckbox" mnemonicParsing="false" onAction="#saveSettings" selected="true" text="Watch files for changes" />
                         <CheckBox fx:id="deleteDotFilesCheckbox" mnemonicParsing="false" onAction="#saveSettings" selected="true" text="Delete DOT files on exit" />
-                        <CheckBox id="groupByFilesButton" fx:id="groupByFilesCheckbox" mnemonicParsing="false" onAction="#groupByBuildFileClicked" text="Group by build file" />
+                        <CheckBox id="groupByFilesButton" fx:id="groupByFilesCheckbox" mnemonicParsing="false" onAction="#saveSettings" text="Group by build file" />
                         <CheckBox id="concentrateScriptLines" fx:id="concentrateScriptLinesCheckbox" mnemonicParsing="false" onAction="#saveSettings" text="Concentrate lines" />
                       </children>
                     </VBox>
@@ -35,7 +24,8 @@
                 <VBox id="VBox" alignment="TOP_LEFT" layoutX="14.0" layoutY="158.0" spacing="5.0">
                   <children>
                     <Label styleClass="smallLabel" text="Gradle options" />
-                    <CheckBox fx:id="shouldIncludeImportedFilesCheckbox" mnemonicParsing="false" text="Include imported scripts">
+                    <CheckBox fx:id="showGradleTaskDependenciesCheckbox" mnemonicParsing="false" onAction="#saveSettings" text="Show Gradle dependencies (slow)" />
+                    <CheckBox fx:id="shouldIncludeImportedFilesCheckbox" mnemonicParsing="false" onAction="#saveSettings" text="Include imported scripts">
                       <VBox.margin>
                         <Insets />
                       </VBox.margin>

@@ -8,9 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-import static javafx.concurrent.Worker.State.CANCELLED;
-import static javafx.concurrent.Worker.State.FAILED;
-import static javafx.concurrent.Worker.State.SUCCEEDED;
+import static javafx.concurrent.Worker.State.*;
 
 import javafx.scene.Scene;
 
@@ -39,9 +37,9 @@ public class DialogService extends Service<Void>
    * @param  parent         the parent {@linkplain Stage}
    * @param  window         the window {@linkplain Stage} that will be shown/hidden
    * @param  messageHeader  the messageHeader {@linkplain Text} used for the service that will be updated with exception information as the
-   *                        submitService informs the {@linkplain DialogService} of
-   * @param  submitService  the {@linkplain Service} that will be listened to for {@linkplain State#SUCCEEDED} at which point the
-   *                        {@linkplain DialogService} window {@linkplain Stage} will be hidden
+   *                        submitService informs the DialogService of
+   * @param  submitService  the {@linkplain Service} that will be listened to for {@linkplain State#SUCCEEDED} at which point the DialogService window
+   *                        {@linkplain Stage} will be hidden
    */
   protected DialogService(Stage parent, final Stage window, final Text messageHeader, final Service<Void> submitService)
   {
