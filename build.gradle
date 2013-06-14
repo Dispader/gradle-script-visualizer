@@ -12,32 +12,32 @@ targetCompatibility = 1.7
 
 mainClassName = "com.nurflugel.gradle.ui.Main"
 versionClassName = 'com.nurflugel.util.Util'
-
-task dibble2 <<{
-  println "This is dibble2"
-}
-
-task dibble4 <<{
-  println "This is dibble4"
-}
-
-task dibble5 <<{
-  println "This is dibble5"
-}
-
-
-
-task dibble3 (dependsOn: 'dibble4') <<{ // note that dibble4 will NOT be executed when dibble1 is run!!!
-  println "This is dibble3"
-  dibble5.execute()
-}
-
-task dibble1 <<{
-  
-  println "This is dibble"
-  dibble2.execute()
-  dibble3.execute()
-}
+//
+//task dibble2 <<{
+//  println "This is dibble2"
+//}
+//
+//task dibble4 <<{
+//  println "This is dibble4"
+//}
+//
+//task dibble5 <<{
+//  println "This is dibble5"
+//}
+//
+//
+//
+//task dibble3 (dependsOn: 'dibble4') <<{ // note that dibble4 will NOT be executed when dibble1 is run!!!
+//  println "This is dibble3"
+//  dibble5.execute()
+//}
+//
+//task dibble1 <<{
+//  
+//  println "This is dibble"
+//  dibble2.execute()
+//  dibble3.execute()
+//}
 
 
 //buildscript {

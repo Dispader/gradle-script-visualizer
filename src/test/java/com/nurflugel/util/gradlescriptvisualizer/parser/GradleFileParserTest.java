@@ -336,7 +336,7 @@ public class GradleFileParserTest
 
     Task task = tasksMap.get("tomcatRunMock");
 
-    assertEquals(task.getDependsOn().size(), 5);
+    assertEquals(task.getDependsOn().size(), 3);
   }
 
   // after task declaration, keep parsing lines keeping track of { and } - anything within

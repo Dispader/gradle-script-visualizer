@@ -1,20 +1,13 @@
 package com.nurflugel.util.dependencyvisualizer.output;
 
-import com.nurflugel.gradle.ui.dialog.ConfigurationChoiceDialog;
-import com.nurflugel.gradle.ui.dialog.ConfigurationsDialogBuilder;
-
 import com.nurflugel.util.dependencyvisualizer.parser.GradleDependencyParser;
 import com.nurflugel.util.gradlescriptvisualizer.domain.Os;
 import com.nurflugel.util.gradlescriptvisualizer.ui.GradleScriptPreferences;
 import static com.nurflugel.util.test.TestResources.getFilePath;
 
-import org.apache.commons.io.FileUtils;
 import static org.apache.commons.io.FileUtils.readLines;
 
-import org.testng.Assert;
-
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.fail;
 
 import org.testng.annotations.Test;
 
@@ -51,20 +44,23 @@ public class DependencyDotFileGeneratorTest
   @Test(groups = "unit")
   public void testNoTransitives() throws Exception, NoConfigurationsFoundException
   {
-    File file = new File(getFilePath("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build/resources/test/gradle/dependencies/build_build_NoTransitives.gradle"));
-    DependencyDotFileGenerator generator = new MockDependencyDotFileGenerator();
+    File file = new File(getFilePath("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build/resources/test/gradle/dependencies/build_NoTransitives.gradle"));
+
+    // File file = new File(getFilePath("./build/resources/test/gradle/dependencies/build_NoTransitives.gradle"));
+    DependencyDotFileGenerator generator   = new MockDependencyDotFileGenerator();
     GradleScriptPreferences    preferences = new GradleScriptPreferences();
 
     preferences.setShouldJustUseCompileConfig(true);
 
-    File output = generator.createOutputForFile(file, new GradleDependencyParser(), preferences, "gradle/dependencies/build_NoTransitives.dot",
+    File output = generator.createOutputForFile(file, new GradleDependencyParser(), preferences,
+                                                "/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build/resources/test/gradle/dependencies/build_NoTransitives.dot",
                                                 Os.findOs());
 
     // compare files with reference
     List<String> outputLines    = readLines(output);
-    List<String> referenceLines = readLines(new File("gradle/dependencies/reference_build_NoTransitives.dot"));
+    List<String> referenceLines = readLines(new File("/Users/douglas_bullard/Documents/JavaStuff/Google_Code/gradle-script-visualizer/trunk/build/resources/test/gradle/dependencies/reference_build_NoTransitives.dot"));
 
-    assertEquals(outputLines, referenceLines, "Should have teh same output");
+    assertEquals(outputLines, referenceLines, "Should have the same output");
   }
 
   @Test(groups = "long")
@@ -75,8 +71,6 @@ public class DependencyDotFileGeneratorTest
     GradleScriptPreferences    preferences = new GradleScriptPreferences();
 
     preferences.setShouldJustUseCompileConfig(true);
-
-    // todo fix this so it won't die because of the dialog
     generator.createOutputForFile(file, new GradleDependencyParser(), preferences, "dibble.dot", Os.findOs());
   }
 }

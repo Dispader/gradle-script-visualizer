@@ -1,7 +1,6 @@
 package com.nurflugel.util.gradlescriptvisualizer.domain;
 
 import static com.nurflugel.util.gradlescriptvisualizer.domain.Task.*;
-import static com.nurflugel.util.gradlescriptvisualizer.domain.TaskUsage.EXECUTE;
 import static com.nurflugel.util.test.TestResources.getLinesFromArray;
 
 import static org.testng.Assert.*;
@@ -167,17 +166,20 @@ public class TaskTest
   {
     HashMap<String, Task> map           = new HashMap<>();
     Task                  taskInContext = new Task("dibble");
+    String                tomcatRun     = "tomcatRun";
 
-    findOrCreateImplicitTasksByExecute(map, "tomcatRun.execute()", taskInContext, new ArrayList<Task>());
-
-    String tomcatRun = "tomcatRun";
-
+    findOrCreateImplicitTasksByExecute(map, tomcatRun + ".execute()", taskInContext, new ArrayList<Task>());
     assertTrue(map.containsKey(tomcatRun));
 
     Task task = map.get(tomcatRun);
 
     assertEquals(task.getName(), tomcatRun);
-    assertEquals(taskInContext.getDependsOn().get(0), task);  //
+
+    Map<Task, TaskUsage> dependsOn  = taskInContext.getDependsOn();
+    Set<Task>            tasks      = dependsOn.keySet();
+    Task                 actualTask = tasks.iterator().next();
+
+    assertEquals(actualTask, task);
   }
 
   @Test(groups = "gradle")

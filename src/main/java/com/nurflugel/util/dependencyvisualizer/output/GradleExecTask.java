@@ -10,8 +10,6 @@ import javafx.application.Platform;
 
 import javafx.concurrent.Task;
 
-import javafx.scene.control.TextArea;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
@@ -96,23 +94,36 @@ public class GradleExecTask extends Task
     final String[] lines = outputLines.toArray(new String[outputLines.size()]);
 
     proc.destroy();
-    Platform.runLater(new Runnable()
-      {
-        @Override
-        public void run()
+
+    try
+    {
+      Platform.runLater(new Runnable()
         {
-          try
+          @Override
+          public void run()
           {
-            dependencyDotFileGenerator.createDotFileFromLines(parser, preferences, outputFileName, lines, os, dialog);
+            callDotGenerator(lines);
           }
-          catch (IOException | NoConfigurationsFoundException e)
-          {
-            e.printStackTrace();
-          }
-        }
-      });
+        });
+    }
+    catch (IllegalStateException e)
+    {  // if we got this exception, it's because we're running unit tests, and the UI doesn't exist, so fall back and do it single-threaded
+      callDotGenerator(lines);
+    }
 
     return lines;
+  }
+
+  private void callDotGenerator(String[] lines)
+  {
+    try
+    {
+      dependencyDotFileGenerator.createDotFileFromLines(parser, preferences, outputFileName, lines, os, dialog);
+    }
+    catch (IOException | NoConfigurationsFoundException e)
+    {
+      e.printStackTrace();
+    }
   }
 
   private void log(final String text)
