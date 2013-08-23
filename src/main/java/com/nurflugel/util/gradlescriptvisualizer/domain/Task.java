@@ -31,9 +31,10 @@ public class Task
 
   /** lines included in the scope of the task declaration. */
   private String[]             scopeLines;
-  private boolean              showType       = true;
+  private boolean              showType         = true;
   private String               buildScript;
-  private Map<Task, TaskUsage> dependsOnTasks = new HashMap<>();
+  private Map<Task, TaskUsage> dependsOnTasks   = new HashMap<>();
+  private Map<Task, TaskUsage> finalizedByTasks = new HashMap<>();
 
   /**
    * Given the line of text, find the task in the map of tasks by name, or else create a new task and add it to the map.

@@ -278,9 +278,9 @@ public class DependencyDotFileGenerator
 
   ConfigurationChoiceDialog createAndShowConfigurationDialog(GradleScriptPreferences preferences, String outputFileName, Os os)
   {
-    ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(null, preferences, os, outputFileName).setOwner(null)
-                                                                        .setTitle("Processing build file").addOkButton().addCancelButton(null)
-                                                                        .build();
+    ConfigurationChoiceDialog dialog = new ConfigurationsDialogBuilder().create(new DependencyDotFileGenerator(), preferences, os, outputFileName)
+                                                                        .setOwner(null).setTitle("Processing build file").addOkButton()
+                                                                        .addCancelButton(null).build();
 
     dialog.show();
 

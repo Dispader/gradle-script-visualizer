@@ -352,6 +352,9 @@ public class GradleFileParser
                 }
               }
 
+              if (lineInScope.contains("finalizedBy"))  // todo something where we figure out finalized by
+              {}
+
               if (lineInScope.contains("execute("))
               {
                 for (Task task : tasks)
