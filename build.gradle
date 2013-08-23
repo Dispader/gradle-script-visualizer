@@ -1,10 +1,6 @@
 apply plugin: 'application'
-//apply plugin: 'macAppBundle'
 
-apply from: 'dependencies.gradle'
-//apply from: 'http://ant-master-build-scripts.googlecode.com/svn/trunk/master-gradle/master-webstart-build.gradle'
-//apply from: 'master-gradle/master-javac2.gradle'
-apply from:  'master-gradle/master-webstart-build.gradle'
+apply from:  'gradle/master-gradle/master-webstart-build.gradle'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -12,51 +8,7 @@ targetCompatibility = 1.7
 
 mainClassName = "com.nurflugel.gradle.ui.Main"
 versionClassName = 'com.nurflugel.util.Util'
-//
-//task dibble2 <<{
-//  println "This is dibble2"
-//}
-//
-//task dibble4 <<{
-//  println "This is dibble4"
-//}
-//
-//task dibble5 <<{
-//  println "This is dibble5"
-//}
-//
-//
-//
-//task dibble3 (dependsOn: 'dibble4') <<{ // note that dibble4 will NOT be executed when dibble1 is run!!!
-//  println "This is dibble3"
-//  dibble5.execute()
-//}
-//
-//task dibble1 <<{
-//  
-//  println "This is dibble"
-//  dibble2.execute()
-//  dibble3.execute()
-//}
 
-
-//buildscript {
-//    repositories {
-//        ivy {
-//            url "http://gradle-macappbundle.googlecode.com"
-//            artifactPattern 'http://gradle-macappbundle.googlecode.com/files/[module]-[revision].[ext]'
-//        }
-//    }
-//
-//    dependencies {
-//        classpath 'edu.sc.seis:gradle-macappbundle:1.0.7'
-//    }
-//}
-//
-//macAppBundle {
-//    mainClassName = "com.nurflugel.gradle.ui.Main"
-//    icon = "myIcon.icns"
-//}
 
 
 
